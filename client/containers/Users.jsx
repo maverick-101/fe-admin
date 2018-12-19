@@ -5,7 +5,7 @@ import {Pagination} from 'react-bootstrap';
 
 import HasRole from '../hoc/HasRole';
 
-export default class Area extends React.Component {
+export default class Users extends React.Component {
   constructor(props) {
     super(props);
 
@@ -17,13 +17,13 @@ export default class Area extends React.Component {
     }
   }
   componentWillMount() {
-    axios.get('/api/area')
-      .then(response => {
-        this.setState({
-          areas: response.data.items,
-          pages: Math.ceil(response.data.total/10)
-        })
-      })
+    // axios.get('/api/area')
+    //   .then(response => {
+    //     this.setState({
+    //       areas: response.data.items,
+    //       pages: Math.ceil(response.data.total/10)
+    //     })
+    //   })
   }
   deleteArea(areaId, index) {
     if(confirm("Are you sure you want to delete this area?")) {
@@ -60,9 +60,9 @@ export default class Area extends React.Component {
         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <div className="row space-1">
             <div className="col-sm-4">
-              <h3>List of Areas</h3>
+              <h3>List of Users</h3>
             </div>
-            <div style={{'marginTop':'20px'}} className="col-sm-4">
+            <div style={{marginTop: '20px'}} className="col-sm-4">
               <div className='input-group'>
                 <input  className='form-control' type="text" name="search" placeholder="Enter property type" value={this.state.q} onChange={(event) => this.setState({q: event.target.value})}/>
                 <span className="input-group-btn" >
@@ -79,13 +79,13 @@ export default class Area extends React.Component {
             </div> */}
 
             <div className="col-sm-2 pull-right">
-                <Link to="/area_form">
-                  <button type="button" className="btn btn-success marginTop">Add new Area</button>
+                <Link to="/user_form">
+                  <button type="button" className="btn btn-success marginTop">Add new User</button>
                 </Link>
             </div>
 
           </div>
-          <div className="table-responsive">
+          {/* <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -127,7 +127,7 @@ export default class Area extends React.Component {
                 ))}
               </tbody>
             </table>
-          </div>
+          </div> */}
           <div className="text-center">
             <Pagination prev next items={this.state.pages} activePage={this.state.activePage} onSelect={this.handleSelect.bind(this)}> </Pagination>
           </div>

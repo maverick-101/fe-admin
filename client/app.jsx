@@ -13,7 +13,14 @@ import './dashboard.css'
 
 import App from './containers/App';
 import Area from './containers/Area';
+import Cities from './containers/Cities'
 import Stats from './containers/Stats';
+import AreaForm from './containers/AreaForm';
+import CityForm from './containers/CityForm';
+import Hotels from './containers/Hotels';
+import HotelForm from './containers/HotelForm';
+import Users from './containers/Users';
+import UserForm from './containers/UserForm';
 
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
@@ -24,6 +31,13 @@ ReactDOM.render(
       <Route path="/" component={App}>
         <IndexRoute component={Stats}/>
         <Route path="/area" component={Area}/>
+        <Route path="/area_form" component={AreaForm}/>
+        <Route path="/cities" component={Cities}/>
+        <Route path="/city_form" component={CityForm}/>
+        <Route path="/hotels" component={Hotels}/>
+        <Route path="/hotel_form" component={HotelForm}/>
+        <Route path="/users" component={Users}/>
+        <Route path="/user_form" component={UserForm}/>
       </Route>
     </Router>
   </Provider>,

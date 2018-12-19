@@ -39,14 +39,14 @@ export default class SideNav extends React.Component {
             <Link onClick={() => {this.setState({active:'areas'})}} to="/area">
               <li className={`side_nav ${this.state.active == 'areas' ? 'active' : ''}`}>Areas</li>
             </Link>
-            <Link onClick={() => {this.setState({active:'creditRequests'})}} to="/credit-requests">
-              <li className={`side_nav ${this.state.active == 'creditRequests' ? 'active' : ''}`}>Credit Requests</li>
+            <Link onClick={() => {this.setState({active:'cities'})}} to="/cities">
+              <li className={`side_nav ${this.state.active == 'cities' ? 'active' : ''}`}>Cities</li>
             </Link>
-            <Link onClick={() => {this.setState({active:'projects'})}} to="/project">
-              <li className={`side_nav ${this.state.active == 'projects' ? 'active' : ''}`}>Projects</li>
+            <Link onClick={() => {this.setState({active:'hotels'})}} to="/hotels">
+              <li className={`side_nav ${this.state.active == 'hotels' ? 'active' : ''}`}>Hotels</li>
             </Link>
-            <Link onClick={() => {this.setState({active:'agencies'})}} to="/agency">
-              <li className={`side_nav ${this.state.active == 'agencies' ? 'active' : ''}`}>Agencies</li>
+            <Link onClick={() => {this.setState({active:'users'})}} to="/users">
+              <li className={`side_nav ${this.state.active == 'users' ? 'active' : ''}`}>Users</li>
             </Link>
             <Link onClick={() => {this.setState({active:'developers'})}} to="/developer">
               <li className={`side_nav ${this.state.active == 'developers' ? 'active' : ''}`}>Developers</li>
