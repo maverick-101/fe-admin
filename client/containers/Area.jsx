@@ -17,10 +17,10 @@ export default class Area extends React.Component {
     }
   }
   componentWillMount() {
-    axios.get('/api/area')
+    axios.get('/api/locations/fetch')
       .then(response => {
         this.setState({
-          areas: response.data.items,
+          areas: response.data,
           pages: Math.ceil(response.data.total/10)
         })
       })
@@ -90,24 +90,25 @@ export default class Area extends React.Component {
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Size</th>
-                  <th>City</th>
-                  <th>Marla-Size(Sqft)</th>
+                  {/* <th>Size</th> */}
+                  <th>Views</th>
+                  {/* <th>Marla-Size(Sqft)</th>
                   <th>Population</th>
                   <th>Latitude</th>
-                  <th>Longitude</th>
+                  <th>Longitude</th> */}
                 </tr>
               </thead>
               <tbody>
-                {this.state.areas.map((area, index) => (
+                {this.state.areas && this.state.areas.length &&
+                  this.state.areas.map((area, index) => (
                   <tr key={index}>
                     <td>{area.name}</td>
-                    <td>{area.size}</td>
-                    <td>{area.city.name}</td>
-                    <td>{area.marla_size}</td>
+                    {/* <td>{area.size}</td> */}
+                    <td>{area.views}</td>
+                    {/* <td>{area.marla_size}</td>
                     <td>{area.population}</td>
                     <td>{area.lat}</td>
-                    <td>{area.lon}</td>
+                    <td>{area.lon}</td> */}
                     <td>
                       <Link to={`/area_resource/${area.id}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>

@@ -52,48 +52,22 @@ export default class CityForm extends React.Component {
     this.setState({ city });
   }
 
-  // postCity(event) {
-  //   event.preventDefault();
-  //   const { match, history } = this.props;
-  //   const { loading, city } = this.state;
-  //   if (!loading) {
-  //     if (match.params.cityId) {
-  //       this.setState({ loading: true });
-  //       axios.put(`/api/city/${match.params.cityId}`, city)
-  //         .then((/* response */) => {
-  //           history.push('/cities');
-  //         });
-  //     } else {
-  //       // const { city } = this.state;
-  //       this.setState({ loading: true });
-  //       // console.log(city);
-  //       axios.post('/api/city', city)
-  //         .then((response) => {
-  //           if (response.data === 'Already exists') {
-  //             window.alert(response.data);
-  //             this.setState({ loading: false });
-  //           } else {
-  //             history.push('/cities');
-  //           }
-  //         });
-  //     }
-  //   }
-  // }
-
   postCity(event) {
     event.preventDefault();
     const { match, history } = this.props;
     const { loading, city } = this.state;
         this.setState({ loading: true });
-        axios.post('/api/city', city)
+        if(!loading) {
+        axios.post('/api/city/save', city)
           .then((response) => {
-            if (response.data === 'Already exists') {
+            if (response.data === 'City Saved!') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
               history.push('/cities');
             }
           });
+        }
       }
 
   render() {
@@ -233,7 +207,7 @@ export default class CityForm extends React.Component {
                           className={`btn btn-success btn-lg ${loading ? 'disabled' : ''}`}
                         >
                           <i
-                            className={`fa fa-spinner fa-pulse ${loading ? '' : 'd-none'}`}
+                            className={`fa fa-spinner fa-pulse ${loading ? '' : 'hidden'}`}
                           /> Submit
                         </Button>
                       </div>

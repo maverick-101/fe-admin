@@ -14,13 +14,14 @@ export default class HotelForm extends React.Component {
         city: '',
         address: '',
         description: '',
-
       },
+      gallery: '',
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postCity = this.postCity.bind(this);
+    this.handleFile = this.handleFile.bind(this);
+    this.postHotel = this.postHotel.bind(this);
   }
 
   componentDidMount() {
@@ -37,10 +38,10 @@ export default class HotelForm extends React.Component {
   }
 
   setDescription(description) {
-    const { city } = this.state;
-    city.description = description.toString('html');
+    const { hotel } = this.state;
+    hotel.description = description.toString('html');
     this.setState({
-      city,
+      hotel,
       description,
     });
   }
@@ -48,27 +49,36 @@ export default class HotelForm extends React.Component {
   handleInputChange(event) {
     const { value, name } = event.target;
 
-    const { city } = this.state;
-    city[name] = value;
-    this.setState({ city });
+    const { hotel } = this.state;
+    hotel[name] = value;
+    this.setState({ hotel });
   }
 
-  postCity(event) {
+  handleFile(event) {
+    this.setState({
+      gallery: event.target.files.length ? event.target.files[0] : '',
+    });
+  }
+
+  postHotel(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, city } = this.state;
+    const { loading, hotel, gallery } = this.state;
     if (!loading) {
-      if (match.params.cityId) {
-        this.setState({ loading: true });
-        axios.put(`/api/city/${match.params.cityId}`, city)
-          .then((/* response */) => {
-            history.push('/cities');
-          });
-      } else {
+      // if (match.params.cityId) {
+      //   this.setState({ loading: true });
+      //   axios.put(`/api/city/${match.params.cityId}`, city)
+      //     .then((/* response */) => {
+      //       history.push('/cities');
+      //     });
+      // } else {
         // const { city } = this.state;
         this.setState({ loading: true });
-        // console.log(city);
-        axios.post('/api/city', city)
+        const fd = new FormData();
+        fd.append('gallery', gallery);
+        fd.append('hotel', JSON.stringify(hotel));
+        this.setState({ loading: true });
+        axios.post('/api/city', fd)
           .then((response) => {
             if (response.data === 'Already exists') {
               window.alert(response.data);
@@ -77,7 +87,7 @@ export default class HotelForm extends React.Component {
               history.push('/hotels');
             }
           });
-      }
+      // }
     }
   }
 
@@ -146,7 +156,7 @@ export default class HotelForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postCity}
+                    onSubmit={this.postHotel}
                   >
                     <div className="form-group row">
                       <label
@@ -182,19 +192,17 @@ export default class HotelForm extends React.Component {
                       </div>
                     </div>
 
+
                     <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Hotel Gallery
-                      </label>
+                      <label className="control-label col-md-3 col-sm-3">Hotel Gallery</label>
                       <div className="col-md-6 col-sm-6">
                         <input
-                          required
-                          type="text"
-                          name="name"
+                          type="file"
+                          name="cover"
                           className="form-control"
-                          value={hotel.name}
-                          onChange={this.handleInputChange}
+                          onChange={this.handleFile}
+                          multiple
+                          // required={coverForm.url ? 0 : 1}
                         />
                       </div>
                     </div>
@@ -252,7 +260,7 @@ export default class HotelForm extends React.Component {
                           className={`btn btn-success btn-lg ${loading ? 'disabled' : ''}`}
                         >
                           <i
-                            className={`fa fa-spinner fa-pulse ${loading ? '' : 'd-none'}`}
+                            className={`fa fa-spinner fa-pulse ${loading ? '' : 'hidden'}`}
                           /> Submit
                         </Button>
                       </div>
@@ -268,7 +276,3 @@ export default class HotelForm extends React.Component {
   }
 }
 
-// CityForm.propTypes = {
-//   match: PropTypes.instanceOf(Object).isRequired,
-//   history: PropTypes.instanceOf(Object).isRequired,
-// };

@@ -10,20 +10,20 @@ export default class Cities extends React.Component {
     super(props);
 
     this.state = {
-      areas: [],
+      cities: [],
       activePage: 1,
       pages: 1,
       q: '',
     }
   }
   componentWillMount() {
-    // axios.get('/api/area')
-    //   .then(response => {
-    //     this.setState({
-    //       areas: response.data.items,
-    //       pages: Math.ceil(response.data.total/10)
-    //     })
-    //   })
+    axios.get('/api/city/fetch')
+      .then(response => {
+        this.setState({
+          cities: response.data,
+          pages: Math.ceil(response.data.total/10)
+        })
+      })
   }
   deleteArea(areaId, index) {
     if(confirm("Are you sure you want to delete this area?")) {
@@ -85,49 +85,51 @@ export default class Cities extends React.Component {
             </div>
 
           </div>
-          {/* <div className="table-responsive">
+          <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Size</th>
-                  <th>City</th>
-                  <th>Marla-Size(Sqft)</th>
+                  <th>Province</th>
+                  <th>Views</th>
+                  {/* <th>Marla-Size(Sqft)</th>
                   <th>Population</th>
                   <th>Latitude</th>
-                  <th>Longitude</th>
+                  <th>Longitude</th> */}
                 </tr>
               </thead>
               <tbody>
-                {this.state.areas.map((area, index) => (
+                  {console.log('cities',this.state.cities)}
+                {this.state.cities && this.state.cities.length >= 1 &&
+                  this.state.cities.map((city, index) => (
                   <tr key={index}>
-                    <td>{area.name}</td>
-                    <td>{area.size}</td>
-                    <td>{area.city.name}</td>
-                    <td>{area.marla_size}</td>
+                    <td>{city.name}</td>
+                    <td>{city.province}</td>
+                    <td>{city.views}</td>
+                    {/* <td>{area.marla_size}</td>
                     <td>{area.population}</td>
                     <td>{area.lat}</td>
-                    <td>{area.lon}</td>
+                    <td>{area.lon}</td> */}
                     <td>
-                      <Link to={`/area_resource/${area.id}`}>
+                      <Link to={`/area_resource/${city.id}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
                     </td>
                     <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}>
                       <td>
-                        <Link to={`/edit_area/${area.id}`}>
+                        <Link to={`/edit_city/${city.id}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" onClick={() => this.deleteArea(area.id, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" onClick={() => this.deletecity(city.id, index)}></span>
                       </td>
                     </HasRole>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div> */}
+          </div>
           <div className="text-center">
             <Pagination prev next items={this.state.pages} activePage={this.state.activePage} onSelect={this.handleSelect.bind(this)}> </Pagination>
           </div>

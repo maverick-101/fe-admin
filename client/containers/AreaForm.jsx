@@ -11,6 +11,7 @@ export default class AreaForm extends React.Component {
       loading: false,
       area: {
         name: '',
+        city: '',
         province: '',
         views: '',
         description: '',
@@ -19,27 +20,17 @@ export default class AreaForm extends React.Component {
     };
     // this.rteState = RichTextEditor.createEmptyValue();
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postCity = this.postCity.bind(this);
+    this.postArea = this.postArea.bind(this);
   }
 
   componentDidMount() {
-    // const { match } = this.props;
-    // if (match.params.cityId) {
-    //   axios.get(`/api/city/${match.params.cityId}`)
-    //     .then((response) => {
-    //       this.setState({
-    //         city: response.data,
-    //         description: RichTextEditor.createValueFromString(response.data.description, 'html'),
-    //       });
-    //     });
-    // }
   }
 
   setDescription(description) {
-    const { city } = this.state;
-    city.description = description.toString('html');
+    const { area } = this.state;
+    area.description = description.toString('html');
     this.setState({
-      city,
+      area,
       description,
     });
   }
@@ -52,26 +43,18 @@ export default class AreaForm extends React.Component {
     this.setState({ area });
   }
 
-  postCity(event) {
+  postArea(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, city } = this.state;
+    const { loading, area } = this.state;
     if (!loading) {
-    //   if (match.params.cityId) {
-    //     this.setState({ loading: true });
-    //     axios.put(`/api/city/${match.params.cityId}`, city)
-    //       .then((/* response */) => {
-    //         history.push('/cities');
-    //       });
-    //   } else {
-        // const { city } = this.state;
         this.setState({ loading: true });
-        // console.log(city);
-        axios.post('/api/city', area)
+        axios.post('/api/locations/save', area)
           .then((response) => {
-            if (response.data === 'Already exists') {
+            if (response.data === 'Location Saved!') {
               window.alert(response.data);
-              this.setState({ loading: false });
+              history.push('/areas');
+              // this.setState({ loading: false });
             } else {
               history.push('/areas');
             }
@@ -145,7 +128,7 @@ export default class AreaForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postCity}
+                    onSubmit={this.postArea}
                   >
                     <div className="form-group row">
                       <label
@@ -159,6 +142,23 @@ export default class AreaForm extends React.Component {
                           name="name"
                           className="form-control"
                           value={area.name}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >City
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="city"
+                          className="form-control"
+                          value={area.city}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -217,7 +217,7 @@ export default class AreaForm extends React.Component {
                           className={`btn btn-success btn-lg ${loading ? 'disabled' : ''}`}
                         >
                           <i
-                            className={`fa fa-spinner fa-pulse ${loading ? '' : 'd-none'}`}
+                            className={`fa fa-spinner fa-pulse ${loading ? '' : 'hidden'}`}
                           /> Submit
                         </Button>
                       </div>
@@ -232,8 +232,3 @@ export default class AreaForm extends React.Component {
     );
   }
 }
-
-// CityForm.propTypes = {
-//   match: PropTypes.instanceOf(Object).isRequired,
-//   history: PropTypes.instanceOf(Object).isRequired,
-// };

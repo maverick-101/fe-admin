@@ -9,15 +9,17 @@ export default class UserForm extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      city: {
+      user: {
         name: '',
+        email: '',
+        phone: '',
         description: '',
       },
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postCity = this.postCity.bind(this);
+    this.postUser = this.postUser.bind(this);
   }
 
   componentDidMount() {
@@ -34,10 +36,10 @@ export default class UserForm extends React.Component {
   }
 
   setDescription(description) {
-    const { city } = this.state;
-    city.description = description.toString('html');
+    const { user } = this.state;
+    user.description = description.toString('html');
     this.setState({
-      city,
+      user,
       description,
     });
   }
@@ -45,27 +47,27 @@ export default class UserForm extends React.Component {
   handleInputChange(event) {
     const { value, name } = event.target;
 
-    const { city } = this.state;
-    city[name] = value;
-    this.setState({ city });
+    const { user } = this.state;
+    user[name] = value;
+    this.setState({ user });
   }
 
-  postCity(event) {
+  postUser(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, city } = this.state;
+    const { loading, user } = this.state;
     if (!loading) {
-      if (match.params.cityId) {
-        this.setState({ loading: true });
-        axios.put(`/api/city/${match.params.cityId}`, city)
-          .then((/* response */) => {
-            history.push('/cities');
-          });
-      } else {
+      // if (match.params.cityId) {
+      //   this.setState({ loading: true });
+      //   axios.put(`/api/city/${match.params.cityId}`, city)
+      //     .then((/* response */) => {
+      //       history.push('/cities');
+      //     });
+      // } else {
         // const { city } = this.state;
         this.setState({ loading: true });
         // console.log(city);
-        axios.post('/api/city', city)
+        axios.post('/api/city', user)
           .then((response) => {
             if (response.data === 'Already exists') {
               window.alert(response.data);
@@ -74,14 +76,14 @@ export default class UserForm extends React.Component {
               history.push('/users');
             }
           });
-      }
+      // }
     }
   }
 
   render() {
     const {
       loading,
-      city,
+      user,
       description,
     } = this.state;
     const toolbarConfig = {
@@ -143,7 +145,7 @@ export default class UserForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postCity}
+                    onSubmit={this.postUser}
                   >
                     <div className="form-group row">
                       <label
@@ -156,7 +158,7 @@ export default class UserForm extends React.Component {
                           type="text"
                           name="name"
                           className="form-control"
-                          value={city.name}
+                          value={user.name}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -171,9 +173,9 @@ export default class UserForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="name"
+                          name="email"
                           className="form-control"
-                          value={city.name}
+                          value={user.email}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -187,10 +189,10 @@ export default class UserForm extends React.Component {
                       <div className="col-md-6 col-sm-6">
                         <input
                           required
-                          type="text"
-                          name="name"
+                          type="number"
+                          name="phone"
                           className="form-control"
-                          value={city.name}
+                          value={user.phone}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -215,7 +217,7 @@ export default class UserForm extends React.Component {
                           className={`btn btn-success btn-lg ${loading ? 'disabled' : ''}`}
                         >
                           <i
-                            className={`fa fa-spinner fa-pulse ${loading ? '' : 'd-none'}`}
+                            className={`fa fa-spinner fa-pulse ${loading ? '' : 'hidden'}`}
                           /> Submit
                         </Button>
                       </div>
