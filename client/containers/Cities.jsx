@@ -21,7 +21,7 @@ export default class Cities extends React.Component {
       .then(response => {
         this.setState({
           cities: response.data,
-          pages: Math.ceil(response.data.total/10)
+          pages: Math.ceil(response.data.length/10)
         })
       })
   }
@@ -99,7 +99,6 @@ export default class Cities extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                  {console.log('cities',this.state.cities)}
                 {this.state.cities && this.state.cities.length >= 1 &&
                   this.state.cities.map((city, index) => (
                   <tr key={index}>
