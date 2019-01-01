@@ -10,11 +10,16 @@ export default class UserForm extends React.Component {
     this.state = {
       loading: false,
       user: {
-        name: '',
+        firstName: '',
+        lastName: '',
         email: '',
         phone: '',
         description: '',
+        password: '',
+        address: '',
+
       },
+      file: '',
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -55,32 +60,35 @@ export default class UserForm extends React.Component {
   postUser(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, user } = this.state;
+    const { loading, user, file } = this.state;
     if (!loading) {
-      // if (match.params.cityId) {
-      //   this.setState({ loading: true });
-      //   axios.put(`/api/city/${match.params.cityId}`, city)
-      //     .then((/* response */) => {
-      //       history.push('/cities');
-      //     });
-      // } else {
-        // const { city } = this.state;
+        const fd = new FormData();
+        fd.append('file', file);
+        fd.append('user', user);
+        console.log(user.firstName);
         this.setState({ loading: true });
-        // console.log(city);
-        axios.post('/api/city', user)
-          .then((response) => {
-            if (response.data === 'Already exists') {
-              window.alert(response.data);
-              this.setState({ loading: false });
-            } else {
-              history.push('/users');
-            }
-          });
+        
+        // axios.post('/api/user/save', fd)
+        //   .then((response) => {
+        //     if (response.data === 'Already exists') {
+        //       window.alert(response.data);
+        //       this.setState({ loading: false });
+        //     } else {
+        //       history.push('/users');
+        //     }
+        //   });
       // }
     }
   }
 
+  handleFile = (event) => {
+    this.setState({
+      file: event.target.files.length ? event.target.files[0] : '',
+    });
+  }
+
   render() {
+    console.log(this.state);
     const {
       loading,
       user,
@@ -150,15 +158,32 @@ export default class UserForm extends React.Component {
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Name
+                      >First Name
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
                           required
                           type="text"
-                          name="name"
+                          name="firstName"
                           className="form-control"
-                          value={user.name}
+                          value={user.firstName}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Last Name
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="lastName"
+                          className="form-control"
+                          value={user.lastName}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -184,6 +209,37 @@ export default class UserForm extends React.Component {
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
+                      >Password
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="password"
+                          name="password"
+                          className="form-control"
+                          value={user.password}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Profile Picture</label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          type="file"
+                          name="cover"
+                          className="form-control"
+                          onChange={this.handleFile}
+                          required
+                          // required={coverForm.url ? 0 : 1}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
                       >Phone
                       </label>
                       <div className="col-md-6 col-sm-6">
@@ -199,6 +255,23 @@ export default class UserForm extends React.Component {
                     </div>
 
                     <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Address
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="address"
+                          className="form-control"
+                          value={user.address}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Description</label>
                       <div className="col-md-6 col-sm-6">
                         <RichTextEditor
@@ -209,7 +282,7 @@ export default class UserForm extends React.Component {
                           }}
                         />
                       </div>
-                    </div>
+                    </div> */}
                     <div className="ln_solid" />
                     <div className="form-group row">
                       <div className="col-md-12 col-sm-12 text-center offset-md-3">

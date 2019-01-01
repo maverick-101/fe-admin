@@ -10,20 +10,20 @@ export default class Users extends React.Component {
     super(props);
 
     this.state = {
-      areas: [],
+      users: [],
       activePage: 1,
       pages: 1,
       q: '',
     }
   }
   componentWillMount() {
-    // axios.get('/api/area')
-    //   .then(response => {
-    //     this.setState({
-    //       areas: response.data.items,
-    //       pages: Math.ceil(response.data.total/10)
-    //     })
-    //   })
+    axios.get('/api/user/fetch')
+      .then(response => {
+        this.setState({
+          users: response.data.items,
+          pages: Math.ceil(response.data.total/10)
+        })
+      })
   }
   deleteArea(areaId, index) {
     if(confirm("Are you sure you want to delete this area?")) {
@@ -99,21 +99,21 @@ export default class Users extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.areas.map((area, index) => (
+                {this.state.users.map((user, index) => (
                   <tr key={index}>
-                    <td>{area.name}</td>
-                    <td>{area.size}</td>
-                    <td>{area.city.name}</td>
+                    <td>{user.firstName}</td>
+                    <td>{user.phone}</td> */}
+                    {/* <td>{area.city.name}</td>
                     <td>{area.marla_size}</td>
                     <td>{area.population}</td>
                     <td>{area.lat}</td>
-                    <td>{area.lon}</td>
-                    <td>
+                    <td>{area.lon}</td> */}
+                    {/* <td>
                       <Link to={`/area_resource/${area.id}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
-                    </td>
-                    <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}>
+                    </td> */}
+                    {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}>
                       <td>
                         <Link to={`/edit_area/${area.id}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
@@ -122,8 +122,8 @@ export default class Users extends React.Component {
                       <td>
                         <span className="glyphicon glyphicon-trash" aria-hidden="true" onClick={() => this.deleteArea(area.id, index)}></span>
                       </td>
-                    </HasRole>
-                  </tr>
+                    </HasRole> */}
+                  {/* </tr>
                 ))}
               </tbody>
             </table>
