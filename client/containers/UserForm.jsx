@@ -68,7 +68,7 @@ export default class UserForm extends React.Component {
 
         this.setState({ loading: true });
         
-        axios.post('/api/user/save', fd)
+        axios.post('/api/user/save', {profile_picture, user})
           .then((response) => {
             if (response.data === 'Already exists') {
               window.alert(response.data);
