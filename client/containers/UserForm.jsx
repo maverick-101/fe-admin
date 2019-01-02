@@ -65,18 +65,18 @@ export default class UserForm extends React.Component {
         const fd = new FormData();
         fd.append('file', file);
         fd.append('user', user);
-        console.log(user.firstName);
+
         this.setState({ loading: true });
         
-        // axios.post('/api/user/save', fd)
-        //   .then((response) => {
-        //     if (response.data === 'Already exists') {
-        //       window.alert(response.data);
-        //       this.setState({ loading: false });
-        //     } else {
-        //       history.push('/users');
-        //     }
-        //   });
+        axios.post('/api/user/save', fd)
+          .then((response) => {
+            if (response.data === 'Already exists') {
+              window.alert(response.data);
+              this.setState({ loading: false });
+            } else {
+              history.push('/users');
+            }
+          });
       // }
     }
   }

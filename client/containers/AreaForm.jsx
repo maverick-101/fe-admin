@@ -16,6 +16,7 @@ export default class AreaForm extends React.Component {
         views: '',
         description: '',
       },
+      files: '',
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -43,13 +44,24 @@ export default class AreaForm extends React.Component {
     this.setState({ area });
   }
 
+  handleFile = (event) => {
+    this.setState({
+      files: event.target.files.length ? event.target.files[0] : '',
+    });
+  }
+
   postArea(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, area } = this.state;
+    const { loading, area, files } = this.state;
     if (!loading) {
         this.setState({ loading: true });
-        axios.post('/api/locations/save', area)
+
+        const fd = new FormData();
+        fd.append('files', files);
+        fd.append('area', JSON.stringify(area));
+
+        axios.post('/api/locations/save', fd)
           .then((response) => {
             if (response.data === 'Location Saved!') {
               window.alert(response.data);
@@ -194,6 +206,20 @@ export default class AreaForm extends React.Component {
                           className="form-control"
                           value={area.views}
                           onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Area Gallery</label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          type="file"
+                          name="cover"
+                          className="form-control"
+                          onChange={this.handleFile}
+                          multiple
+                          // required={coverForm.url ? 0 : 1}
                         />
                       </div>
                     </div>
