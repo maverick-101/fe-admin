@@ -19,7 +19,7 @@ export default class UserForm extends React.Component {
         address: '',
 
       },
-      file: '',
+      profile_picture: '',
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -60,10 +60,10 @@ export default class UserForm extends React.Component {
   postUser(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, user, file } = this.state;
+    const { loading, user, profile_picture } = this.state;
     if (!loading) {
         const fd = new FormData();
-        fd.append('file', file);
+        fd.append('profile_picture', profile_picture);
         fd.append('user', user);
 
         this.setState({ loading: true });
@@ -83,7 +83,7 @@ export default class UserForm extends React.Component {
 
   handleFile = (event) => {
     this.setState({
-      file: event.target.files.length ? event.target.files[0] : '',
+      profile_picture: event.target.files.length ? event.target.files[0] : '',
     });
   }
 
@@ -164,9 +164,9 @@ export default class UserForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="firstName"
+                          name="first_name"
                           className="form-control"
-                          value={user.firstName}
+                          value={user.first_name}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -181,9 +181,9 @@ export default class UserForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="lastName"
+                          name="last_name"
                           className="form-control"
-                          value={user.lastName}
+                          value={user.last_name}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -228,7 +228,7 @@ export default class UserForm extends React.Component {
                       <div className="col-md-6 col-sm-6">
                         <input
                           type="file"
-                          name="cover"
+                          name="profile_picture"
                           className="form-control"
                           onChange={this.handleFile}
                           required
