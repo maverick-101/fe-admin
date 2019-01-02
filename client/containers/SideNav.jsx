@@ -48,7 +48,7 @@ export default class SideNav extends React.Component {
             <Link onClick={() => {this.setState({active:'users'})}} to="/users">
               <li className={`side_nav ${this.state.active == 'users' ? 'active' : ''}`}>Users</li>
             </Link>
-            <Link onClick={() => {this.setState({active:'developers'})}} to="/developer">
+            {/* <Link onClick={() => {this.setState({active:'developers'})}} to="/developer">
               <li className={`side_nav ${this.state.active == 'developers' ? 'active' : ''}`}>Developers</li>
             </Link>
             <Link onClick={() => {this.setState({active:'properties'})}} to="/property">
@@ -107,7 +107,7 @@ export default class SideNav extends React.Component {
             </Link>
           <Link onClick={() => {this.setState({active:'inquiries'})}} to="/inquiries">
               <li className={`side_nav ${this.state.active == 'inquiries' ? 'active' : ''}`}>Inquiries</li>
-          </Link>
+          </Link> */}
         </ul>
         <div className='text-center' style={{'position':'absolute',}}>
           <span style={{'paddingTop':'3px'}} className="pull-left glyphicon glyphicon-off" aria-hidden="true" onClick={() => this.deleteDeveloper(developer.id, index)}></span>
