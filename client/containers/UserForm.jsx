@@ -10,8 +10,8 @@ export default class UserForm extends React.Component {
     this.state = {
       loading: false,
       user: {
-        firstName: '',
-        lastName: '',
+        first_name: '',
+        last_name: '',
         email: '',
         phone: '',
         description: '',

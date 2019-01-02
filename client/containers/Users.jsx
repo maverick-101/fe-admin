@@ -20,7 +20,7 @@ export default class Users extends React.Component {
     axios.get('/api/user/fetch')
       .then(response => {
         this.setState({
-          users: response.data.items,
+          users: response.data,
           pages: Math.ceil(response.data.total/10)
         })
       })
@@ -55,6 +55,7 @@ export default class Users extends React.Component {
       })
   }
   render() {
+    console.log(this.state);
     return (
       <div className="row">
         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -85,25 +86,32 @@ export default class Users extends React.Component {
             </div>
 
           </div>
-          {/* <div className="table-responsive">
+          <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Size</th>
-                  <th>City</th>
+                  <th>ID</th>
+                  <th>Picture</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  {/* <th>City</th>
                   <th>Marla-Size(Sqft)</th>
                   <th>Population</th>
                   <th>Latitude</th>
-                  <th>Longitude</th>
+                  <th>Longitude</th> */}
                 </tr>
               </thead>
               <tbody>
-                {this.state.users.map((user, index) => (
+                {this.state.users && this.state.users.length &&
+                this.state.users.map((user, index) => (
                   <tr key={index}>
-                    <td>{user.firstName}</td>
-                    <td>{user.phone}</td> */}
-                    {/* <td>{area.city.name}</td>
+                  <td>{user.ID}</td>
+                  <td>{<img style={{height: '50px', width: '50px'}} src={user.profile_picture.url}/>}</td>
+                  <td>{user.first_name}</td>
+                  <td>{user.last_name}</td>
+                    {/* <td>{user.firstName}</td>
+                    <td>{user.phone}</td>
+                    <td>{area.city.name}</td>
                     <td>{area.marla_size}</td>
                     <td>{area.population}</td>
                     <td>{area.lat}</td>
@@ -123,11 +131,11 @@ export default class Users extends React.Component {
                         <span className="glyphicon glyphicon-trash" aria-hidden="true" onClick={() => this.deleteArea(area.id, index)}></span>
                       </td>
                     </HasRole> */}
-                  {/* </tr>
+                    </tr>
                 ))}
               </tbody>
             </table>
-          </div> */}
+          </div>
           <div className="text-center">
             <Pagination prev next items={this.state.pages} activePage={this.state.activePage} onSelect={this.handleSelect.bind(this)}> </Pagination>
           </div>
