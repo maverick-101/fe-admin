@@ -23,7 +23,7 @@ export default class CityForm extends React.Component {
     this.postCity = this.postCity.bind(this);
   }
 
-  componentDidMount() {
+  // componentDidMount() {
     // const { match } = this.props;
     // if (match.params.cityId) {
     //   axios.get(`/api/city/${match.params.cityId}`)
@@ -34,7 +34,19 @@ export default class CityForm extends React.Component {
     //       });
     //     });
     // }
-  }
+  // }
+
+  componentDidMount() {
+    console.log('props',this.props);
+      if (window.location.href.split('/')[3] === 'edit_city')
+      axios.get(`/api/city/fetchById/${this.props.params.cityId}`)
+        .then((response) => {
+          this.setState({
+            city: response.data[0],
+            description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+          });
+        });
+    }
 
   setDescription(description) {
     const { city } = this.state;
@@ -75,8 +87,19 @@ export default class CityForm extends React.Component {
 
         fd.append('city', JSON.stringify(city));
 
-        if(!loading) {
-        axios.post('/api/city/save', fd)
+        if(this.props.params.cityId) {
+        axios.patch('/api/city/update', fd)
+          .then((response) => {
+            if (response.data === 'City Updated!') {
+              window.alert(response.data);
+              this.setState({ loading: false });
+            } else {
+              history.push('/cities');
+            }
+          });
+        }
+        else {
+          axios.post('/api/city/save', fd)
           .then((response) => {
             if (response.data === 'City Saved!') {
               window.alert(response.data);
@@ -86,7 +109,7 @@ export default class CityForm extends React.Component {
             }
           });
         }
-      }
+        }
 
   render() {
     const {

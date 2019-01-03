@@ -30,14 +30,22 @@ ReactDOM.render(
     <Router history={history}>
       <Route path="/" component={App}>
         <IndexRoute component={Stats}/>
+
         <Route path="/area" component={Area}/>
         <Route path="/area_form" component={AreaForm}/>
+        <Route path="/edit_area/:areaId" component={AreaForm}/>
+
         <Route path="/cities" component={Cities}/>
         <Route path="/city_form" component={CityForm}/>
+        <Route path="/edit_city/:cityId" component={CityForm}/>
+
         <Route path="/hotels" component={Hotels}/>
         <Route path="/hotel_form" component={HotelForm}/>
+        <Route path="/edit_hotel/:hotelId" component={HotelForm}/>
+
         <Route path="/users" component={Users}/>
         <Route path="/user_form" component={UserForm}/>
+        <Route path="/edit_user/:userId" component={UserForm}/>
       </Route>
     </Router>
   </Provider>,

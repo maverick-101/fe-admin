@@ -19,6 +19,7 @@ export default class UserForm extends React.Component {
         address: '',
 
       },
+      userId: '',
       profile_picture: '',
       description: RichTextEditor.createEmptyValue(),
     };
@@ -28,17 +29,16 @@ export default class UserForm extends React.Component {
   }
 
   componentDidMount() {
-    // const { match } = this.props;
-    // if (match.params.cityId) {
-    //   axios.get(`/api/city/${match.params.cityId}`)
-    //     .then((response) => {
-    //       this.setState({
-    //         city: response.data,
-    //         description: RichTextEditor.createValueFromString(response.data.description, 'html'),
-    //       });
-    //     });
-    // }
-  }
+    console.log('props',this.props);
+      if (this.props.params.userId)
+      axios.get(`/api/user/fetchById/${this.props.params.userId}`)
+        .then((response) => {
+          this.setState({
+            user: response.data[0],
+            description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+          });
+        });
+    }
 
   setDescription(description) {
     const { user } = this.state;
@@ -67,8 +67,18 @@ export default class UserForm extends React.Component {
         fd.append('user', JSON.stringify(user));
 
         this.setState({ loading: true });
-        
-        // axios.post('/api/user/save', {profile_picture, user})
+        if(this.props.params.userId) {
+          axios.patch('/api/user/update', fd)
+          .then((response) => {
+            if (response.data === 'User Updated!') {
+              window.alert(response.data);
+              this.setState({ loading: false });
+            } else {
+              history.push('/users');
+            }
+          });
+        }
+        else {
         axios.post('/api/user/save', fd)
           .then((response) => {
             if (response.data === 'User Saved!') {
@@ -78,7 +88,7 @@ export default class UserForm extends React.Component {
               history.push('/users');
             }
           });
-      // }
+        }
     }
   }
 

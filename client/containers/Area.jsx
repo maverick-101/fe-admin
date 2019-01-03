@@ -116,7 +116,7 @@ export default class Area extends React.Component {
                     </td>
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`/edit_area/${area.id}`}>
+                        <Link to={`/edit_area/${area.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>

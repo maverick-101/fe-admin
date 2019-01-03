@@ -25,6 +25,15 @@ export default class AreaForm extends React.Component {
   }
 
   componentDidMount() {
+    console.log('props',this.props);
+      if (this.props.params.areaId)
+      axios.get(`/api/locations/fetchById/${this.props.params.areaId}`)
+        .then((response) => {
+          this.setState({
+            area: response.data[0],
+            description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+          });
+        });
   }
 
   setDescription(description) {
@@ -72,7 +81,19 @@ export default class AreaForm extends React.Component {
         });
         fd.append('area', JSON.stringify(area));
 
-        axios.post('/api/locations/save', fd)
+        if(this.props.params.areaId) {
+          axios.patch('/api/locations/update', fd)
+          .then((response) => {
+            if (response.data === 'Location Updated!') {
+              window.alert(response.data);
+              // history.push('/areas');
+              this.setState({ loading: false });
+            } else {
+              history.push('/areas');
+            }
+          });
+        } else {
+          axios.post('/api/locations/save', fd)
           .then((response) => {
             if (response.data === 'Location Saved!') {
               window.alert(response.data);
@@ -82,9 +103,9 @@ export default class AreaForm extends React.Component {
               history.push('/areas');
             }
           });
+        }
       }
     }
-//   }
 
   render() {
     console.log(this.state)
