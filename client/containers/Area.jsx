@@ -121,7 +121,7 @@ export default class Area extends React.Component {
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteArea(area.id, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteArea(area.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                   </tr>

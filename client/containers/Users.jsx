@@ -25,16 +25,17 @@ export default class Users extends React.Component {
         })
       })
   }
-  deleteArea(areaId, index) {
+  deleteUser(userId, index) {
     if(confirm("Are you sure you want to delete this area?")) {
-      axios.delete(`/api/area/${areaId}`)
+      axios.delete(`/api/area/${userId}`)
         .then(response => {
-          const areas = this.state.areas.slice();
-          areas.splice(index, 1);
-          this.setState({ areas });
+          const users = this.state.users.slice();
+          users.splice(index, 1);
+          this.setState({ users });
         });
     }
   }
+
   handleSelect(page) {
     axios.get(`/api/area?offset=${(page-1)*10}`)
       .then(response => {
@@ -44,6 +45,7 @@ export default class Users extends React.Component {
         })
       })
   }
+
   handleSearch() {
     axios.get(`/api/area?q=${this.state.q}`)
       .then((response) => {
@@ -128,7 +130,7 @@ export default class Users extends React.Component {
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteArea(area.id, index)}></span>
+                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteUser(user.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                     </tr>

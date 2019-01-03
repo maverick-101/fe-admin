@@ -25,13 +25,13 @@ export default class Cities extends React.Component {
         })
       })
   }
-  deleteArea(areaId, index) {
+  deleteCity(cityId, index) {
     if(confirm("Are you sure you want to delete this area?")) {
-      axios.delete(`/api/area/${areaId}`)
+      axios.delete(`/api/area/${cityId}`)
         .then(response => {
-          const areas = this.state.areas.slice();
-          areas.splice(index, 1);
-          this.setState({ areas });
+          const cities = this.state.cities.slice();
+          cities.splice(index, 1);
+          this.setState({ cities });
         });
     }
   }
@@ -121,7 +121,7 @@ export default class Cities extends React.Component {
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deletecity(city.id, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteCity(city.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                   </tr>

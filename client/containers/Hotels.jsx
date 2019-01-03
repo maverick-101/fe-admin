@@ -10,7 +10,7 @@ export default class Hotels extends React.Component {
     super(props);
 
     this.state = {
-      areas: [],
+      hotels: [],
       activePage: 1,
       pages: 1,
       q: '',
@@ -25,13 +25,14 @@ export default class Hotels extends React.Component {
     //     })
     //   })
   }
-  deleteArea(areaId, index) {
+
+  deleteHotel(hotelId, index) {
     if(confirm("Are you sure you want to delete this area?")) {
-      axios.delete(`/api/area/${areaId}`)
+      axios.delete(`/api/area/${hotelId}`)
         .then(response => {
-          const areas = this.state.areas.slice();
-          areas.splice(index, 1);
-          this.setState({ areas });
+          const hotels = this.state.hotels.slice();
+          hotels.splice(index, 1);
+          this.setState({ hotels });
         });
     }
   }
