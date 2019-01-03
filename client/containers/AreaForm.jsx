@@ -77,7 +77,7 @@ export default class AreaForm extends React.Component {
           imgArray.push(gallery[index]);
         }
           imgArray.forEach((img) => {
-          fd.append('gallery', img);
+          fd.append('gallery_images', img);
           return img;
         });
         fd.append('location', JSON.stringify(location));
@@ -179,7 +179,7 @@ export default class AreaForm extends React.Component {
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >location Name
+                      >Location Name
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input

@@ -77,7 +77,7 @@ export default class HotelForm extends React.Component {
           imgArray.push(gallery[index]);
         }
           imgArray.forEach((img) => {
-          fd.append('gallery', img);
+          fd.append('gallery_images', img);
           return img;
         });
 

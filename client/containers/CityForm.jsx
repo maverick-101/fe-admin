@@ -13,6 +13,7 @@ export default class CityForm extends React.Component {
         name: '',
         province: '',
         views: '',
+        image_type: '',
         description: '',
       },
       gallery: '',
@@ -81,7 +82,7 @@ export default class CityForm extends React.Component {
           imgArray.push(gallery[index]);
         }
           imgArray.forEach((img) => {
-          fd.append('gallery', img);
+          fd.append('gallery_images', img);
           return img;
         });
 
@@ -239,6 +240,23 @@ export default class CityForm extends React.Component {
                           onChange={this.handleImages}
                           multiple
                         />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Image Type</label>
+                      <div className="col-md-6 col-sm-6">
+                        <select
+                          name="image_type"
+                          value={city.image_type}
+                          className="form-control custom-select"
+                          onChange={this.handleInputChange}
+                          required
+                        >
+                          <option value="">Select Type</option>
+                          <option value="lounge">Lounge Image</option>
+                          <option value="main_hall">Main Hall Image</option>
+                        </select>
                       </div>
                     </div>
 
