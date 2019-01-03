@@ -14,14 +14,18 @@ export default class Users extends React.Component {
       activePage: 1,
       pages: 1,
       q: '',
+      loading: false,
+      responseMessage: 'Loading Users...'
     }
   }
   componentWillMount() {
+    this.setState({ loading: true })
     axios.get('/api/user/fetch')
       .then(response => {
         this.setState({
           users: response.data,
-          pages: Math.ceil(response.data.total/10)
+          pages: Math.ceil(response.data.length/10),
+          loading: false,
         })
       })
   }
@@ -58,6 +62,7 @@ export default class Users extends React.Component {
   }
   render() {
     console.log(this.state);
+    const {loading, users, responseMessage} = this.state; 
     return (
       <div className="row">
         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -104,7 +109,7 @@ export default class Users extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.users && this.state.users.length &&
+                {this.state.users && this.state.users.length >= 1 ?
                 this.state.users.map((user, index) => (
                   <tr key={index}>
                   <td>{user.ID}</td>
@@ -134,7 +139,13 @@ export default class Users extends React.Component {
                       </td>
                     {/* </HasRole> */}
                     </tr>
-                ))}
+                )) :
+                (
+                  <tr>
+                    <td colSpan="15" className="text-center">{responseMessage}</td>
+                  </tr>
+                )
+                }
               </tbody>
             </table>
           </div>

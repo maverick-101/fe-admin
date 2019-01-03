@@ -14,6 +14,7 @@ export default class Hotels extends React.Component {
       activePage: 1,
       pages: 1,
       q: '',
+      loading: false,
     }
   }
   componentWillMount() {

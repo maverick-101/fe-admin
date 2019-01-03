@@ -16,7 +16,7 @@ export default class HotelForm extends React.Component {
         image_type: '',
         description: '',
       },
-      photos: '',
+      gallery: '',
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -62,22 +62,22 @@ export default class HotelForm extends React.Component {
   // }
 
   handleImages = (event) => {
-    this.setState({ photos: event.target.files });
+    this.setState({ gallery: event.target.files });
   }
 
   postHotel(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, hotel, photos } = this.state;
+    const { loading, hotel, gallery } = this.state;
     if (!loading) {
         this.setState({ loading: true });
         let imgArray = [];
         const fd = new FormData();
-        for (let index = 0; index < photos.length; index += 1) {
-          imgArray.push(photos[index]);
+        for (let index = 0; index < gallery.length; index += 1) {
+          imgArray.push(gallery[index]);
         }
           imgArray.forEach((img) => {
-          fd.append('photos', img);
+          fd.append('gallery', img);
           return img;
         });
 

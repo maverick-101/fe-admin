@@ -16,7 +16,7 @@ export default class AreaForm extends React.Component {
         views: '',
         description: '',
       },
-      photos: '',
+      gallery: '',
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -60,23 +60,23 @@ export default class AreaForm extends React.Component {
   // }
 
   handleImages = (event) => {
-    this.setState({ photos: event.target.files });
+    this.setState({ gallery: event.target.files });
   }
 
   postArea(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, area, photos } = this.state;
+    const { loading, area, gallery } = this.state;
     if (!loading) {
         this.setState({ loading: true });
 
         let imgArray = [];
         const fd = new FormData();
-        for (let index = 0; index < photos.length; index += 1) {
-          imgArray.push(photos[index]);
+        for (let index = 0; index < gallery.length; index += 1) {
+          imgArray.push(gallery[index]);
         }
           imgArray.forEach((img) => {
-          fd.append('photos', img);
+          fd.append('gallery', img);
           return img;
         });
         fd.append('area', JSON.stringify(area));
