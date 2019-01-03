@@ -63,7 +63,7 @@ export default class UserForm extends React.Component {
     const { loading, user, profile_picture } = this.state;
     if (!loading) {
         const fd = new FormData();
-        fd.append('file', profile_picture);
+        fd.append('profile_picture', profile_picture);
         fd.append('user', JSON.stringify(user));
 
         this.setState({ loading: true });
