@@ -13,6 +13,7 @@ export default class HotelForm extends React.Component {
         name: '',
         city: '',
         address: '',
+        image_type: '',
         description: '',
       },
       photos: '',
@@ -96,6 +97,7 @@ export default class HotelForm extends React.Component {
   }
 
   render() {
+    console.log(this.state)
     const {
       loading,
       hotel,
@@ -208,6 +210,23 @@ export default class HotelForm extends React.Component {
                           multiple
                           // required={coverForm.url ? 0 : 1}
                         />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Image Type</label>
+                      <div className="col-md-6 col-sm-6">
+                        <select
+                          name="image_type"
+                          value={hotel.image_type}
+                          className="form-control custom-select"
+                          onChange={this.handleInputChange}
+                          required
+                        >
+                          <option value="">Select Type</option>
+                          <option value="lounge">Lounge Image</option>
+                          <option value="main_hall">Main Hall Image</option>
+                        </select>
                       </div>
                     </div>
 
