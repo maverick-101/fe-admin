@@ -9,7 +9,7 @@ export default class AreaForm extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      area: {
+      location: {
         name: '',
         city: '',
         province: '',
@@ -30,17 +30,17 @@ export default class AreaForm extends React.Component {
       axios.get(`/api/locations/fetchById/${this.props.params.areaId}`)
         .then((response) => {
           this.setState({
-            area: response.data[0],
+            location: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           });
         });
   }
 
   setDescription(description) {
-    const { area } = this.state;
-    area.description = description.toString('html');
+    const { location } = this.state;
+    location.description = description.toString('html');
     this.setState({
-      area,
+      location,
       description,
     });
   }
@@ -48,9 +48,9 @@ export default class AreaForm extends React.Component {
   handleInputChange(event) {
     const { value, name } = event.target;
 
-    const { area } = this.state;
-    area[name] = value;
-    this.setState({ area });
+    const { location } = this.state;
+    location[name] = value;
+    this.setState({ location });
   }
 
   // handleFile = (event) => {
@@ -66,7 +66,7 @@ export default class AreaForm extends React.Component {
   postArea(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, area, gallery } = this.state;
+    const { loading, location, gallery } = this.state;
     if (!loading) {
         this.setState({ loading: true });
 
@@ -79,7 +79,7 @@ export default class AreaForm extends React.Component {
           fd.append('gallery', img);
           return img;
         });
-        fd.append('area', JSON.stringify(area));
+        fd.append('location', JSON.stringify(location));
 
         if(this.props.params.areaId) {
           axios.patch('/api/locations/update', fd)
@@ -111,7 +111,7 @@ export default class AreaForm extends React.Component {
     console.log(this.state)
     const {
       loading,
-      area,
+      location,
       description,
     } = this.state;
     const toolbarConfig = {
@@ -165,7 +165,7 @@ export default class AreaForm extends React.Component {
             <div className="col-md-10 col-sm-10">
               <div className="x_panel">
                 <div className="x_title">
-                  <h2>Enter Area Details</h2>
+                  <h2>Enter location Details</h2>
                 </div>
                 <div className="x_content">
                   <br />
@@ -178,7 +178,7 @@ export default class AreaForm extends React.Component {
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Area Name
+                      >location Name
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -186,7 +186,7 @@ export default class AreaForm extends React.Component {
                           type="text"
                           name="name"
                           className="form-control"
-                          value={area.name}
+                          value={location.name}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -203,7 +203,7 @@ export default class AreaForm extends React.Component {
                           type="text"
                           name="city"
                           className="form-control"
-                          value={area.city}
+                          value={location.city}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -220,7 +220,7 @@ export default class AreaForm extends React.Component {
                           type="text"
                           name="province"
                           className="form-control"
-                          value={area.province}
+                          value={location.province}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -237,14 +237,14 @@ export default class AreaForm extends React.Component {
                           type="text"
                           name="views"
                           className="form-control"
-                          value={area.views}
+                          value={location.views}
                           onChange={this.handleInputChange}
                         />
                       </div>
                     </div>
 
                     <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Area Gallery</label>
+                      <label className="control-label col-md-3 col-sm-3">location Gallery</label>
                       <div className="col-md-6 col-sm-6">
                         <input
                           type="file"
