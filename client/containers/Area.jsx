@@ -114,16 +114,16 @@ export default class Area extends React.Component {
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
                     </td>
-                    <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}>
+                    {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
                         <Link to={`/edit_area/${area.id}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" onClick={() => this.deleteArea(area.id, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteArea(area.id, index)}></span>
                       </td>
-                    </HasRole>
+                    {/* </HasRole> */}
                   </tr>
                 ))}
               </tbody>

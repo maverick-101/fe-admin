@@ -121,16 +121,16 @@ export default class Users extends React.Component {
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
                     </td> */}
-                    {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}>
+                    {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`/edit_area/${area.id}`}>
+                        <Link to={`/edit_user/${user.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" onClick={() => this.deleteArea(area.id, index)}></span>
+                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteArea(area.id, index)}></span>
                       </td>
-                    </HasRole> */}
+                    {/* </HasRole> */}
                     </tr>
                 ))}
               </tbody>

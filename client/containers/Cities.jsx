@@ -110,20 +110,20 @@ export default class Cities extends React.Component {
                     <td>{area.lat}</td>
                     <td>{area.lon}</td> */}
                     <td>
-                      <Link to={`/area_resource/${city.id}`}>
+                      <Link to={`/area_resource/${city.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
                     </td>
-                    <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}>
+                    {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`/edit_city/${city.id}`}>
+                        <Link to={`/edit_city/${city.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" onClick={() => this.deletecity(city.id, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deletecity(city.id, index)}></span>
                       </td>
-                    </HasRole>
+                    {/* </HasRole> */}
                   </tr>
                 ))}
               </tbody>
