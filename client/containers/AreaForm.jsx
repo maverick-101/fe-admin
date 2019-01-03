@@ -14,6 +14,7 @@ export default class AreaForm extends React.Component {
         city: '',
         province: '',
         views: '',
+        image_type: '',
         description: '',
       },
       gallery: '',
@@ -244,7 +245,7 @@ export default class AreaForm extends React.Component {
                     </div>
 
                     <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">location Gallery</label>
+                      <label className="control-label col-md-3 col-sm-3">Location Gallery</label>
                       <div className="col-md-6 col-sm-6">
                         <input
                           type="file"
@@ -254,6 +255,23 @@ export default class AreaForm extends React.Component {
                           multiple
                           // required={coverForm.url ? 0 : 1}
                         />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Image Type</label>
+                      <div className="col-md-6 col-sm-6">
+                        <select
+                          name="image_type"
+                          value={location.image_type}
+                          className="form-control custom-select"
+                          onChange={this.handleInputChange}
+                          required
+                        >
+                          <option value="">Select Type</option>
+                          <option value="lounge">Lounge Image</option>
+                          <option value="main_hall">Main Hall Image</option>
+                        </select>
                       </div>
                     </div>
 
