@@ -15,6 +15,7 @@ export default class CityForm extends React.Component {
         views: '',
         description: '',
       },
+      photos: '',
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -52,13 +53,30 @@ export default class CityForm extends React.Component {
     this.setState({ city });
   }
 
+  handleImages = (event) => {
+    this.setState({ photos: event.target.files });
+  }
+
   postCity(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, city } = this.state;
+    const { loading, city, photos } = this.state;
         this.setState({ loading: true });
+
+        let imgArray = [];
+        const fd = new FormData();
+        for (let index = 0; index < photos.length; index += 1) {
+          imgArray.push(photos[index]);
+        }
+          imgArray.forEach((img) => {
+          fd.append('photos', img);
+          return img;
+        });
+
+        fd.append('city', JSON.stringify(city));
+
         if(!loading) {
-        axios.post('/api/city/save', city)
+        axios.post('/api/city/save', fd)
           .then((response) => {
             if (response.data === 'City Saved!') {
               window.alert(response.data);
@@ -184,6 +202,19 @@ export default class CityForm extends React.Component {
                           className="form-control"
                           value={city.views}
                           onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">City Gallery</label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          type="file"
+                          name="cover"
+                          className="form-control"
+                          onChange={this.handleImages}
+                          multiple
                         />
                       </div>
                     </div>

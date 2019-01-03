@@ -15,12 +15,12 @@ export default class HotelForm extends React.Component {
         address: '',
         description: '',
       },
-      gallery: '',
+      photos: '',
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleFile = this.handleFile.bind(this);
+    // this.handleFile = this.handleFile.bind(this);
     this.postHotel = this.postHotel.bind(this);
   }
 
@@ -54,33 +54,37 @@ export default class HotelForm extends React.Component {
     this.setState({ hotel });
   }
 
-  handleFile(event) {
-    this.setState({
-      gallery: event.target.files.length ? event.target.files[0] : '',
-    });
+  // handleFile(event) {
+  //   this.setState({
+  //     gallery: event.target.files.length ? event.target.files[0] : '',
+  //   });
+  // }
+
+  handleImages = (event) => {
+    this.setState({ photos: event.target.files });
   }
 
   postHotel(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, hotel, gallery } = this.state;
+    const { loading, hotel, photos } = this.state;
     if (!loading) {
-      // if (match.params.cityId) {
-      //   this.setState({ loading: true });
-      //   axios.put(`/api/city/${match.params.cityId}`, city)
-      //     .then((/* response */) => {
-      //       history.push('/cities');
-      //     });
-      // } else {
-        // const { city } = this.state;
         this.setState({ loading: true });
+        let imgArray = [];
         const fd = new FormData();
-        fd.append('gallery', gallery);
+        for (let index = 0; index < photos.length; index += 1) {
+          imgArray.push(photos[index]);
+        }
+          imgArray.forEach((img) => {
+          fd.append('photos', img);
+          return img;
+        });
+
         fd.append('hotel', JSON.stringify(hotel));
         this.setState({ loading: true });
         axios.post('/api/city', fd)
           .then((response) => {
-            if (response.data === 'Already exists') {
+            if (response.data === 'Hotel Saved!') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -200,7 +204,7 @@ export default class HotelForm extends React.Component {
                           type="file"
                           name="cover"
                           className="form-control"
-                          onChange={this.handleFile}
+                          onChange={this.handleImages}
                           multiple
                           // required={coverForm.url ? 0 : 1}
                         />

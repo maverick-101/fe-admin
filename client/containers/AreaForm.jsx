@@ -16,7 +16,7 @@ export default class AreaForm extends React.Component {
         views: '',
         description: '',
       },
-      files: '',
+      photos: '',
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -44,21 +44,32 @@ export default class AreaForm extends React.Component {
     this.setState({ area });
   }
 
-  handleFile = (event) => {
-    this.setState({
-      files: event.target.files.length ? event.target.files[0] : '',
-    });
+  // handleFile = (event) => {
+  //   this.setState({
+  //     files: event.target.files.length ? event.target.files[0] : '',
+  //   });
+  // }
+
+  handleImages = (event) => {
+    this.setState({ photos: event.target.files });
   }
 
   postArea(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, area, files } = this.state;
+    const { loading, area, photos } = this.state;
     if (!loading) {
         this.setState({ loading: true });
 
+        let imgArray = [];
         const fd = new FormData();
-        fd.append('files', files);
+        for (let index = 0; index < photos.length; index += 1) {
+          imgArray.push(photos[index]);
+        }
+          imgArray.forEach((img) => {
+          fd.append('photos', img);
+          return img;
+        });
         fd.append('area', JSON.stringify(area));
 
         axios.post('/api/locations/save', fd)
@@ -76,6 +87,7 @@ export default class AreaForm extends React.Component {
 //   }
 
   render() {
+    console.log(this.state)
     const {
       loading,
       area,
@@ -217,7 +229,7 @@ export default class AreaForm extends React.Component {
                           type="file"
                           name="cover"
                           className="form-control"
-                          onChange={this.handleFile}
+                          onChange={this.handleImages}
                           multiple
                           // required={coverForm.url ? 0 : 1}
                         />
