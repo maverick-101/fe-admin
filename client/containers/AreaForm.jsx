@@ -4,6 +4,9 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
+
 export default class AreaForm extends React.Component {
   constructor(props) {
     super(props);
@@ -11,18 +14,29 @@ export default class AreaForm extends React.Component {
       loading: false,
       location: {
         name: '',
-        city: '',
+        city_id: '',
         province: '',
         views: '',
         image_type: '',
         description: '',
       },
       gallery: '',
+      city: '',
+      locations: [],
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postArea = this.postArea.bind(this);
+  }
+
+  componentWillMount() {
+    axios.get(`/api/city/fetch`)
+        .then((response) => {
+          this.setState({
+            locations: response.data,
+          });
+        });
   }
 
   componentDidMount() {
@@ -59,6 +73,16 @@ export default class AreaForm extends React.Component {
   //     files: event.target.files.length ? event.target.files[0] : '',
   //   });
   // }
+
+  setCity(selectedCity) {
+    this.setState(prevState => ({
+      city: selectedCity,
+      location: {
+        ...prevState.location,
+        city_id: selectedCity.ID,
+      },
+    }));
+  }
 
   handleImages = (event) => {
     this.setState({ gallery: event.target.files });
@@ -113,6 +137,8 @@ export default class AreaForm extends React.Component {
     const {
       loading,
       location,
+      locations,
+      city,
       description,
     } = this.state;
     const toolbarConfig = {
@@ -193,7 +219,7 @@ export default class AreaForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >City
@@ -208,7 +234,24 @@ export default class AreaForm extends React.Component {
                           onChange={this.handleInputChange}
                         />
                       </div>
-                    </div>
+                    </div> */}
+
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">City</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="city_id"
+                              value={city}
+                              onChange={value => this.setCity(value)}
+                              options={locations}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
 
                     <div className="form-group row">
                       <label
