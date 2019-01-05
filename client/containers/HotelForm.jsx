@@ -4,6 +4,9 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
+
 export default class HotelForm extends React.Component {
   constructor(props) {
     super(props);
@@ -11,18 +14,52 @@ export default class HotelForm extends React.Component {
       loading: false,
       hotel: {
         name: '',
-        city: '',
+        city_id: '',
+        location_id: '',
         address: '',
         image_type: '',
+        stars: '',
+        logo: '',
+        url: '',
+        pets_allowed: '',
+        smoking_allowed: '',
+        postalCode: '',
+        star_rating: '',
+        email: '',
+        phone: '',
+        geo: {
+          latitude: '',
+          longitude: '',
+        },
         description: '',
+        amenities: '',
       },
       gallery: '',
+      cities: [],
+      locations: [],
+      city: '',
+      location: '',
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
     this.handleInputChange = this.handleInputChange.bind(this);
     // this.handleFile = this.handleFile.bind(this);
     this.postHotel = this.postHotel.bind(this);
+  }
+
+  componentWillMount() {
+    axios.get(`/api/city/fetch`)
+        .then((response) => {
+          this.setState({
+            cities: response.data,
+          });
+        });
+    axios.get(`/api/locations/fetch`)
+    .then((response) => {
+      this.setState({
+        locations: response.data,
+      });
+    });
   }
 
   componentDidMount() {
@@ -60,6 +97,26 @@ export default class HotelForm extends React.Component {
   //     gallery: event.target.files.length ? event.target.files[0] : '',
   //   });
   // }
+
+  setCity(selectedCity) {
+    this.setState(prevState => ({
+      city: selectedCity,
+      hotel: {
+        ...prevState.hotel,
+        city_id: selectedCity.ID,
+      },
+    }));
+  }
+
+  setLocation(selectedLocation) {
+    this.setState(prevState => ({
+      location: selectedLocation,
+      hotel: {
+        ...prevState.hotel,
+        location_id: selectedLocation.ID,
+      },
+    }));
+  }
 
   handleImages = (event) => {
     this.setState({ gallery: event.target.files });
@@ -101,6 +158,10 @@ export default class HotelForm extends React.Component {
     const {
       loading,
       hotel,
+      cities,
+      city,
+      locations,
+      location,
       description,
     } = this.state;
     const toolbarConfig = {
@@ -181,7 +242,7 @@ export default class HotelForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >City
@@ -196,8 +257,41 @@ export default class HotelForm extends React.Component {
                           onChange={this.handleInputChange}
                         />
                       </div>
-                    </div>
+                    </div> */}
 
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">City</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="city_id"
+                              value={city}
+                              onChange={value => this.setCity(value)}
+                              options={cities}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">Location</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="location_id"
+                              value={location}
+                              onChange={value => this.setLocation(value)}
+                              options={locations}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>    
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Hotel Gallery</label>
@@ -239,13 +333,196 @@ export default class HotelForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="name"
+                          name="amenities"
                           className="form-control"
-                          value={hotel.name}
+                          value={hotel.amenities}
                           onChange={this.handleInputChange}
                         />
                       </div>
                     </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Stars
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="stars"
+                          className="form-control"
+                          value={hotel.stars}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Logo
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="logo"
+                          className="form-control"
+                          value={hotel.logo}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Website
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="url"
+                          className="form-control"
+                          value={hotel.url}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Pets Allowed</label>
+                      <div className="col-md-6 col-sm-6">
+                        <select
+                          name="pets_allowed"
+                          value={hotel.pets_allowed}
+                          className="form-control custom-select"
+                          onChange={this.handleInputChange}
+                          required
+                        >
+                          <option value="">Select Value</option>
+                          <option value="yes">Yes</option>
+                          <option value="no">No</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Smoking Allowed</label>
+                      <div className="col-md-6 col-sm-6">
+                        <select
+                          name="smoking_allowed"
+                          value={hotel.smoking_allowed}
+                          className="form-control custom-select"
+                          onChange={this.handleInputChange}
+                          required
+                        >
+                          <option value="">Select Value</option>
+                          <option value="yes">Yes</option>
+                          <option value="no">No</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Postal Code
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="postalCode"
+                          className="form-control"
+                          value={hotel.postalCode}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Star Rating
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="star_rating"
+                          className="form-control"
+                          value={hotel.star_rating}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Email
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="email"
+                          className="form-control"
+                          value={hotel.email}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Phone
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="phone"
+                          className="form-control"
+                          value={hotel.phone}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Latitiude
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="geo"
+                          className="form-control"
+                          value={hotel.geo.latitude}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    {/* <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Longitude
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="location"
+                          className="form-control"
+                          value={hotel.geo.longitude}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div> */}
 
                     <div className="form-group row">
                       <label

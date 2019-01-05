@@ -22,7 +22,7 @@ export default class AreaForm extends React.Component {
       },
       gallery: '',
       city: '',
-      locations: [],
+      cities: [],
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -34,7 +34,7 @@ export default class AreaForm extends React.Component {
     axios.get(`/api/city/fetch`)
         .then((response) => {
           this.setState({
-            locations: response.data,
+            cities: response.data,
           });
         });
   }
@@ -137,7 +137,7 @@ export default class AreaForm extends React.Component {
     const {
       loading,
       location,
-      locations,
+      cities,
       city,
       description,
     } = this.state;
@@ -243,7 +243,7 @@ export default class AreaForm extends React.Component {
                               name="city_id"
                               value={city}
                               onChange={value => this.setCity(value)}
-                              options={locations}
+                              options={cities}
                               valueKey="id"
                               labelKey="name"
                               clearable={false}
