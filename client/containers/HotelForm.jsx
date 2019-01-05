@@ -34,7 +34,7 @@ export default class HotelForm extends React.Component {
         description: '',
         amenities: '',
       },
-      gallery: '',
+      hotel_gallery: '',
       cities: [],
       locations: [],
       city: '',
@@ -119,22 +119,22 @@ export default class HotelForm extends React.Component {
   }
 
   handleImages = (event) => {
-    this.setState({ gallery: event.target.files });
+    this.setState({ hotel_gallery: event.target.files });
   }
 
   postHotel(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, hotel, gallery } = this.state;
+    const { loading, hotel, hotel_gallery } = this.state;
     if (!loading) {
         this.setState({ loading: true });
         let imgArray = [];
         const fd = new FormData();
-        for (let index = 0; index < gallery.length; index += 1) {
-          imgArray.push(gallery[index]);
+        for (let index = 0; index < hotel_gallery.length; index += 1) {
+          imgArray.push(hotel_gallery[index]);
         }
           imgArray.forEach((img) => {
-          fd.append('gallery_images', img);
+          fd.append('hotel_gallery', img);
           return img;
         });
 
