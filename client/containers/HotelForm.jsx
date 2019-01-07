@@ -32,7 +32,7 @@ export default class HotelForm extends React.Component {
           longitude: '',
         },
         description: '',
-        amenities: '',
+        amenities: [],
       },
       hotel_gallery: '',
       cities: [],
@@ -358,7 +358,7 @@ export default class HotelForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Logo
@@ -373,7 +373,7 @@ export default class HotelForm extends React.Component {
                           onChange={this.handleInputChange}
                         />
                       </div>
-                    </div>
+                    </div> */}
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
@@ -499,15 +499,15 @@ export default class HotelForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="geo"
+                          name="latitude"
                           className="form-control"
-                          value={hotel.geo.latitude}
+                          value={hotel.latitude}
                           onChange={this.handleInputChange}
                         />
                       </div>
                     </div>
 
-                    {/* <div className="form-group row">
+                    <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Longitude
@@ -516,13 +516,13 @@ export default class HotelForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="location"
+                          name="longitude"
                           className="form-control"
-                          value={hotel.geo.longitude}
+                          value={hotel.longitude}
                           onChange={this.handleInputChange}
                         />
                       </div>
-                    </div> */}
+                    </div>
 
                     <div className="form-group row">
                       <label

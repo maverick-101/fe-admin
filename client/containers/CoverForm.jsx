@@ -4,6 +4,9 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 
+import { DateRangePicker } from 'react-dates';
+import 'react-dates/initialize';
+
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
@@ -15,11 +18,17 @@ export default class CoverForm extends React.Component {
       cover: {
         image_type: '',
         hotel_id: '',
+        agency_id: '',
+        start_date: null,
+        end_date: null,
         description: '',
       },
       gallery: '',
       hotels: [],
       hotel: '',
+      startDate: null,
+      endDate: null,
+      focusedInput: null,
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -140,7 +149,10 @@ export default class CoverForm extends React.Component {
       cover,
       hotel,
       hotels,
+      startDate,
+      endDate,
       description,
+      focusedInput,
     } = this.state;
     const toolbarConfig = {
       // Optionally specify the groups to display (displayed in the order listed).
@@ -270,6 +282,23 @@ export default class CoverForm extends React.Component {
                             />
                           </div>
                         </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Agency Id
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="agency_id"
+                          className="form-control"
+                          value={cover.agency_id}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
                     
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Type</label>
@@ -297,6 +326,26 @@ export default class CoverForm extends React.Component {
                           className="form-control"
                           onChange={this.handleImages}
                           multiple
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Date Range</label>
+                      <div className="col-md-6 col-sm-6">
+                        <DateRangePicker
+                            startDate={cover.startDate ? moment(cover.start_date) : startDate}
+                            endDate={cover.end_date ? moment(cover.end_date) : endDate}
+                            startDateId="date_input_start"
+                            endDateId="date_input_end"
+                            onDatesChange={({ startDate: dateStart, endDate: dateEnd }) => (
+                            this.setState({
+                                startDate: dateStart,
+                                endDate: dateEnd,
+                            }))}
+                            focusedInput={focusedInput}
+                            onFocusChange={input => this.setState({ focusedInput: input })}
+                            required
                         />
                       </div>
                     </div>
