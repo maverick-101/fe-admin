@@ -51,10 +51,10 @@ export default class SideNav extends React.Component {
             <Link onClick={() => {this.setState({active:'rooms'})}} to="/rooms">
               <li className={`side_nav ${this.state.active == 'rooms' ? 'active' : ''}`}>Rooms</li>
             </Link>
-            {/* <Link onClick={() => {this.setState({active:'properties'})}} to="/property">
-              <li className={`side_nav ${this.state.active == 'properties' ? 'active' : ''}`}>Properties</li>
+            <Link onClick={() => {this.setState({active:'cover_banner'})}} to="/cover_banner_form">
+              <li className={`side_nav ${this.state.active == 'properties' ? 'active' : ''}`}>Cover Banner</li>
             </Link>
-            <Link onClick={() => {this.setState({active:'premiumPlusRequests'})}} to="/premium-plus-requests">
+            {/* <Link onClick={() => {this.setState({active:'premiumPlusRequests'})}} to="/premium-plus-requests">
               <li className={`side_nav ${this.state.active == 'premiumPlusRequests' ? 'active' : ''}`}>Premium Plus Requests</li>
             </Link>
             <Link onClick={() => {this.setState({active:'premiumRequests'})}} to="/premium-requests">
