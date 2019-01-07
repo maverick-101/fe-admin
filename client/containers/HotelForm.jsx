@@ -140,7 +140,7 @@ export default class HotelForm extends React.Component {
 
         fd.append('hotel', JSON.stringify(hotel));
         this.setState({ loading: true });
-        axios.post('/api/city', fd)
+        axios.post('/api/hotel/save', fd)
           .then((response) => {
             if (response.data === 'Hotel Saved!') {
               window.alert(response.data);
