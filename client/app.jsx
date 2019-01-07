@@ -24,6 +24,8 @@ import UserForm from './containers/UserForm';
 
 import RoomForm from './containers/RoomForm';
 
+import CoverForm from './containers/CoverForm';
+
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -50,6 +52,9 @@ ReactDOM.render(
         <Route path="/edit_user/:userId" component={UserForm}/>
 
         <Route path="/rooms" component={RoomForm}/>
+
+        <Route path="/cover_banner_form" component={CoverForm}/>
+
       </Route>
     </Router>
   </Provider>,

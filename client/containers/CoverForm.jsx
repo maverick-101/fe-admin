@@ -7,62 +7,75 @@ import { Button } from 'reactstrap';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
-export default class AreaForm extends React.Component {
+export default class CoverForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
-      location: {
-        name: '',
-        city_id: '',
-        province: '',
-        views: '',
+      cover: {
         image_type: '',
+        hotel_id: '',
         description: '',
       },
       gallery: '',
-      city: '',
-      cities: [],
+      hotels: [],
+      hotel: '',
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postArea = this.postArea.bind(this);
+    this.postCity = this.postCity.bind(this);
   }
 
+  // componentDidMount() {
+    // const { match } = this.props;
+    // if (match.params.cityId) {
+    //   axios.get(`/api/cover/${match.params.cityId}`)
+    //     .then((response) => {
+    //       this.setState({
+    //         cover: response.data,
+    //         description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+    //       });
+    //     });
+    // }
+  // }
+
   componentWillMount() {
-    axios.get(`/api/city/fetch`)
+    axios.get(`/api/hotel/fetch`)
         .then((response) => {
           this.setState({
-            cities: response.data,
+            hotels: response.data,
           });
         });
+  }
+
+  setCity(selectedHotel) {
+    this.setState(prevState => ({
+      hotel: selectedHotel,
+      location: {
+        ...prevState.cover,
+        hotel_id: selectedHotel.ID,
+      },
+    }));
   }
 
   componentDidMount() {
-    console.log('props',this.props);
-      if (this.props.params.areaId)
-      axios.get(`/api/locations/fetchById/${this.props.params.areaId}`)
-        .then((response) => {
-          this.setState({
-            location: response.data[0],
-            description: RichTextEditor.createValueFromString(response.data.description, 'html'),
-          }, () => {
-            axios.get(`/api/city/fetchById/${this.state.location.city_id}`)
-            .then((response) => {
-              this.setState({
-                city: response.data[0],
-              });
-            });
-          });
-        });
-      }
+    // console.log('props',this.props);
+    //   if (window.location.href.split('/')[3] === 'edit_city')
+    //   axios.get(`/api/cover/fetchById/${this.props.params.cityId}`)
+    //     .then((response) => {
+    //       this.setState({
+    //         cover: response.data[0],
+    //         description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+    //       });
+    //     });
+    }
 
   setDescription(description) {
-    const { location } = this.state;
-    location.description = description.toString('html');
+    const { cover } = this.state;
+    cover.description = description.toString('html');
     this.setState({
-      location,
+      cover,
       description,
     });
   }
@@ -70,36 +83,19 @@ export default class AreaForm extends React.Component {
   handleInputChange(event) {
     const { value, name } = event.target;
 
-    const { location } = this.state;
-    location[name] = value;
-    this.setState({ location });
-  }
-
-  // handleFile = (event) => {
-  //   this.setState({
-  //     files: event.target.files.length ? event.target.files[0] : '',
-  //   });
-  // }
-
-  setCity(selectedCity) {
-    this.setState(prevState => ({
-      city: selectedCity,
-      location: {
-        ...prevState.location,
-        city_id: selectedCity.ID,
-      },
-    }));
+    const { cover } = this.state;
+    cover[name] = value;
+    this.setState({ cover });
   }
 
   handleImages = (event) => {
     this.setState({ gallery: event.target.files });
   }
 
-  postArea(event) {
+  postCity(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, location, gallery } = this.state;
-    if (!loading) {
+    const { loading, cover, gallery } = this.state;
         this.setState({ loading: true });
 
         let imgArray = [];
@@ -111,41 +107,39 @@ export default class AreaForm extends React.Component {
           fd.append('gallery_images', img);
           return img;
         });
-        fd.append('location', JSON.stringify(location));
 
-        if(this.props.params.areaId) {
-          axios.patch('/api/locations/update', fd)
+        fd.append('cover', JSON.stringify(cover));
+
+        if(this.props.params.cityId) {
+        axios.patch('/api/cover/update', fd)
           .then((response) => {
-            if (response.data === 'Location Updated!') {
+            if (response.data === 'cover Updated!') {
               window.alert(response.data);
-              // history.push('/areas');
               this.setState({ loading: false });
             } else {
-              history.push('/areas');
-            }
-          });
-        } else {
-          axios.post('/api/locations/save', fd)
-          .then((response) => {
-            if (response.data === 'Location Saved!') {
-              window.alert(response.data);
-              history.push('/areas');
-              // this.setState({ loading: false });
-            } else {
-              history.push('/areas');
+              history.push('/cities');
             }
           });
         }
-      }
-    }
+        else {
+          axios.post('/api/cover/save', fd)
+          .then((response) => {
+            if (response.data === 'cover Saved!') {
+              window.alert(response.data);
+              this.setState({ loading: false });
+            } else {
+              history.push('/cities');
+            }
+          });
+        }
+        }
 
   render() {
-    console.log(this.state)
     const {
       loading,
-      location,
-      cities,
-      city,
+      cover,
+      hotel,
+      hotels,
       description,
     } = this.state;
     const toolbarConfig = {
@@ -199,7 +193,7 @@ export default class AreaForm extends React.Component {
             <div className="col-md-10 col-sm-10">
               <div className="x_panel">
                 <div className="x_title">
-                  <h2>Enter location Details</h2>
+                  <h2>Enter cover Details</h2>
                 </div>
                 <div className="x_content">
                   <br />
@@ -207,12 +201,12 @@ export default class AreaForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postArea}
+                    onSubmit={this.postCity}
                   >
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Location Name
+                      >cover Name
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -220,45 +214,11 @@ export default class AreaForm extends React.Component {
                           type="text"
                           name="name"
                           className="form-control"
-                          value={location.name}
+                          value={cover.name}
                           onChange={this.handleInputChange}
                         />
                       </div>
                     </div>
-
-                    {/* <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >City
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="city"
-                          className="form-control"
-                          value={location.city}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div> */}
-
-                    <div className="form-group row">
-                          <label className="control-label col-md-3 col-sm-3">City</label>
-                          <div className="col-md-6 col-sm-6">
-                            <Select
-                              name="city_id"
-                              value={city}
-                              onChange={value => this.setCity(value)}
-                              options={cities}
-                              valueKey="id"
-                              labelKey="name"
-                              clearable={false}
-                              backspaceRemoves={false}
-                              required
-                            />
-                          </div>
-                        </div>
 
                     <div className="form-group row">
                       <label
@@ -271,7 +231,7 @@ export default class AreaForm extends React.Component {
                           type="text"
                           name="province"
                           className="form-control"
-                          value={location.province}
+                          value={cover.province}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -288,32 +248,35 @@ export default class AreaForm extends React.Component {
                           type="text"
                           name="views"
                           className="form-control"
-                          value={location.views}
+                          value={cover.views}
                           onChange={this.handleInputChange}
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Location Gallery</label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          type="file"
-                          name="cover"
-                          className="form-control"
-                          onChange={this.handleImages}
-                          multiple
-                          // required={coverForm.url ? 0 : 1}
-                        />
-                      </div>
-                    </div>
-
+                          <label className="control-label col-md-3 col-sm-3">Hotel</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="hotel_id"
+                              value={hotel}
+                              onChange={value => this.setHotel(value)}
+                              options={hotels}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                            //   required
+                            />
+                          </div>
+                        </div>
+                    
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Type</label>
                       <div className="col-md-6 col-sm-6">
                         <select
                           name="image_type"
-                          value={location.image_type}
+                          value={cover.image_type}
                           className="form-control custom-select"
                           onChange={this.handleInputChange}
                           required
@@ -322,6 +285,19 @@ export default class AreaForm extends React.Component {
                           <option value="lounge">Lounge Image</option>
                           <option value="main_hall">Main Hall Image</option>
                         </select>
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Image Upload</label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          type="file"
+                          name="cover"
+                          className="form-control"
+                          onChange={this.handleImages}
+                          multiple
+                        />
                       </div>
                     </div>
 
@@ -359,3 +335,4 @@ export default class AreaForm extends React.Component {
     );
   }
 }
+

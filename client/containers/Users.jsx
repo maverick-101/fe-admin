@@ -101,8 +101,8 @@ export default class Users extends React.Component {
                   <th>Picture</th>
                   <th>First Name</th>
                   <th>Last Name</th>
-                  {/* <th>City</th>
-                  <th>Marla-Size(Sqft)</th>
+                  <th>Email</th>
+                  {/* <th>Marla-Size(Sqft)</th>
                   <th>Population</th>
                   <th>Latitude</th>
                   <th>Longitude</th> */}
@@ -116,6 +116,7 @@ export default class Users extends React.Component {
                   <td>{<img style={{height: '50px', width: '50px'}} src={user.profile_picture.url}/>}</td>
                   <td>{user.first_name}</td>
                   <td>{user.last_name}</td>
+                  <td>{user.email}</td>
                     {/* <td>{user.firstName}</td>
                     <td>{user.phone}</td>
                     <td>{area.city.name}</td>
