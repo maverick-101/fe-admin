@@ -2,9 +2,9 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/saadi-dashboard
+    destination: /home/ubuntu/saadiTrip-admin
 hooks:
   AfterInstall:
-    - location: scripts/build_code.sh
+    - location: scripts/restart_nginx.sh
       timeout: 200
-      runas: ubuntu
+      runas: root
