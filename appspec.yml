@@ -5,6 +5,6 @@ files:
     destination: /home/ubuntu/saadi-dashboard
 hooks:
   AfterInstall:
-    - location: scripts/build_code.sh
+    - location: scripts/restart_nginx.sh
       timeout: 200
-      runas: ubuntu
+      runas: root
