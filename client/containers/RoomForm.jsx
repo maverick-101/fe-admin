@@ -61,7 +61,13 @@ export default class RoomForm extends React.Component {
   }
 
   componentDidMount() {
-    // const { match } = this.props;
+    const { match } = this.props;
+    const { room } = this.state;
+    console.log('props',this.props)
+    this.setState({
+      room: {...room, hotel_id: this.props.params.hotelId}
+    })
+
     // if (match.params.cityId) {
     //   axios.get(`/api/city/${match.params.cityId}`)
     //     .then((response) => {

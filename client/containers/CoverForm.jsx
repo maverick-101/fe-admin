@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
+import moment from 'moment';
 
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/initialize';
@@ -33,21 +34,29 @@ export default class CoverForm extends React.Component {
     };
     // this.rteState = RichTextEditor.createEmptyValue();
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postCity = this.postCity.bind(this);
+    this.postCoverBanner = this.postCoverBanner.bind(this);
   }
 
-  // componentDidMount() {
-    // const { match } = this.props;
-    // if (match.params.cityId) {
-    //   axios.get(`/api/cover/${match.params.cityId}`)
-    //     .then((response) => {
-    //       this.setState({
-    //         cover: response.data,
-    //         description: RichTextEditor.createValueFromString(response.data.description, 'html'),
-    //       });
-    //     });
-    // }
-  // }
+  componentDidMount() {
+    console.log('props', this.props)
+    if (this.props.params.coverBannerId) {
+      axios.get(`/api/coverbanner/fetchById/${this.props.params.coverBannerId}`)
+        .then((response) => {
+          this.setState({
+            cover: response.data[0]
+          },() => {
+            axios.get(`/api/hotel/fetchById/${this.state.cover.hotel_id}`)
+            .then((response) => {
+              this.setState({
+                hotel: response.data[0],
+                startDate: moment(this.state.cover.start_date),
+                endDate: moment(this.state.cover.end_date),
+              })
+            })
+          });
+        });
+    }
+  }
 
   componentWillMount() {
     axios.get(`/api/hotel/fetch`)
@@ -58,17 +67,17 @@ export default class CoverForm extends React.Component {
         });
   }
 
-  setCity(selectedHotel) {
+  setHotel(selectedHotel) {
     this.setState(prevState => ({
       hotel: selectedHotel,
-      location: {
+      cover: {
         ...prevState.cover,
         hotel_id: selectedHotel.ID,
       },
     }));
   }
 
-  componentDidMount() {
+  // componentDidMount() {
     // console.log('props',this.props);
     //   if (window.location.href.split('/')[3] === 'edit_city')
     //   axios.get(`/api/cover/fetchById/${this.props.params.cityId}`)
@@ -78,7 +87,7 @@ export default class CoverForm extends React.Component {
     //         description: RichTextEditor.createValueFromString(response.data.description, 'html'),
     //       });
     //     });
-    }
+    // }
 
   setDescription(description) {
     const { cover } = this.state;
@@ -98,29 +107,23 @@ export default class CoverForm extends React.Component {
   }
 
   handleImages = (event) => {
-    this.setState({ gallery: event.target.files });
+    this.setState({ gallery: event.target.files[0] });
   }
 
-  postCity(event) {
+  postCoverBanner(event) {
     event.preventDefault();
     const { match, history } = this.props;
     const { loading, cover, gallery } = this.state;
         this.setState({ loading: true });
 
-        let imgArray = [];
+        // let imgArray = [];
         const fd = new FormData();
-        for (let index = 0; index < gallery.length; index += 1) {
-          imgArray.push(gallery[index]);
-        }
-          imgArray.forEach((img) => {
-          fd.append('gallery_images', img);
-          return img;
-        });
+        fd.append('image', gallery);
 
-        fd.append('cover', JSON.stringify(cover));
+        fd.append('coverBanner', JSON.stringify(cover));
 
-        if(this.props.params.cityId) {
-        axios.patch('/api/cover/update', fd)
+        if(this.props.params.coverBannerId) {
+        axios.patch('/api/coverbanner/update', fd)
           .then((response) => {
             if (response.data === 'cover Updated!') {
               window.alert(response.data);
@@ -131,7 +134,7 @@ export default class CoverForm extends React.Component {
           });
         }
         else {
-          axios.post('/api/cover/save', fd)
+          axios.post('/api/coverbanner/save', fd)
           .then((response) => {
             if (response.data === 'cover Saved!') {
               window.alert(response.data);
@@ -154,6 +157,7 @@ export default class CoverForm extends React.Component {
       description,
       focusedInput,
     } = this.state;
+    console.log(this.state);
     const toolbarConfig = {
       // Optionally specify the groups to display (displayed in the order listed).
       display: ['INLINE_STYLE_BUTTONS', 'BLOCK_TYPE_BUTTONS', 'HISTORY_BUTTONS'],
@@ -213,7 +217,7 @@ export default class CoverForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postCity}
+                    onSubmit={this.postCoverBanner}
                   >
                     {/* <div className="form-group row">
                       <label
@@ -325,7 +329,7 @@ export default class CoverForm extends React.Component {
                           name="cover"
                           className="form-control"
                           onChange={this.handleImages}
-                          multiple
+                          // multiple
                         />
                       </div>
                     </div>
@@ -342,6 +346,10 @@ export default class CoverForm extends React.Component {
                             this.setState({
                                 startDate: dateStart,
                                 endDate: dateEnd,
+                            }, () => {
+                                this.setState(prevState => ({
+                                    cover: {...prevState.cover, start_date: this.state.startDate, end_date: this.state.endDate},
+                                }))
                             }))}
                             focusedInput={focusedInput}
                             onFocusChange={input => this.setState({ focusedInput: input })}

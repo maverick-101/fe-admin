@@ -63,6 +63,32 @@ export default class HotelForm extends React.Component {
   }
 
   componentDidMount() {
+    console.log('props',this.props);
+      if (this.props.params.hotelId)
+      axios.get(`/api/hotel/fetchById/${this.props.params.hotelId}`)
+        .then((response) => {
+          this.setState({
+            hotel: response.data[0],
+            description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+          }, () => {
+            axios.get(`/api/city/fetchById/${this.state.hotel.city_id}`)
+            .then((response) => {
+              this.setState({
+                city: response.data[0],
+              }, () => {
+                axios.get(`/api/locations/fetchById/${this.state.hotel.location_id}`)
+                .then((response) => {
+                  this.setState({
+                    location: response.data[0],
+                  })
+                })
+              });
+            });
+          });
+        });
+      }
+
+  // componentDidMount() {
     // const { match } = this.props;
     // if (match.params.cityId) {
     //   axios.get(`/api/city/${match.params.cityId}`)
@@ -73,7 +99,7 @@ export default class HotelForm extends React.Component {
     //       });
     //     });
     // }
-  }
+  // }
 
   setDescription(description) {
     const { hotel } = this.state;
@@ -140,7 +166,19 @@ export default class HotelForm extends React.Component {
 
         fd.append('hotel', JSON.stringify(hotel));
         this.setState({ loading: true });
-        axios.post('/api/hotel/save', fd)
+
+        if(this.props.params.hotelId) {
+          axios.patch('/api/hotel/update', fd)
+          .then((response) => {
+            if (response.data === 'Hotel Updated!') {
+              window.alert(response.data);
+              this.setState({ loading: false });
+            } else {
+              history.push('/hotels');
+            }
+          });
+        } else {
+          axios.post('/api/hotel/save', fd)
           .then((response) => {
             if (response.data === 'Hotel Saved!') {
               window.alert(response.data);
@@ -152,6 +190,7 @@ export default class HotelForm extends React.Component {
       // }
     }
   }
+}
 
   render() {
     console.log(this.state)
@@ -402,8 +441,8 @@ export default class HotelForm extends React.Component {
                           required
                         >
                           <option value="">Select Value</option>
-                          <option value="yes">Yes</option>
-                          <option value="no">No</option>
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
                         </select>
                       </div>
                     </div>
@@ -419,8 +458,8 @@ export default class HotelForm extends React.Component {
                           required
                         >
                           <option value="">Select Value</option>
-                          <option value="yes">Yes</option>
-                          <option value="no">No</option>
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
                         </select>
                       </div>
                     </div>

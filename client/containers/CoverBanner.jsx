@@ -2,38 +2,37 @@ import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
+import moment from 'moment';
 
 import HasRole from '../hoc/HasRole';
 
-export default class Hotels extends React.Component {
+export default class CoverBanner extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      hotels: [],
+      coverBanners: [],
       activePage: 1,
       pages: 1,
       q: '',
-      loading: false,
     }
   }
   componentWillMount() {
-    axios.get('/api/hotel/fetch')
+    axios.get('/api/coverbanner/fetch')
       .then(response => {
         this.setState({
-          hotels: response.data,
+          coverBanners: response.data,
           pages: Math.ceil(response.data.length/10)
         })
       })
   }
-
-  deleteHotel(hotelId, index) {
+  deleteCity(coverBannerId, index) {
     if(confirm("Are you sure you want to delete this area?")) {
-      axios.delete(`/api/area/${hotelId}`)
+      axios.delete(`/api/area/${coverBannerId}`)
         .then(response => {
-          const hotels = this.state.hotels.slice();
-          hotels.splice(index, 1);
-          this.setState({ hotels });
+          const coverBanners = this.state.coverBanners.slice();
+          coverBanners.splice(index, 1);
+          this.setState({ coverBanners });
         });
     }
   }
@@ -57,13 +56,12 @@ export default class Hotels extends React.Component {
       })
   }
   render() {
-    const { hotels } = this.state;
     return (
       <div className="row">
         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <div className="row space-1">
             <div className="col-sm-4">
-              <h3>List of Hotels</h3>
+              <h3>List of Cover Banners</h3>
             </div>
             <div style={{marginTop: '20px'}} className="col-sm-4">
               <div className='input-group'>
@@ -82,8 +80,8 @@ export default class Hotels extends React.Component {
             </div> */}
 
             <div className="col-sm-2 pull-right">
-                <Link to="/hotel_form">
-                  <button type="button" className="btn btn-success marginTop">Add new Hotel</button>
+                <Link to="/cover_banner_form">
+                  <button type="button" className="btn btn-success marginTop">Add new Cover</button>
                 </Link>
             </div>
 
@@ -92,10 +90,10 @@ export default class Hotels extends React.Component {
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>Logo</th>
-                  <th>Name</th>
-                  <th>Rating</th>
-                  <th>Address</th>
+                  <th>Id</th>
+                  <th>Image</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
                   {/* <th>Marla-Size(Sqft)</th>
                   <th>Population</th>
                   <th>Latitude</th>
@@ -103,38 +101,34 @@ export default class Hotels extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {hotels && hotels.length >= 1 ?
-                hotels.map((hotel, index) => (
+                {this.state.coverBanners && this.state.coverBanners.length >= 1 &&
+                  this.state.coverBanners.map((coverBanner, index) => (
                   <tr key={index}>
-                    <td>{<img style={{height: '50px', width: '50px'}} src={hotel.gallery[index].url} />}</td>
-                    <td>{hotel.name}</td>
-                    <td>{hotel.star_rating}</td>
-                    <td>{hotel.address}</td>
-                    {/* <td>{area.city.name}</td>
-                    <td>{area.marla_size}</td>
+                    <td>{coverBanner.ID}</td>
+                    <td>{<img style={{height: '50px', width: '70px'}} src={coverBanner.image.url}/>}</td>
+                    <td>{moment(coverBanner.start_date).format('DD-MMM-YYYY')}</td>
+                    <td>{moment(coverBanner.end_date).format('DD-MMM-YYYY')}</td>
+                    {/* <td>{area.marla_size}</td>
                     <td>{area.population}</td>
                     <td>{area.lat}</td>
                     <td>{area.lon}</td> */}
                     <td>
-                      <Link to={`/rooms/${hotel.ID}`}>
-                        <button type="button" className="btn btn-info btn-sm">Rooms</button>
+                      <Link to={`/area_resource/${coverBanner.ID}`}>
+                        <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
                     </td>
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`/edit_hotel/${hotel.ID}`}>
+                        <Link to={`/edit_coverBanner/${coverBanner.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" onClick={() => this.deleteArea(area.id, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteCity(coverBanner.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                   </tr>
-                ))
-              :
-              <td>No Hotels Found</td>
-              }
+                ))}
               </tbody>
             </table>
           </div>
