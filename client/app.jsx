@@ -53,6 +53,7 @@ ReactDOM.render(
         <Route path="/edit_user/:userId" component={UserForm}/>
 
         <Route path="/rooms/:hotelId" component={RoomForm}/>
+        <Route path="/edit_rooms/:roomId" component={RoomForm}/>
 
         <Route path="/cover_banner" component={CoverBanner}/>
         <Route path="/cover_banner_form" component={CoverForm}/>

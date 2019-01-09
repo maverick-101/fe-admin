@@ -270,7 +270,7 @@ export default class CoverForm extends React.Component {
                       </div>
                     </div> */}
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                           <label className="control-label col-md-3 col-sm-3">Hotel</label>
                           <div className="col-md-6 col-sm-6">
                             <Select
@@ -319,7 +319,7 @@ export default class CoverForm extends React.Component {
                           <option value="main_hall">Main Hall Image</option>
                         </select>
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Upload</label>

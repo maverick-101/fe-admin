@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
+import { Link } from 'react-router';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -14,7 +15,7 @@ export default class RoomForm extends React.Component {
       loading: false,
       room: {
         hotel_id: '',
-        room_title: '',
+        title: '',
         persons: '',
         beds: '',
         bed_type: '',
@@ -30,12 +31,14 @@ export default class RoomForm extends React.Component {
         //   longitude: '',
         // },
         packages: [],
-        room_amenities: [],
+        responseMessage: 'Loading Rooms...'
+        // room_amenities: [],
       },
       gallery: '',
       // cities: [],
       // locations: [],
-      // city: '',
+      hotel: '',
+      rooms: [],
       // location: '',
       description: RichTextEditor.createEmptyValue(),
     };
@@ -46,18 +49,16 @@ export default class RoomForm extends React.Component {
   }
 
   componentWillMount() {
-    // axios.get(`/api/city/fetch`)
-    //     .then((response) => {
-    //       this.setState({
-    //         cities: response.data,
-    //       });
-    //     });
-    // axios.get(`/api/locations/fetch`)
-    // .then((response) => {
-    //   this.setState({
-    //     locations: response.data,
-    //   });
-    // });
+    this.fetchRooms();
+  }
+
+  fetchRooms = () => {
+    axios.get(`/api/room/fetch/`)
+        .then((response) => {
+          this.setState({
+            rooms: response.data,
+          });
+        });
   }
 
   componentDidMount() {
@@ -67,7 +68,12 @@ export default class RoomForm extends React.Component {
     this.setState({
       room: {...room, hotel_id: this.props.params.hotelId}
     })
-
+    axios.get(`/api/hotel/fetchById/${this.props.params.hotelId}`)
+        .then((response) => {
+          this.setState({
+            hotel: response.data[0],
+          });
+        });
     // if (match.params.cityId) {
     //   axios.get(`/api/city/${match.params.cityId}`)
     //     .then((response) => {
@@ -92,8 +98,18 @@ export default class RoomForm extends React.Component {
     const { value, name } = event.target;
 
     const { room } = this.state;
+    let arr = []; 
+    if (name === 'room_amenities') {
+      arr.push(value)
+      console.log(value)
+      this.setState({
+        room: {...room, room_amenities: arr}
+      })
+    } else {
     room[name] = value;
     this.setState({ room });
+    }
+    
   }
 
   // handleFile(event) {
@@ -138,17 +154,18 @@ export default class RoomForm extends React.Component {
           imgArray.push(gallery[index]);
         }
           imgArray.forEach((img) => {
-          fd.append('images', img);
+          fd.append('gallery_images', img);
           return img;
         });
 
         fd.append('room', JSON.stringify(room));
         this.setState({ loading: true });
-        axios.post('/api/city', fd)
+        axios.post('/api/room/save', fd)
           .then((response) => {
-            if (response.data === 'room Saved!') {
+            if (response.data === 'Room Saved!') {
               window.alert(response.data);
               this.setState({ loading: false });
+              this.fetchRooms();
             } else {
               history.push('/hotels');
             }
@@ -162,7 +179,9 @@ export default class RoomForm extends React.Component {
     const {
       loading,
       room,
+      hotel,
       description,
+      responseMessage
     } = this.state;
     const toolbarConfig = {
       // Optionally specify the groups to display (displayed in the order listed).
@@ -215,7 +234,7 @@ export default class RoomForm extends React.Component {
             <div className="col-md-10 col-sm-10">
               <div className="x_panel">
                 <div className="x_title">
-                  <h2>Enter room Details</h2>
+                  <h2>Enter Room Details</h2>
                 </div>
                 <div className="x_content">
                   <br />
@@ -234,9 +253,9 @@ export default class RoomForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="room_title"
+                          name="title"
                           className="form-control"
-                          value={room.room_title}
+                          value={room.title}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -307,7 +326,7 @@ export default class RoomForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Room Amenities
@@ -322,7 +341,7 @@ export default class RoomForm extends React.Component {
                           onChange={this.handleInputChange}
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Pets Allowed</label>
@@ -384,6 +403,66 @@ export default class RoomForm extends React.Component {
                     </div>
                   </form>
                 </div>
+                <h1>Rooms available at {hotel.name}</h1>
+                <div className="table-responsive">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>Persons Allowed</th>
+                  <th>Beds Count</th>
+                  <th>Bed Type</th>
+                  {/* <th>Email</th> */}
+                  {/* <th>Marla-Size(Sqft)</th>
+                  <th>Population</th>
+                  <th>Latitude</th>
+                  <th>Longitude</th> */}
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.rooms && this.state.rooms.length >= 1 ?
+                this.state.rooms.map((room, index) => (
+                  <tr key={index}>
+                  <td>{room.ID}</td>
+                  <td>{room.title}</td>
+                  {/* <td>{<img style={{height: '50px', width: '50px'}} src={room.profile_picture.url}/>}</td> */}
+                  <td>{room.persons}</td>
+                  <td>{room.beds}</td>
+                  <td>{room.bed_type}</td>
+                    {/* <td>{room.firstName}</td>
+                    <td>{room.phone}</td>
+                    <td>{area.city.name}</td>
+                    <td>{area.marla_size}</td>
+                    <td>{area.population}</td>
+                    <td>{area.lat}</td>
+                    <td>{area.lon}</td> */}
+                    {/* <td>
+                      <Link to={`/area_resource/${area.id}`}>
+                        <button type="button" className="btn btn-info btn-sm">Resource</button>
+                      </Link>
+                    </td> */}
+                    {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
+                      <td>
+                        <Link to={`/edit_room/${room.ID}`}>
+                          <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </Link>
+                      </td>
+                      <td>
+                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteUser(room.ID, index)}></span>
+                      </td>
+                    {/* </HasRole> */}
+                    </tr>
+                )) :
+                (
+                  <tr>
+                    <td colSpan="15" className="text-center">{responseMessage}</td>
+                  </tr>
+                )
+                }
+              </tbody>
+            </table>
+          </div>
               </div>
             </div>
           </div>

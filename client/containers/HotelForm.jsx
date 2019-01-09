@@ -16,6 +16,7 @@ export default class HotelForm extends React.Component {
         name: '',
         city_id: '',
         location_id: '',
+        user_id: '',
         address: '',
         image_type: '',
         stars: '',
@@ -37,8 +38,10 @@ export default class HotelForm extends React.Component {
       hotel_gallery: '',
       cities: [],
       locations: [],
+      users: [],
       city: '',
       location: '',
+      user: '',
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -58,6 +61,12 @@ export default class HotelForm extends React.Component {
     .then((response) => {
       this.setState({
         locations: response.data,
+      });
+    });
+    axios.get(`/api/user/fetch`)
+    .then((response) => {
+      this.setState({
+        users: response.data,
       });
     });
   }
@@ -144,6 +153,16 @@ export default class HotelForm extends React.Component {
     }));
   }
 
+  setUser(selectedUser) {
+    this.setState(prevState => ({
+      user: selectedUser,
+      hotel: {
+        ...prevState.hotel,
+        user_id: selectedUser.ID,
+      },
+    }));
+  }
+
   handleImages = (event) => {
     this.setState({ hotel_gallery: event.target.files });
   }
@@ -201,6 +220,8 @@ export default class HotelForm extends React.Component {
       city,
       locations,
       location,
+      users,
+      user,
       description,
     } = this.state;
     const toolbarConfig = {
@@ -297,6 +318,24 @@ export default class HotelForm extends React.Component {
                         />
                       </div>
                     </div> */}
+
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">User</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="user_id"
+                              value={user}
+                              onChange={value => this.setUser(value)}
+                              options={users}
+                              valueKey="first_name"
+                              labelKey="first_name"
+                              // labelKey={`first_name last_name`}
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
 
                     <div className="form-group row">
                           <label className="control-label col-md-3 col-sm-3">City</label>
