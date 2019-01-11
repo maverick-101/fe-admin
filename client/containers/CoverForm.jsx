@@ -33,6 +33,7 @@ export default class CoverForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
+    this.endPoint = 'http://ec2-52-70-110-65.compute-1.amazonaws.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postCoverBanner = this.postCoverBanner.bind(this);
   }
@@ -124,6 +125,7 @@ export default class CoverForm extends React.Component {
 
         if(this.props.params.coverBannerId) {
         axios.patch('/api/coverbanner/update', fd)
+        axios.patch(`${this.endPoint}/api/coverbanner/update`, fd)
           .then((response) => {
             if (response.data === 'cover Updated!') {
               window.alert(response.data);
@@ -134,7 +136,8 @@ export default class CoverForm extends React.Component {
           });
         }
         else {
-          axios.post('/api/coverbanner/save', fd)
+          // axios.post('/api/coverbanner/save', fd)
+          axios.post(`${this.endPoint}/api/coverbanner/save`, fd)
           .then((response) => {
             if (response.data === 'cover Saved!') {
               window.alert(response.data);

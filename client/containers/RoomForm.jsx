@@ -43,6 +43,7 @@ export default class RoomForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
+    this.endPoint = 'http://ec2-52-70-110-65.compute-1.amazonaws.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     // this.handleFile = this.handleFile.bind(this);
     this.postHotel = this.postHotel.bind(this);
@@ -160,7 +161,8 @@ export default class RoomForm extends React.Component {
 
         fd.append('room', JSON.stringify(room));
         this.setState({ loading: true });
-        axios.post('/api/room/save', fd)
+        // axios.post('/api/room/save', fd)
+        axios.post(`${this.endPoint}/api/room/save`, fd)
           .then((response) => {
             if (response.data === 'Room Saved!') {
               window.alert(response.data);

@@ -45,6 +45,7 @@ export default class HotelForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
+    this.endPoint = 'http://ec2-52-70-110-65.compute-1.amazonaws.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     // this.handleFile = this.handleFile.bind(this);
     this.postHotel = this.postHotel.bind(this);
@@ -187,7 +188,8 @@ export default class HotelForm extends React.Component {
         this.setState({ loading: true });
 
         if(this.props.params.hotelId) {
-          axios.patch('/api/hotel/update', fd)
+          // axios.patch('/api/hotel/update', fd)
+          axios.patch(`${this.endPoint}/api/hotel/update`, fd)
           .then((response) => {
             if (response.data === 'Hotel Updated!') {
               window.alert(response.data);
@@ -197,7 +199,8 @@ export default class HotelForm extends React.Component {
             }
           });
         } else {
-          axios.post('/api/hotel/save', fd)
+          // axios.post('/api/hotel/save', fd)
+          axios.post(`${this.endPoint}/api/hotel/save`, fd)
           .then((response) => {
             if (response.data === 'Hotel Saved!') {
               window.alert(response.data);

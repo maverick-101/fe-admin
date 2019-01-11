@@ -26,6 +26,7 @@ export default class AreaForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
+    this.endPoint = 'http://ec2-52-70-110-65.compute-1.amazonaws.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postArea = this.postArea.bind(this);
   }
@@ -114,7 +115,8 @@ export default class AreaForm extends React.Component {
         fd.append('location', JSON.stringify(location));
 
         if(this.props.params.areaId) {
-          axios.patch('/api/locations/update', fd)
+          // axios.patch('/api/locations/update', fd)
+          axios.patch(`${this.endPoint}/api/locations/update`, fd)
           .then((response) => {
             if (response.data === 'Location Updated!') {
               window.alert(response.data);
@@ -125,7 +127,8 @@ export default class AreaForm extends React.Component {
             }
           });
         } else {
-          axios.post('/api/locations/save', fd)
+          // axios.post('/api/locations/save', fd)
+          axios.post(`${this.endPoint}/api/locations/save`, fd)
           .then((response) => {
             if (response.data === 'Location Saved!') {
               window.alert(response.data);

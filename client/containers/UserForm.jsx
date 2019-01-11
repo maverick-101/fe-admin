@@ -24,6 +24,7 @@ export default class UserForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
+    this.endPoint = 'http://ec2-52-70-110-65.compute-1.amazonaws.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postUser = this.postUser.bind(this);
   }
@@ -68,7 +69,8 @@ export default class UserForm extends React.Component {
 
         this.setState({ loading: true });
         if(this.props.params.userId) {
-          axios.patch('/api/user/update', fd)
+          // axios.patch('/api/user/update', fd)
+          axios.patch(`${this.endPoint}/api/user/update`, fd)
           .then((response) => {
             if (response.data === 'User Updated!') {
               window.alert(response.data);
@@ -79,7 +81,8 @@ export default class UserForm extends React.Component {
           });
         }
         else {
-        axios.post('/api/user/save', fd)
+        // axios.post('/api/user/save', fd)
+        axios.post(`${this.endPoint}/api/user/save`, fd)
           .then((response) => {
             if (response.data === 'User Saved!') {
               window.alert(response.data);
