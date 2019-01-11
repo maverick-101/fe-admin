@@ -27,6 +27,12 @@ import RoomForm from './containers/RoomForm';
 import CoverForm from './containers/CoverForm';
 import CoverBanner from './containers/CoverBanner';
 
+import AgentForm from './containers/AgentForm';
+import Agents from './containers/Agents';
+
+import PackageForm from './containers/PackageForm';
+import Packages from './containers/Packages';
+
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -58,6 +64,14 @@ ReactDOM.render(
         <Route path="/cover_banner" component={CoverBanner}/>
         <Route path="/cover_banner_form" component={CoverForm}/>
         <Route path="/edit_coverBanner/:coverBannerId" component={CoverForm}/>
+        
+        <Route path="/agents" component={Agents}/>
+        <Route path="/agent_form" component={AgentForm}/>
+        <Route path="/edit_agent/:agentId" component={AgentForm}/>
+
+        <Route path="/packages" component={Packages}/>
+        <Route path="/package_form" component={PackageForm}/>
+        <Route path="/edit_package/:packageId" component={PackageForm}/>
 
       </Route>
     </Router>
