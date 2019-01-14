@@ -26,7 +26,7 @@ export default class PackageForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'http://ec2-52-70-110-65.compute-1.amazonaws.com';
+    this.endPoint = 'https://api.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postArea = this.postArea.bind(this);
   }
