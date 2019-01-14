@@ -43,7 +43,7 @@ export default class RoomForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'http://ec2-52-70-110-65.compute-1.amazonaws.com';
+    this.endPoint = 'https://ec2-52-70-110-65.compute-1.amazonaws.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     // this.handleFile = this.handleFile.bind(this);
     this.postHotel = this.postHotel.bind(this);
