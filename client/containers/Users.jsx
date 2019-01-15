@@ -27,6 +27,7 @@ export default class Users extends React.Component {
           users: response.data,
           pages: Math.ceil(response.data.length/10),
           loading: false,
+          responseMessage: 'No Users Found'
         })
       })
   }

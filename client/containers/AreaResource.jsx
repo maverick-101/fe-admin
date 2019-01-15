@@ -17,7 +17,8 @@ export default class AreaResource extends React.Component {
         city_id: '',
         province: '',
         views: '',
-        image_type: '',
+        type: '',
+        status: '',
         description: '',
         url: '',
       },
@@ -38,8 +39,13 @@ export default class AreaResource extends React.Component {
         .then((response) => {
           this.setState({
             cities: response.data,
+          },() => {
+              this.fetchResources();
           });
         });
+  }
+
+  fetchResources = () => {
     axios.get(`${this.endPoint}/api/lcoationResources/fetchById/${this.props.params.areaId}`)
     .then((response) => {
         this.setState({
@@ -112,18 +118,18 @@ export default class AreaResource extends React.Component {
     if (!loading) {
         this.setState({ loading: true });
 
-        let imgArray = [];
+        // let imgArray = [];
         const fd = new FormData();
-        for (let index = 0; index < gallery.length; index += 1) {
-          imgArray.push(gallery[index]);
-        }
-          imgArray.forEach((img) => {
-          fd.append('gallery_images', img);
-          return img;
-        });
-        fd.append('location', JSON.stringify(location));
+        // for (let index = 0; index < gallery.length; index += 1) {
+        //   imgArray.push(gallery[index]);
+        // }
+        //   imgArray.forEach((img) => {
+        //   fd.append('gallery_images', img);
+        //   return img;
+        // });
+        fd.append('locationResources', JSON.stringify(location));
 
-        if(this.props.params.areaId) {
+        if(this.props.params.resourceId) {
           // axios.patch('/api/locations/update', fd)
           axios.patch(`${this.endPoint}/api/lcoationResources/update`, fd)
           .then((response) => {
@@ -139,12 +145,13 @@ export default class AreaResource extends React.Component {
           // axios.post('/api/locations/save', fd)
           axios.post(`${this.endPoint}/api/lcoationResources/save`, fd)
           .then((response) => {
-            if (response.data === 'Location Saved!') {
+            if (response.data === 'LocationResources Saved!') {
               window.alert(response.data);
-              history.push('/areas');
+              this.fetchResources();
+            //   history.push('/areas');
               // this.setState({ loading: false });
             } else {
-              history.push('/areas');
+            //   history.push('/areas');
             }
           });
         }
@@ -250,7 +257,7 @@ export default class AreaResource extends React.Component {
                         <input
                           required
                           type="text"
-                          name="views"
+                          name="name"
                           className="form-control"
                           value={location.name}
                           onChange={this.handleInputChange}
@@ -302,7 +309,7 @@ export default class AreaResource extends React.Component {
                         <input
                           required
                           type="text"
-                          name="name"
+                          name="url"
                           className="form-control"
                           value={location.url}
                           onChange={this.handleInputChange}
@@ -328,7 +335,7 @@ export default class AreaResource extends React.Component {
                       <label className="control-label col-md-3 col-sm-3">Resource Type</label>
                       <div className="col-md-6 col-sm-6">
                         <select
-                          name="image_type"
+                          name="type"
                           value={location.type}
                           className="form-control custom-select"
                           onChange={this.handleInputChange}
@@ -345,7 +352,7 @@ export default class AreaResource extends React.Component {
                       <label className="control-label col-md-3 col-sm-3">Status</label>
                       <div className="col-md-6 col-sm-6">
                         <select
-                          name="image_type"
+                          name="status"
                           value={location.status}
                           className="form-control custom-select"
                           onChange={this.handleInputChange}
