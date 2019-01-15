@@ -28,7 +28,7 @@ export default class AgentForm extends React.Component {
     // this.rteState = RichTextEditor.createEmptyValue();
     this.endPoint = 'https://api.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postArea = this.postArea.bind(this);
+    this.postAgent = this.postAgent.bind(this);
   }
 
   componentWillMount() {
@@ -96,7 +96,7 @@ export default class AgentForm extends React.Component {
     this.setState({ gallery: event.target.files });
   }
 
-  postArea(event) {
+  postAgent(event) {
     event.preventDefault();
     const { match, history } = this.props;
     const { loading, location, gallery } = this.state;
@@ -210,7 +210,7 @@ export default class AgentForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postArea}
+                    onSubmit={this.postAgent}
                   >
                     <div className="form-group row">
                       <label
