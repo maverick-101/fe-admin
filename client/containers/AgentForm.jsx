@@ -12,7 +12,7 @@ export default class AgentForm extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      agent: {
+      location: {
         name: '',
         city_id: '',
         province: '',
@@ -28,7 +28,7 @@ export default class AgentForm extends React.Component {
     // this.rteState = RichTextEditor.createEmptyValue();
     this.endPoint = 'http://ec2-52-70-110-65.compute-1.amazonaws.com';
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postAgent = this.postAgent.bind(this);
+    this.postArea = this.postArea.bind(this);
   }
 
   componentWillMount() {
@@ -96,7 +96,7 @@ export default class AgentForm extends React.Component {
     this.setState({ gallery: event.target.files });
   }
 
-  postAgent(event) {
+  postArea(event) {
     event.preventDefault();
     const { match, history } = this.props;
     const { loading, location, gallery } = this.state;
@@ -130,7 +130,7 @@ export default class AgentForm extends React.Component {
           // axios.post('/api/locations/save', fd)
           axios.post(`${this.endPoint}/api/locations/save`, fd)
           .then((response) => {
-            if (response.data === 'Agent Saved!') {
+            if (response.data === 'Location Saved!') {
               window.alert(response.data);
               history.push('/areas');
               // this.setState({ loading: false });
@@ -210,7 +210,7 @@ export default class AgentForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postAgent}
+                    onSubmit={this.postArea}
                   >
                     <div className="form-group row">
                       <label

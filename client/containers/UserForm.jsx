@@ -24,7 +24,7 @@ export default class UserForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://ec2-52-70-110-65.compute-1.amazonaws.com';
+    this.endPoint = 'http://ec2-52-70-110-65.compute-1.amazonaws.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postUser = this.postUser.bind(this);
   }
