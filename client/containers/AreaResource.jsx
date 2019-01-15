@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
+import { Link } from 'react-router';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -392,16 +393,16 @@ export default class AreaResource extends React.Component {
                     </div>
                   </form>
                 </div>
-                <h1>Resources available</h1>
+                <h1>Available Resources </h1>
                 <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Title</th>
-                  <th>Persons Allowed</th>
-                  <th>Beds Count</th>
-                  <th>Bed Type</th>
+                  <th>Resource Type</th>
+                  <th>Status</th>
+                  <th>URL</th>
+                  {/* <th>Bed Type</th> */}
                   {/* <th>Email</th> */}
                   {/* <th>Marla-Size(Sqft)</th>
                   <th>Population</th>
@@ -414,11 +415,10 @@ export default class AreaResource extends React.Component {
                 this.state.resources.map((resource, index) => (
                   <tr key={index}>
                   <td>{resource.ID}</td>
-                  <td>{resource.title}</td>
+                  <td>{resource.type}</td>
                   {/* <td>{<img style={{height: '50px', width: '50px'}} src={resource.profile_picture.url}/>}</td> */}
-                  <td>{resource.persons}</td>
-                  <td>{resource.beds}</td>
-                  <td>{resource.bed_type}</td>
+                  <td>{resource.status}</td>
+                  <td>{resource.url}</td>
                     {/* <td>{resource.firstName}</td>
                     <td>{resource.phone}</td>
                     <td>{area.city.name}</td>
@@ -433,7 +433,7 @@ export default class AreaResource extends React.Component {
                     </td> */}
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`/edit_room/${resource.ID}`}>
+                        <Link to={`/edit_resource/${resource.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
