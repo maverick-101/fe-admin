@@ -15,9 +15,10 @@ export default class Cities extends React.Component {
       pages: 1,
       q: '',
     }
+    this.endPoint = 'https://api.saaditrips.com';
   }
   componentWillMount() {
-    axios.get('/api/city/fetch')
+    axios.get(`${this.endPoint}/api/city/fetch`)
       .then(response => {
         this.setState({
           cities: response.data,

@@ -13,10 +13,14 @@ import './dashboard.css'
 
 import App from './containers/App';
 import Area from './containers/Area';
-import Cities from './containers/Cities'
+
 import Stats from './containers/Stats';
 import AreaForm from './containers/AreaForm';
+import AreaResource from './containers/AreaResource';
+
+import Cities from './containers/Cities'
 import CityForm from './containers/CityForm';
+
 import Hotels from './containers/Hotels';
 import HotelForm from './containers/HotelForm';
 import Users from './containers/Users';
@@ -45,6 +49,7 @@ ReactDOM.render(
         <Route path="/area" component={Area}/>
         <Route path="/area_form" component={AreaForm}/>
         <Route path="/edit_area/:areaId" component={AreaForm}/>
+        <Route path="/area_resource/:areaId" component={AreaResource}/>
 
         <Route path="/cities" component={Cities}/>
         <Route path="/city_form" component={CityForm}/>

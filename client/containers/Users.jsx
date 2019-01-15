@@ -17,10 +17,11 @@ export default class Users extends React.Component {
       loading: false,
       responseMessage: 'Loading Users...'
     }
+    this.endPoint = 'https://api.saaditrips.com';
   }
   componentWillMount() {
     this.setState({ loading: true })
-    axios.get('/api/user/fetch')
+    axios.get(`${this.endPoint}/api/user/fetch`)
       .then(response => {
         this.setState({
           users: response.data,

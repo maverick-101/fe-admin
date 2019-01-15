@@ -7,7 +7,7 @@ import { Button } from 'reactstrap';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
-export default class AreaForm extends React.Component {
+export default class AreaResource extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,16 +19,18 @@ export default class AreaForm extends React.Component {
         views: '',
         image_type: '',
         description: '',
+        url: '',
       },
       gallery: '',
       city: '',
       cities: [],
+      resources: [],
       description: RichTextEditor.createEmptyValue(),
+      responseMessage: 'Loading Resources...'
     };
-    // this.rteState = RichTextEditor.createEmptyValue();
     this.endPoint = 'https://api.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postArea = this.postArea.bind(this);
+    this.postAreaResource = this.postAreaResource.bind(this);
   }
 
   componentWillMount() {
@@ -38,6 +40,13 @@ export default class AreaForm extends React.Component {
             cities: response.data,
           });
         });
+    axios.get(`${this.endPoint}/api/lcoationResources/fetchById/${this.props.params.areaId}`)
+    .then((response) => {
+        this.setState({
+        resources: response.data,
+        responseMessage: 'No resources found'
+        });
+    });
   }
 
   componentDidMount() {
@@ -96,7 +105,7 @@ export default class AreaForm extends React.Component {
     this.setState({ gallery: event.target.files });
   }
 
-  postArea(event) {
+  postAreaResource(event) {
     event.preventDefault();
     const { match, history } = this.props;
     const { loading, location, gallery } = this.state;
@@ -116,7 +125,7 @@ export default class AreaForm extends React.Component {
 
         if(this.props.params.areaId) {
           // axios.patch('/api/locations/update', fd)
-          axios.patch(`${this.endPoint}/api/locations/update`, fd)
+          axios.patch(`${this.endPoint}/api/lcoationResources/update`, fd)
           .then((response) => {
             if (response.data === 'Location Updated!') {
               window.alert(response.data);
@@ -128,7 +137,7 @@ export default class AreaForm extends React.Component {
           });
         } else {
           // axios.post('/api/locations/save', fd)
-          axios.post(`${this.endPoint}/api/locations/save`, fd)
+          axios.post(`${this.endPoint}/api/lcoationResources/save`, fd)
           .then((response) => {
             if (response.data === 'Location Saved!') {
               window.alert(response.data);
@@ -150,6 +159,7 @@ export default class AreaForm extends React.Component {
       cities,
       city,
       description,
+      responseMessage,
     } = this.state;
     const toolbarConfig = {
       // Optionally specify the groups to display (displayed in the order listed).
@@ -202,7 +212,7 @@ export default class AreaForm extends React.Component {
             <div className="col-md-10 col-sm-10">
               <div className="x_panel">
                 <div className="x_title">
-                  <h2>Enter location Details</h2>
+                  <h2>Enter Area Resource Details</h2>
                 </div>
                 <div className="x_content">
                   <br />
@@ -210,41 +220,8 @@ export default class AreaForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postArea}
+                    onSubmit={this.postAreaResource}
                   >
-                    <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Location Name
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="name"
-                          className="form-control"
-                          value={location.name}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div>
-
-                    {/* <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >City
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="city"
-                          className="form-control"
-                          value={location.city}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div> */}
 
                     <div className="form-group row">
                           <label className="control-label col-md-3 col-sm-3">City</label>
@@ -259,11 +236,30 @@ export default class AreaForm extends React.Component {
                               clearable={false}
                               backspaceRemoves={false}
                               required
+                              disabled
                             />
                           </div>
                         </div>
 
-                    <div className="form-group row">
+                        <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Location
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="views"
+                          className="form-control"
+                          value={location.name}
+                          onChange={this.handleInputChange}
+                          disabled
+                        />
+                      </div>
+                    </div>
+
+                    {/* <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Province
@@ -278,9 +274,9 @@ export default class AreaForm extends React.Component {
                           onChange={this.handleInputChange}
                         />
                       </div>
-                    </div>
+                    </div> */}
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Views
@@ -295,9 +291,26 @@ export default class AreaForm extends React.Component {
                           onChange={this.handleInputChange}
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Url
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="name"
+                          className="form-control"
+                          value={location.url}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Location Gallery</label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -309,26 +322,43 @@ export default class AreaForm extends React.Component {
                           // required={coverForm.url ? 0 : 1}
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Image Type</label>
+                      <label className="control-label col-md-3 col-sm-3">Resource Type</label>
                       <div className="col-md-6 col-sm-6">
                         <select
                           name="image_type"
-                          value={location.image_type}
+                          value={location.type}
                           className="form-control custom-select"
                           onChange={this.handleInputChange}
                           required
                         >
                           <option value="">Select Type</option>
-                          <option value="lounge">Lounge Image</option>
-                          <option value="main_hall">Main Hall Image</option>
+                          <option value="image">Image</option>
+                          <option value="video">Video</option>
                         </select>
                       </div>
                     </div>
 
                     <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Status</label>
+                      <div className="col-md-6 col-sm-6">
+                        <select
+                          name="image_type"
+                          value={location.status}
+                          className="form-control custom-select"
+                          onChange={this.handleInputChange}
+                          required
+                        >
+                          <option value="">Select Status</option>
+                          <option value="active">Active</option>
+                          <option value="inactive">In-active</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Description</label>
                       <div className="col-md-6 col-sm-6">
                         <RichTextEditor
@@ -339,7 +369,8 @@ export default class AreaForm extends React.Component {
                           }}
                         />
                       </div>
-                    </div>
+                    </div> */}
+
                     <div className="ln_solid" />
                     <div className="form-group row">
                       <div className="col-md-12 col-sm-12 text-center offset-md-3">
@@ -354,6 +385,66 @@ export default class AreaForm extends React.Component {
                     </div>
                   </form>
                 </div>
+                <h1>Resources available</h1>
+                <div className="table-responsive">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>Persons Allowed</th>
+                  <th>Beds Count</th>
+                  <th>Bed Type</th>
+                  {/* <th>Email</th> */}
+                  {/* <th>Marla-Size(Sqft)</th>
+                  <th>Population</th>
+                  <th>Latitude</th>
+                  <th>Longitude</th> */}
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.resources && this.state.resources.length >= 1 ?
+                this.state.resources.map((resource, index) => (
+                  <tr key={index}>
+                  <td>{resource.ID}</td>
+                  <td>{resource.title}</td>
+                  {/* <td>{<img style={{height: '50px', width: '50px'}} src={resource.profile_picture.url}/>}</td> */}
+                  <td>{resource.persons}</td>
+                  <td>{resource.beds}</td>
+                  <td>{resource.bed_type}</td>
+                    {/* <td>{resource.firstName}</td>
+                    <td>{resource.phone}</td>
+                    <td>{area.city.name}</td>
+                    <td>{area.marla_size}</td>
+                    <td>{area.population}</td>
+                    <td>{area.lat}</td>
+                    <td>{area.lon}</td> */}
+                    {/* <td>
+                      <Link to={`/area_resource/${area.id}`}>
+                        <button type="button" className="btn btn-info btn-sm">Resource</button>
+                      </Link>
+                    </td> */}
+                    {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
+                      <td>
+                        <Link to={`/edit_room/${resource.ID}`}>
+                          <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </Link>
+                      </td>
+                      <td>
+                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteUser(resource.ID, index)}></span>
+                      </td>
+                    {/* </HasRole> */}
+                    </tr>
+                )) :
+                (
+                  <tr>
+                    <td colSpan="15" className="text-center">{responseMessage}</td>
+                  </tr>
+                )
+                }
+              </tbody>
+            </table>
+          </div>
               </div>
             </div>
           </div>

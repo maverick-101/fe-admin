@@ -15,9 +15,10 @@ export default class Area extends React.Component {
       pages: 1,
       q: '',
     }
+    this.endPoint = 'https://api.saaditrips.com';
   }
   componentWillMount() {
-    axios.get('/api/locations/fetch')
+    axios.get(`${this.endPoint}/api/locations/fetch`)
       .then(response => {
         this.setState({
           areas: response.data,
@@ -110,7 +111,7 @@ export default class Area extends React.Component {
                     <td>{area.lat}</td>
                     <td>{area.lon}</td> */}
                     <td>
-                      <Link to={`/area_resource/${area.id}`}>
+                      <Link to={`/area_resource/${area.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
                     </td>
