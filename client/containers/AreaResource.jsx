@@ -92,11 +92,6 @@ export default class AreaResource extends React.Component {
     this.setState({ location });
   }
 
-  // handleFile = (event) => {
-  //   this.setState({
-  //     files: event.target.files.length ? event.target.files[0] : '',
-  //   });
-  // }
 
   setCity(selectedCity) {
     this.setState(prevState => ({
@@ -119,40 +114,29 @@ export default class AreaResource extends React.Component {
     if (!loading) {
         this.setState({ loading: true });
 
-        // let imgArray = [];
         const fd = new FormData();
-        // for (let index = 0; index < gallery.length; index += 1) {
-        //   imgArray.push(gallery[index]);
-        // }
-        //   imgArray.forEach((img) => {
-        //   fd.append('gallery_images', img);
-        //   return img;
-        // });
         fd.append('locationResources', JSON.stringify(location));
 
         if(this.props.params.resourceId) {
-          // axios.patch('/api/locations/update', fd)
           axios.patch(`${this.endPoint}/api/lcoationResources/update`, fd)
           .then((response) => {
-            if (response.data === 'Location Updated!') {
+            if (response.data === 'locationResources Updated!') {
               window.alert(response.data);
-              // history.push('/areas');
               this.setState({ loading: false });
             } else {
-              history.push('/areas');
+                this.setState({ loading: false });
             }
           });
         } else {
           // axios.post('/api/locations/save', fd)
           axios.post(`${this.endPoint}/api/lcoationResources/save`, fd)
           .then((response) => {
-            if (response.data === 'LocationResources Saved!') {
+            if (response.data === 'locationResources Saved!') {
               window.alert(response.data);
               this.fetchResources();
-            //   history.push('/areas');
-              // this.setState({ loading: false });
+              this.setState({ loading: false });
             } else {
-            //   history.push('/areas');
+            this.setState({ loading: false });
             }
           });
         }
@@ -160,7 +144,7 @@ export default class AreaResource extends React.Component {
     }
 
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     const {
       loading,
       location,
@@ -169,46 +153,6 @@ export default class AreaResource extends React.Component {
       description,
       responseMessage,
     } = this.state;
-    const toolbarConfig = {
-      // Optionally specify the groups to display (displayed in the order listed).
-      display: ['INLINE_STYLE_BUTTONS', 'BLOCK_TYPE_BUTTONS', 'HISTORY_BUTTONS'],
-      INLINE_STYLE_BUTTONS: [
-        {
-          label: 'Bold',
-          style: 'BOLD',
-          className: 'custom-css-class',
-        },
-        {
-          label: 'Italic',
-          style: 'ITALIC',
-        },
-        {
-          label: 'Underline',
-          style: 'UNDERLINE',
-        },
-      ],
-      BLOCK_TYPE_DROPDOWN: [
-        {
-          label: 'Normal',
-          style: 'unstyled',
-        },
-        {
-          label: 'Heading',
-          style: 'header-four',
-        },
-      ],
-      BLOCK_TYPE_BUTTONS: [
-        {
-          label: 'UL',
-          style: 'unordered-list-item',
-        },
-        {
-          label: 'OL',
-          style: 'ordered-list-item',
-        },
-      ],
-    };
-    // console.log(this.state);
 
     return (
       <div className="row animated fadeIn">
@@ -267,40 +211,6 @@ export default class AreaResource extends React.Component {
                       </div>
                     </div>
 
-                    {/* <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Province
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="province"
-                          className="form-control"
-                          value={location.province}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div> */}
-
-                    {/* <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Views
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="views"
-                          className="form-control"
-                          value={location.views}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div> */}
-
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
@@ -317,20 +227,6 @@ export default class AreaResource extends React.Component {
                         />
                       </div>
                     </div>
-
-                    {/* <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Location Gallery</label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          type="file"
-                          name="cover"
-                          className="form-control"
-                          onChange={this.handleImages}
-                          multiple
-                          // required={coverForm.url ? 0 : 1}
-                        />
-                      </div>
-                    </div> */}
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Resource Type</label>
@@ -366,19 +262,6 @@ export default class AreaResource extends React.Component {
                       </div>
                     </div>
 
-                    {/* <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Description</label>
-                      <div className="col-md-6 col-sm-6">
-                        <RichTextEditor
-                          value={description}
-                          toolbarConfig={toolbarConfig}
-                          onChange={(e) => {
-                            this.setDescription(e);
-                          }}
-                        />
-                      </div>
-                    </div> */}
-
                     <div className="ln_solid" />
                     <div className="form-group row">
                       <div className="col-md-12 col-sm-12 text-center offset-md-3">
@@ -402,12 +285,6 @@ export default class AreaResource extends React.Component {
                   <th>Resource Type</th>
                   <th>Status</th>
                   <th>URL</th>
-                  {/* <th>Bed Type</th> */}
-                  {/* <th>Email</th> */}
-                  {/* <th>Marla-Size(Sqft)</th>
-                  <th>Population</th>
-                  <th>Latitude</th>
-                  <th>Longitude</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -419,13 +296,6 @@ export default class AreaResource extends React.Component {
                   {/* <td>{<img style={{height: '50px', width: '50px'}} src={resource.profile_picture.URL}/>}</td> */}
                   <td>{resource.status}</td>
                   <td>{resource.URL}</td>
-                    {/* <td>{resource.firstName}</td>
-                    <td>{resource.phone}</td>
-                    <td>{area.city.name}</td>
-                    <td>{area.marla_size}</td>
-                    <td>{area.population}</td>
-                    <td>{area.lat}</td>
-                    <td>{area.lon}</td> */}
                     {/* <td>
                       <Link to={`/area_resource/${area.id}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
