@@ -41,12 +41,12 @@ export default class CoverForm extends React.Component {
   componentDidMount() {
     console.log('props', this.props)
     if (this.props.params.coverBannerId) {
-      axios.get(`/api/coverbanner/fetchById/${this.props.params.coverBannerId}`)
+      axios.get(`${this.endPoint}/api/coverbanner/fetchById/${this.props.params.coverBannerId}`)
         .then((response) => {
           this.setState({
             cover: response.data[0]
           },() => {
-            axios.get(`/api/hotel/fetchById/${this.state.cover.hotel_id}`)
+            axios.get(`${this.endPoint}/api/hotel/fetchById/${this.state.cover.hotel_id}`)
             .then((response) => {
               this.setState({
                 hotel: response.data[0],
@@ -60,12 +60,12 @@ export default class CoverForm extends React.Component {
   }
 
   componentWillMount() {
-    axios.get(`/api/hotel/fetch`)
-        .then((response) => {
-          this.setState({
-            hotels: response.data,
-          });
-        });
+    // axios.get(`${this.endPoint}/api/hotel/fetch`)
+    //     .then((response) => {
+    //       this.setState({
+    //         hotels: response.data,
+    //       });
+    //     });
   }
 
   setHotel(selectedHotel) {
@@ -77,18 +77,6 @@ export default class CoverForm extends React.Component {
       },
     }));
   }
-
-  // componentDidMount() {
-    // console.log('props',this.props);
-    //   if (window.location.href.split('/')[3] === 'edit_city')
-    //   axios.get(`/api/cover/fetchById/${this.props.params.cityId}`)
-    //     .then((response) => {
-    //       this.setState({
-    //         cover: response.data[0],
-    //         description: RichTextEditor.createValueFromString(response.data.description, 'html'),
-    //       });
-    //     });
-    // }
 
   setDescription(description) {
     const { cover } = this.state;
