@@ -22,3 +22,7 @@ npm-debug.*
 ## Server depending files ##
 ----------------------------
 /public
+
+
+-----------------------------
+/config
