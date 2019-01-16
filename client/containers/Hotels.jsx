@@ -68,7 +68,7 @@ export default class Hotels extends React.Component {
             </div>
             <div style={{marginTop: '20px'}} className="col-sm-4">
               <div className='input-group'>
-                <input  className='form-control' type="text" name="search" placeholder="Enter property type" value={this.state.q} onChange={(event) => this.setState({q: event.target.value})}/>
+                <input  className='form-control' type="text" name="search" placeholder="Enter keyword" value={this.state.q} onChange={(event) => this.setState({q: event.target.value})}/>
                 <span className="input-group-btn" >
                   <button type="button" onClick={() => this.handleSearch()} className="btn btn-info search-btn">Search</button>
                 </span>
