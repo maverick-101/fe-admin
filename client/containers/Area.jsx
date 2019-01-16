@@ -22,7 +22,7 @@ export default class Area extends React.Component {
       .then(response => {
         this.setState({
           areas: response.data,
-          pages: Math.ceil(response.data.total/10)
+          pages: Math.ceil(response.data.length/10)
         })
       })
   }
