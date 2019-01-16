@@ -16,6 +16,7 @@ export default class AreaResource extends React.Component {
       location: {
         name: '',
         city_id: '',
+        // location_id: this.props.params.areaId,
         province: '',
         views: '',
         type: '',
@@ -47,7 +48,7 @@ export default class AreaResource extends React.Component {
   }
 
   fetchResources = () => {
-    axios.get(`${this.endPoint}/api/lcoationResources/fetchById/${this.props.params.areaId}`)
+    axios.get(`${this.endPoint}/api/lcoationResources/fetchByLocationId/${this.props.params.areaId}`)
     .then((response) => {
         this.setState({
         resources: response.data,
@@ -202,7 +203,7 @@ export default class AreaResource extends React.Component {
                         <input
                           required
                           type="text"
-                          name="name"
+                          name="location"
                           className="form-control"
                           value={location.name}
                           onChange={this.handleInputChange}
