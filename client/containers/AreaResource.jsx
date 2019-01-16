@@ -21,7 +21,7 @@ export default class AreaResource extends React.Component {
         type: '',
         status: '',
         description: '',
-        url: '',
+        URL: '',
       },
       gallery: '',
       city: '',
@@ -304,15 +304,15 @@ export default class AreaResource extends React.Component {
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Url
+                      >URL
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
                           required
                           type="text"
-                          name="url"
+                          name="URL"
                           className="form-control"
-                          value={location.url}
+                          value={location.URL}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -416,9 +416,9 @@ export default class AreaResource extends React.Component {
                   <tr key={index}>
                   <td>{resource.ID}</td>
                   <td>{resource.type}</td>
-                  {/* <td>{<img style={{height: '50px', width: '50px'}} src={resource.profile_picture.url}/>}</td> */}
+                  {/* <td>{<img style={{height: '50px', width: '50px'}} src={resource.profile_picture.URL}/>}</td> */}
                   <td>{resource.status}</td>
-                  <td>{resource.url}</td>
+                  <td>{resource.URL}</td>
                     {/* <td>{resource.firstName}</td>
                     <td>{resource.phone}</td>
                     <td>{area.city.name}</td>
