@@ -119,24 +119,15 @@ export default class AgentForm extends React.Component {
     if (!loading) {
         this.setState({ loading: true });
 
-        let imgArray = [];
         const fd = new FormData();
-        for (let index = 0; index < gallery.length; index += 1) {
-          imgArray.push(gallery[index]);
-        }
-          imgArray.forEach((img) => {
-          fd.append('gallery_images', img);
-          return img;
-        });
+ 
         fd.append('agent', JSON.stringify(agent));
 
-        if(this.props.params.areaId) {
-          // axios.patch('/api/locations/update', fd)
-          axios.patch(`${this.endPoint}/api/locations/update`, fd)
+        if(this.props.params.agentId) {
+          axios.patch(`${this.endPoint}/api/agentPage/update`, fd)
           .then((response) => {
             if (response.data === 'Location Updated!') {
               window.alert(response.data);
-              // history.push('/areas');
               this.setState({ loading: false });
             } else {
               window.alert('ERROR')
@@ -144,7 +135,7 @@ export default class AgentForm extends React.Component {
             }
           });
         } else {
-          axios.post(`${this.endPoint}/api/locations/save`, fd)
+          axios.post(`${this.endPoint}/api/agentPage/save`, fd)
           .then((response) => {
             if (response.data === 'Location Saved!') {
               window.alert(response.data);
