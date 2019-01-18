@@ -125,11 +125,11 @@ export default class AreaResource extends React.Component {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
-                this.setState({ loading: false });
+              window.alert('ERROR')
+              this.setState({ loading: false });
             }
           });
         } else {
-          // axios.post('/api/locations/save', fd)
           axios.post(`${this.endPoint}/api/lcoationResources/save`, fd)
           .then((response) => {
             if (response.data === 'locationResources Saved!') {
@@ -137,7 +137,8 @@ export default class AreaResource extends React.Component {
               this.fetchResources();
               this.setState({ loading: false });
             } else {
-            this.setState({ loading: false });
+              window.alert('ERROR')
+              this.setState({ loading: false });
             }
           });
         }

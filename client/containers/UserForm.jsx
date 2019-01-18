@@ -76,7 +76,8 @@ export default class UserForm extends React.Component {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
-              history.push('/users');
+              window.alert('ERROR')
+              this.setState({ loading: false });
             }
           });
         }
@@ -88,7 +89,8 @@ export default class UserForm extends React.Component {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
-              history.push('/users');
+              window.alert('ERROR')
+              this.setState({ loading: false });
             }
           });
         }

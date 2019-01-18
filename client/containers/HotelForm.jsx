@@ -188,25 +188,25 @@ export default class HotelForm extends React.Component {
         this.setState({ loading: true });
 
         if(this.props.params.hotelId) {
-          // axios.patch('/api/hotel/update', fd)
           axios.patch(`${this.endPoint}/api/hotel/update`, fd)
           .then((response) => {
             if (response.data === 'Hotel Updated!') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
-              history.push('/hotels');
+              window.alert('ERROR')
+              this.setState({ loading: false });
             }
           });
         } else {
-          // axios.post('/api/hotel/save', fd)
           axios.post(`${this.endPoint}/api/hotel/save`, fd)
           .then((response) => {
             if (response.data === 'Hotel Saved!') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
-              history.push('/hotels');
+              window.alert('ERROR')
+              this.setState({ loading: false });
             }
           });
       // }

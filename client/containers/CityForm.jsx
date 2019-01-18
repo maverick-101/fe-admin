@@ -97,7 +97,8 @@ export default class CityForm extends React.Component {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
-              history.push('/cities');
+              window.alert('ERROR')
+              this.setState({ loading: false });
             }
           });
         }
@@ -109,7 +110,8 @@ export default class CityForm extends React.Component {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
-              history.push('/cities');
+              window.alert('ERROR')
+              this.setState({ loading: false });
             }
           });
         }

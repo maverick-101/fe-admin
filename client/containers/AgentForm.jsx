@@ -12,13 +12,11 @@ export default class AgentForm extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      location: {
+      agent: {
         name: '',
         city_id: '',
-        province: '',
-        views: '',
-        image_type: '',
-        description: '',
+        location_id: '',
+        addresses: [],
       },
       gallery: '',
       city: '',
@@ -46,10 +44,10 @@ export default class AgentForm extends React.Component {
       axios.get(`/api/locations/fetchById/${this.props.params.areaId}`)
         .then((response) => {
           this.setState({
-            location: response.data[0],
+            agent: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
-            axios.get(`/api/city/fetchById/${this.state.location.city_id}`)
+            axios.get(`/api/city/fetchById/${this.state.agent.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
@@ -60,10 +58,10 @@ export default class AgentForm extends React.Component {
       }
 
   setDescription(description) {
-    const { location } = this.state;
-    location.description = description.toString('html');
+    const { agent } = this.state;
+    agent.description = description.toString('html');
     this.setState({
-      location,
+      agent,
       description,
     });
   }
@@ -71,9 +69,9 @@ export default class AgentForm extends React.Component {
   handleInputChange(event) {
     const { value, name } = event.target;
 
-    const { location } = this.state;
-    location[name] = value;
-    this.setState({ location });
+    const { agent } = this.state;
+    agent[name] = value;
+    this.setState({ agent });
   }
 
   // handleFile = (event) => {
@@ -85,8 +83,8 @@ export default class AgentForm extends React.Component {
   setCity(selectedCity) {
     this.setState(prevState => ({
       city: selectedCity,
-      location: {
-        ...prevState.location,
+      agent: {
+        ...prevState.agent,
         city_id: selectedCity.ID,
       },
     }));
@@ -99,7 +97,7 @@ export default class AgentForm extends React.Component {
   postAgent(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, location, gallery } = this.state;
+    const { loading, agent, gallery } = this.state;
     if (!loading) {
         this.setState({ loading: true });
 
@@ -112,7 +110,7 @@ export default class AgentForm extends React.Component {
           fd.append('gallery_images', img);
           return img;
         });
-        fd.append('location', JSON.stringify(location));
+        fd.append('agent', JSON.stringify(agent));
 
         if(this.props.params.areaId) {
           // axios.patch('/api/locations/update', fd)
@@ -123,19 +121,19 @@ export default class AgentForm extends React.Component {
               // history.push('/areas');
               this.setState({ loading: false });
             } else {
-              history.push('/areas');
+              window.alert('ERROR')
+              this.setState({ loading: false });
             }
           });
         } else {
-          // axios.post('/api/locations/save', fd)
           axios.post(`${this.endPoint}/api/locations/save`, fd)
           .then((response) => {
             if (response.data === 'Location Saved!') {
               window.alert(response.data);
-              history.push('/areas');
-              // this.setState({ loading: false });
+              this.setState({ loading: false });
             } else {
-              history.push('/areas');
+              window.alert('ERROR')
+              this.setState({ loading: false });
             }
           });
         }
@@ -146,7 +144,7 @@ export default class AgentForm extends React.Component {
     console.log(this.state)
     const {
       loading,
-      location,
+      agent,
       cities,
       city,
       description,
@@ -215,7 +213,7 @@ export default class AgentForm extends React.Component {
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Location Name
+                      >Agent Name
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -223,28 +221,11 @@ export default class AgentForm extends React.Component {
                           type="text"
                           name="name"
                           className="form-control"
-                          value={location.name}
+                          value={agent.name}
                           onChange={this.handleInputChange}
                         />
                       </div>
                     </div>
-
-                    {/* <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >City
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="city"
-                          className="form-control"
-                          value={location.city}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div> */}
 
                     <div className="form-group row">
                           <label className="control-label col-md-3 col-sm-3">City</label>
@@ -264,26 +245,26 @@ export default class AgentForm extends React.Component {
                         </div>
 
                     <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Province
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="province"
-                          className="form-control"
-                          value={location.province}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div>
+                          <label className="control-label col-md-3 col-sm-3">Location</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="location_id"
+                              value={city}
+                              onChange={value => this.setCity(value)}
+                              options={cities}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
 
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Views
+                      >Address
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -291,13 +272,13 @@ export default class AgentForm extends React.Component {
                           type="text"
                           name="views"
                           className="form-control"
-                          value={location.views}
+                          value={agent.views}
                           onChange={this.handleInputChange}
                         />
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Location Gallery</label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -309,14 +290,14 @@ export default class AgentForm extends React.Component {
                           // required={coverForm.url ? 0 : 1}
                         />
                       </div>
-                    </div>
+                    </div> */}
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Type</label>
                       <div className="col-md-6 col-sm-6">
                         <select
                           name="image_type"
-                          value={location.image_type}
+                          value={agent.image_type}
                           className="form-control custom-select"
                           onChange={this.handleInputChange}
                           required
@@ -326,7 +307,7 @@ export default class AgentForm extends React.Component {
                           <option value="main_hall">Main Hall Image</option>
                         </select>
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Description</label>

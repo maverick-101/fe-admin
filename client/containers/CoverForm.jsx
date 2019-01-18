@@ -115,23 +115,24 @@ export default class CoverForm extends React.Component {
         axios.patch('/api/coverbanner/update', fd)
         axios.patch(`${this.endPoint}/api/coverbanner/update`, fd)
           .then((response) => {
-            if (response.data === 'cover Updated!') {
+            if (response.data === 'Cover Updated!') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
-              history.push('/cities');
+              window.alert('ERROR')
+              this.setState({ loading: false });
             }
           });
         }
         else {
-          // axios.post('/api/coverbanner/save', fd)
           axios.post(`${this.endPoint}/api/coverbanner/save`, fd)
           .then((response) => {
             if (response.data === 'cover Saved!') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
-              history.push('/cities');
+              window.alert('ERROR')
+              this.setState({ loading: false });
             }
           });
         }

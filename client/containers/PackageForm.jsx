@@ -120,22 +120,21 @@ export default class PackageForm extends React.Component {
           .then((response) => {
             if (response.data === 'Location Updated!') {
               window.alert(response.data);
-              // history.push('/areas');
               this.setState({ loading: false });
             } else {
-              history.push('/areas');
+              window.alert('ERROR')
+              this.setState({ loading: false });
             }
           });
         } else {
-          // axios.post('/api/locations/save', fd)
           axios.post(`${this.endPoint}/api/locations/save`, fd)
           .then((response) => {
             if (response.data === 'Location Saved!') {
               window.alert(response.data);
-              history.push('/areas');
-              // this.setState({ loading: false });
+              this.setState({ loading: false });
             } else {
-              history.push('/areas');
+              window.alert('ERROR')
+              this.setState({ loading: false });
             }
           });
         }
