@@ -21,6 +21,8 @@ export default class AgentForm extends React.Component {
       gallery: '',
       city: '',
       cities: [],
+      location: '',
+      locations: [],
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -30,12 +32,18 @@ export default class AgentForm extends React.Component {
   }
 
   componentWillMount() {
-    axios.get(`/api/city/fetch`)
+    axios.get(`${this.endPoint}/api/city/fetch`)
         .then((response) => {
           this.setState({
             cities: response.data,
           });
         });
+    axios.get(`${this.endPoint}/api/locations/fetch`)
+    .then((response) => {
+      this.setState({
+        locations: response.data,
+      });
+    });
   }
 
   componentDidMount() {
@@ -86,6 +94,16 @@ export default class AgentForm extends React.Component {
       agent: {
         ...prevState.agent,
         city_id: selectedCity.ID,
+      },
+    }));
+  }
+
+  setLocation(selectedLocation) {
+    this.setState(prevState => ({
+      location: selectedLocation,
+      agent: {
+        ...prevState.agent,
+        location_id: selectedLocation.ID,
       },
     }));
   }
@@ -147,6 +165,8 @@ export default class AgentForm extends React.Component {
       agent,
       cities,
       city,
+      locations,
+      location,
       description,
     } = this.state;
     const toolbarConfig = {
@@ -249,9 +269,9 @@ export default class AgentForm extends React.Component {
                           <div className="col-md-6 col-sm-6">
                             <Select
                               name="location_id"
-                              value={city}
-                              onChange={value => this.setCity(value)}
-                              options={cities}
+                              value={location}
+                              onChange={value => this.setLocation(value)}
+                              options={locations}
                               valueKey="id"
                               labelKey="name"
                               clearable={false}
