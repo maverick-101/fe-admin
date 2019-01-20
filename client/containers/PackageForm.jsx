@@ -12,17 +12,25 @@ export default class PackageForm extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      location: {
+      pckg: {
         name: '',
         city_id: '',
-        province: '',
-        views: '',
-        image_type: '',
+        agent_id: '',
+        location_id: '',
+        price: [],
+        travel_modes: [],
+        activities: [],
+        food: [],
+        latitude: '',
+        longitude: '',
+        rating: '',
         description: '',
       },
       gallery: '',
       city: '',
       cities: [],
+      agents: [],
+      locations: [],
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -32,10 +40,34 @@ export default class PackageForm extends React.Component {
   }
 
   componentWillMount() {
-    axios.get(`/api/city/fetch`)
+    this.getCity();
+    this.getAgent();
+    this.getLocation();
+  }
+
+  getCity = () => {
+    axios.get(`${this.endPoint}/api/city/fetch`)
         .then((response) => {
           this.setState({
             cities: response.data,
+          });
+        });
+  }
+
+  getAgent = () => {
+    axios.get(`${this.endPoint}/api/agentPage/fetch`)
+        .then((response) => {
+          this.setState({
+            agents: response.data,
+          });
+        });
+  }
+
+  getLocation = () => {
+    axios.get(`${this.endPoint}/api/locationPage/fetch`)
+        .then((response) => {
+          this.setState({
+            locations: response.data,
           });
         });
   }
@@ -46,10 +78,10 @@ export default class PackageForm extends React.Component {
       axios.get(`/api/locations/fetchById/${this.props.params.areaId}`)
         .then((response) => {
           this.setState({
-            location: response.data[0],
+            pckg: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
-            axios.get(`/api/city/fetchById/${this.state.location.city_id}`)
+            axios.get(`/api/city/fetchById/${this.state.pckg.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
@@ -60,10 +92,10 @@ export default class PackageForm extends React.Component {
       }
 
   setDescription(description) {
-    const { location } = this.state;
-    location.description = description.toString('html');
+    const { pckg } = this.state;
+    pckg.description = description.toString('html');
     this.setState({
-      location,
+      pckg,
       description,
     });
   }
@@ -71,9 +103,9 @@ export default class PackageForm extends React.Component {
   handleInputChange(event) {
     const { value, name } = event.target;
 
-    const { location } = this.state;
-    location[name] = value;
-    this.setState({ location });
+    const { pckg } = this.state;
+    pckg[name] = value;
+    this.setState({ pckg });
   }
 
   // handleFile = (event) => {
@@ -85,9 +117,29 @@ export default class PackageForm extends React.Component {
   setCity(selectedCity) {
     this.setState(prevState => ({
       city: selectedCity,
-      location: {
-        ...prevState.location,
+      pckg: {
+        ...prevState.pckg,
         city_id: selectedCity.ID,
+      },
+    }));
+  }
+
+  setAgent(selectedAgent) {
+    this.setState(prevState => ({
+      agent: selectedAgent,
+      pckg: {
+        ...prevState.pckg,
+        agent_id: selectedAgent.ID,
+      },
+    }));
+  }
+
+  setLocation(selectedLocation) {
+    this.setState(prevState => ({
+      location: selectedLocation,
+      pckg: {
+        ...prevState.pckg,
+        location_id: selectedLocation.ID,
       },
     }));
   }
@@ -99,7 +151,7 @@ export default class PackageForm extends React.Component {
   postArea(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, location, gallery } = this.state;
+    const { loading, pckg, gallery } = this.state;
     if (!loading) {
         this.setState({ loading: true });
 
@@ -109,16 +161,16 @@ export default class PackageForm extends React.Component {
           imgArray.push(gallery[index]);
         }
           imgArray.forEach((img) => {
-          fd.append('gallery_images', img);
+          fd.append('gallery', img);
           return img;
         });
-        fd.append('location', JSON.stringify(location));
+        fd.append('pckg', JSON.stringify(pckg));
 
         if(this.props.params.areaId) {
           // axios.patch('/api/locations/update', fd)
-          axios.patch(`${this.endPoint}/api/locations/update`, fd)
+          axios.patch(`${this.endPoint}/api/packagePage/update`, fd)
           .then((response) => {
-            if (response.data === 'Location Updated!') {
+            if (response.data === 'Package Updated!') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -127,9 +179,9 @@ export default class PackageForm extends React.Component {
             }
           });
         } else {
-          axios.post(`${this.endPoint}/api/locations/save`, fd)
+          axios.post(`${this.endPoint}/api/packagePage/save`, fd)
           .then((response) => {
-            if (response.data === 'Location Saved!') {
+            if (response.data === 'Package Saved!') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -145,13 +197,16 @@ export default class PackageForm extends React.Component {
     console.log(this.state)
     const {
       loading,
-      location,
+      pckg,
       cities,
       city,
+      agents,
+      agent,
+      locations,
+      location,
       description,
     } = this.state;
     const toolbarConfig = {
-      // Optionally specify the groups to display (displayed in the order listed).
       display: ['INLINE_STYLE_BUTTONS', 'BLOCK_TYPE_BUTTONS', 'HISTORY_BUTTONS'],
       INLINE_STYLE_BUTTONS: [
         {
@@ -189,7 +244,6 @@ export default class PackageForm extends React.Component {
         },
       ],
     };
-    // console.log(this.state);
 
     return (
       <div className="row animated fadeIn">
@@ -222,28 +276,28 @@ export default class PackageForm extends React.Component {
                           type="text"
                           name="name"
                           className="form-control"
-                          value={location.name}
+                          value={pckg.name}
                           onChange={this.handleInputChange}
                         />
                       </div>
                     </div>
 
-                    {/* <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >City
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="city"
-                          className="form-control"
-                          value={location.city}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div> */}
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">Agent</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="agent_id"
+                              value={agent}
+                              onChange={value => this.setCity(value)}
+                              options={agents}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
 
                     <div className="form-group row">
                           <label className="control-label col-md-3 col-sm-3">City</label>
@@ -262,18 +316,35 @@ export default class PackageForm extends React.Component {
                           </div>
                         </div>
 
+                        <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">Location</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="agent_id"
+                              value={location}
+                              onChange={value => this.setCity(value)}
+                              options={locations}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Province
+                      >Price
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
                           required
                           type="text"
-                          name="province"
+                          name="price"
                           className="form-control"
-                          value={location.province}
+                          value={pckg.price}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -282,15 +353,100 @@ export default class PackageForm extends React.Component {
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Views
+                      >Travel Modes
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
                           required
                           type="text"
-                          name="views"
+                          name="travel_modes"
                           className="form-control"
-                          value={location.views}
+                          value={pckg.travel_modes}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Activities
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="activities"
+                          className="form-control"
+                          value={pckg.activities}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Food
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="food"
+                          className="form-control"
+                          value={pckg.food}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >latitude
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="latitude"
+                          className="form-control"
+                          value={pckg.latitude}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Longitude
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="longitude"
+                          className="form-control"
+                          value={pckg.longitude}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Rating
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="rating"
+                          className="form-control"
+                          value={pckg.rating}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -310,12 +466,12 @@ export default class PackageForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Type</label>
                       <div className="col-md-6 col-sm-6">
                         <select
                           name="image_type"
-                          value={location.image_type}
+                          value={pckg.image_type}
                           className="form-control custom-select"
                           onChange={this.handleInputChange}
                           required
@@ -325,7 +481,7 @@ export default class PackageForm extends React.Component {
                           <option value="main_hall">Main Hall Image</option>
                         </select>
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Description</label>

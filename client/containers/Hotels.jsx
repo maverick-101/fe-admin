@@ -15,6 +15,7 @@ export default class Hotels extends React.Component {
       pages: 1,
       q: '',
       loading: false,
+      responseMessage: 'Loading Hotels...'
     }
     this.endPoint = 'https://api.saaditrips.com';
   }
@@ -23,7 +24,8 @@ export default class Hotels extends React.Component {
       .then(response => {
         this.setState({
           hotels: response.data,
-          pages: Math.ceil(response.data.length/10)
+          pages: Math.ceil(response.data.length/10),
+          responseMessage: 'No Hotels Found'
         })
       })
   }
@@ -58,7 +60,7 @@ export default class Hotels extends React.Component {
       })
   }
   render() {
-    const { hotels } = this.state;
+    const { hotels, responseMessage } = this.state;
     return (
       <div className="row">
         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -134,7 +136,9 @@ export default class Hotels extends React.Component {
                   </tr>
                 ))
               :
-              <td>No Hotels Found</td>
+              <tr>
+                    <td colSpan="15" className="text-center">{responseMessage}</td>
+                  </tr>
               }
               </tbody>
             </table>

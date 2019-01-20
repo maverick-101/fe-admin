@@ -14,6 +14,7 @@ export default class Cities extends React.Component {
       activePage: 1,
       pages: 1,
       q: '',
+      responseMessage: 'Loading Cities...'
     }
     this.endPoint = 'https://api.saaditrips.com';
   }
@@ -22,7 +23,8 @@ export default class Cities extends React.Component {
       .then(response => {
         this.setState({
           cities: response.data,
-          pages: Math.ceil(response.data.length/10)
+          pages: Math.ceil(response.data.length/10),
+          responseMessage: 'No Cities Found...'
         })
       })
   }
@@ -100,7 +102,7 @@ export default class Cities extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.cities && this.state.cities.length >= 1 &&
+                {this.state.cities && this.state.cities.length >= 1 ?
                   this.state.cities.map((city, index) => (
                   <tr key={index}>
                     <td>{city.name}</td>
@@ -126,7 +128,11 @@ export default class Cities extends React.Component {
                       </td>
                     {/* </HasRole> */}
                   </tr>
-                ))}
+                )):
+                <tr>
+                    <td colSpan="15" className="text-center">{this.state.responseMessage}</td>
+                  </tr>
+                }
               </tbody>
             </table>
           </div>

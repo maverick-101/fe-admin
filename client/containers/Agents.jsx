@@ -14,6 +14,7 @@ export default class Agents extends React.Component {
       activePage: 1,
       pages: 1,
       q: '',
+      responseMessage: 'Loading Agents...'
     }
     this.endPoint = 'https://api.saaditrips.com';
   }
@@ -22,7 +23,8 @@ export default class Agents extends React.Component {
       .then(response => {
         this.setState({
           areas: response.data,
-          pages: Math.ceil(response.data.total/10)
+          pages: Math.ceil(response.data.total/10),
+          responseMessage: 'No Agents Found...'
         })
       })
   }
@@ -91,7 +93,6 @@ export default class Agents extends React.Component {
               <thead>
                 <tr>
                   <th>Name</th>
-                  {/* <th>Size</th> */}
                   <th>Views</th>
                   {/* <th>Marla-Size(Sqft)</th>
                   <th>Population</th>
@@ -100,7 +101,7 @@ export default class Agents extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.areas && this.state.areas.length &&
+                {this.state.areas && this.state.areas.length >= 1 ?
                   this.state.areas.map((area, index) => (
                   <tr key={index}>
                     <td>{area.name}</td>
@@ -126,7 +127,12 @@ export default class Agents extends React.Component {
                       </td>
                     {/* </HasRole> */}
                   </tr>
-                ))}
+                ))
+                :
+                <tr>
+                    <td colSpan="15" className="text-center">{this.state.responseMessage}</td>
+                  </tr>
+                }
               </tbody>
             </table>
           </div>

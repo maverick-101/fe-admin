@@ -15,6 +15,7 @@ export default class CoverBanner extends React.Component {
       activePage: 1,
       pages: 1,
       q: '',
+      responseMessage: 'Loading Cover Banners...'
     }
     this.endPoint = 'https://api.saaditrips.com';
   }
@@ -23,7 +24,8 @@ export default class CoverBanner extends React.Component {
       .then(response => {
         this.setState({
           coverBanners: response.data,
-          pages: Math.ceil(response.data.length/10)
+          pages: Math.ceil(response.data.length/10),
+          responseMessage: 'No Hotels Found...'
         })
       })
   }
@@ -102,7 +104,7 @@ export default class CoverBanner extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.coverBanners && this.state.coverBanners.length >= 1 &&
+                {this.state.coverBanners && this.state.coverBanners.length >= 1 ?
                   this.state.coverBanners.map((coverBanner, index) => (
                   <tr key={index}>
                     <td>{coverBanner.ID}</td>
@@ -129,7 +131,11 @@ export default class CoverBanner extends React.Component {
                       </td>
                     {/* </HasRole> */}
                   </tr>
-                ))}
+                )):
+                <tr>
+                    <td colSpan="15" className="text-center">{this.state.responseMessage}</td>
+                  </tr>
+                }
               </tbody>
             </table>
           </div>

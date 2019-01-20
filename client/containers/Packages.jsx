@@ -10,45 +10,48 @@ export default class Packages extends React.Component {
     super(props);
 
     this.state = {
-      areas: [],
+      packages: [],
       activePage: 1,
       pages: 1,
       q: '',
+      responseMessage: 'Loading Packages...'
     }
+    this.endPoint = 'https://api.saaditrips.com';
   }
   componentWillMount() {
-    axios.get('/api/locations/fetch')
+    axios.get(`${this.endPoint}/api/packagePage/fetch`)
       .then(response => {
         this.setState({
-          areas: response.data,
-          pages: Math.ceil(response.data.total/10)
+          packages: response.data,
+          pages: Math.ceil(response.data.total/10),
+          responseMessage: 'No Packages found...'
         })
       })
   }
   deleteArea(areaId, index) {
-    if(confirm("Are you sure you want to delete this area?")) {
-      axios.delete(`/api/area/${areaId}`)
+    if(confirm("Are you sure you want to delete this pckg?")) {
+      axios.delete(`/api/pckg/${areaId}`)
         .then(response => {
-          const areas = this.state.areas.slice();
-          areas.splice(index, 1);
-          this.setState({ areas });
+          const packages = this.state.packages.slice();
+          packages.splice(index, 1);
+          this.setState({ packages });
         });
     }
   }
   handleSelect(page) {
-    axios.get(`/api/area?offset=${(page-1)*10}`)
+    axios.get(`/api/pckg?offset=${(page-1)*10}`)
       .then(response => {
         this.setState({
-          areas: response.data.items,
+          packages: response.data.items,
           activePage: page
         })
       })
   }
   handleSearch() {
-    axios.get(`/api/area?q=${this.state.q}`)
+    axios.get(`/api/pckg?q=${this.state.q}`)
       .then((response) => {
         this.setState({
-          areas: response.data.items,
+          packages: response.data.items,
           activePage: 1,
           pages: Math.ceil(response.data.total/10)
         })
@@ -70,6 +73,7 @@ export default class Packages extends React.Component {
                 </span>
               </div>
             </div>
+            
             {/* <div className="col-sm-2 pull-right">
               <HasRole requiredRole={['admin', 'data-entry']} requiredDepartment={['admin', 'sales']}>
                 <Link to="/area_form">
@@ -99,33 +103,37 @@ export default class Packages extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.areas && this.state.areas.length &&
-                  this.state.areas.map((area, index) => (
+                {this.state.packages && this.state.packages.length >= 1 ?
+                  this.state.packages.map((pckg, index) => (
                   <tr key={index}>
-                    <td>{area.name}</td>
-                    {/* <td>{area.size}</td> */}
-                    <td>{area.views}</td>
-                    {/* <td>{area.marla_size}</td>
-                    <td>{area.population}</td>
-                    <td>{area.lat}</td>
-                    <td>{area.lon}</td> */}
+                    <td>{pckg.name}</td>
+                    {/* <td>{pckg.size}</td> */}
+                    <td>{pckg.views}</td>
+                    {/* <td>{pckg.marla_size}</td>
+                    <td>{pckg.population}</td>
+                    <td>{pckg.lat}</td>
+                    <td>{pckg.lon}</td> */}
                     <td>
-                      <Link to={`/area_resource/${area.id}`}>
+                      <Link to={`/area_resource/${pckg.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
                     </td>
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`/edit_package/${area.ID}`}>
+                        <Link to={`/edit_package/${pckg.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteArea(area.ID, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteArea(pckg.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                   </tr>
-                ))}
+                )):
+                <tr>
+                    <td colSpan="15" className="text-center">{this.state.responseMessage}</td>
+                </tr>
+                }
               </tbody>
             </table>
           </div>

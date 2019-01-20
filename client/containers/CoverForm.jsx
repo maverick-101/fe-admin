@@ -115,7 +115,7 @@ export default class CoverForm extends React.Component {
         axios.patch('/api/coverbanner/update', fd)
         axios.patch(`${this.endPoint}/api/coverbanner/update`, fd)
           .then((response) => {
-            if (response.data === 'Cover Updated!') {
+            if (response.data === 'CoverBanner Updated!') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -127,7 +127,7 @@ export default class CoverForm extends React.Component {
         else {
           axios.post(`${this.endPoint}/api/coverbanner/save`, fd)
           .then((response) => {
-            if (response.data === 'cover Saved!') {
+            if (response.data === 'CoverBanner Saved!') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
