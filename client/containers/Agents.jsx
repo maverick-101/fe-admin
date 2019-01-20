@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
+import Broken from '../static/broken.png';
 
 import HasRole from '../hoc/HasRole';
 
@@ -10,7 +11,7 @@ export default class Agents extends React.Component {
     super(props);
 
     this.state = {
-      areas: [],
+      agents: [],
       activePage: 1,
       pages: 1,
       q: '',
@@ -22,36 +23,36 @@ export default class Agents extends React.Component {
     axios.get(`${this.endPoint}/api/agentPage/fetch`)
       .then(response => {
         this.setState({
-          areas: response.data,
+          agents: response.data,
           pages: Math.ceil(response.data.total/10),
           responseMessage: 'No Agents Found...'
         })
       })
   }
   deleteArea(areaId, index) {
-    if(confirm("Are you sure you want to delete this area?")) {
-      axios.delete(`/api/area/${areaId}`)
+    if(confirm("Are you sure you want to delete this agent?")) {
+      axios.delete(`/api/agent/${areaId}`)
         .then(response => {
-          const areas = this.state.areas.slice();
-          areas.splice(index, 1);
-          this.setState({ areas });
+          const agents = this.state.agents.slice();
+          agents.splice(index, 1);
+          this.setState({ agents });
         });
     }
   }
   handleSelect(page) {
-    axios.get(`/api/area?offset=${(page-1)*10}`)
+    axios.get(`/api/agent?offset=${(page-1)*10}`)
       .then(response => {
         this.setState({
-          areas: response.data.items,
+          agents: response.data.items,
           activePage: page
         })
       })
   }
   handleSearch() {
-    axios.get(`/api/area?q=${this.state.q}`)
+    axios.get(`/api/agent?q=${this.state.q}`)
       .then((response) => {
         this.setState({
-          areas: response.data.items,
+          agents: response.data.items,
           activePage: 1,
           pages: Math.ceil(response.data.total/10)
         })
@@ -92,6 +93,7 @@ export default class Agents extends React.Component {
             <table className="table table-striped">
               <thead>
                 <tr>
+                  <th>Image</th>
                   <th>Name</th>
                   <th>Views</th>
                   {/* <th>Marla-Size(Sqft)</th>
@@ -101,29 +103,31 @@ export default class Agents extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.areas && this.state.areas.length >= 1 ?
-                  this.state.areas.map((area, index) => (
+                {this.state.agents && this.state.agents.length >= 1 ?
+                  this.state.agents.map((agent, index) => (
                   <tr key={index}>
-                    <td>{area.name}</td>
-                    {/* <td>{area.size}</td> */}
-                    <td>{area.views}</td>
-                    {/* <td>{area.marla_size}</td>
-                    <td>{area.population}</td>
-                    <td>{area.lat}</td>
-                    <td>{area.lon}</td> */}
+                  {console.log(agent.gallery[0])}
+                    <td>{<img style={{height: '50px', width: '50px'}} src={agent.gallery[index] ? agent.gallery[0].url : Broken} />}</td>
+                    <td>{agent.name}</td>
+                    {/* <td>{agent.size}</td> */}
+                    <td>{agent.views}</td>
+                    {/* <td>{agent.marla_size}</td>
+                    <td>{agent.population}</td>
+                    <td>{agent.lat}</td>
+                    <td>{agent.lon}</td> */}
                     <td>
-                      <Link to={`/area_resource/${area.id}`}>
+                      <Link to={`/area_resource/${agent.id}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
                     </td>
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`/edit_agent/${area.ID}`}>
+                        <Link to={`/edit_agent/${agent.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteArea(area.ID, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteArea(agent.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                   </tr>

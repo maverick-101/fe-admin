@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
+import Broken from '../static/broken.png';
 
 import HasRole from '../hoc/HasRole';
 
@@ -92,6 +93,7 @@ export default class Cities extends React.Component {
             <table className="table table-striped">
               <thead>
                 <tr>
+                  <th>Image</th>
                   <th>Name</th>
                   <th>Province</th>
                   <th>Views</th>
@@ -105,6 +107,8 @@ export default class Cities extends React.Component {
                 {this.state.cities && this.state.cities.length >= 1 ?
                   this.state.cities.map((city, index) => (
                   <tr key={index}>
+                  {/* {console.log(city.gallery[index])} */}
+                    <td>{<img style={{height: '50px', width: '50px'}} src={city.gallery[index] ? city.gallery[index].url : Broken} />}</td>
                     <td>{city.name}</td>
                     <td>{city.province}</td>
                     <td>{city.views}</td>

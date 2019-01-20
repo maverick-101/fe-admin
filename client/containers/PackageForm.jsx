@@ -64,7 +64,7 @@ export default class PackageForm extends React.Component {
   }
 
   getLocation = () => {
-    axios.get(`${this.endPoint}/api/locationPage/fetch`)
+    axios.get(`${this.endPoint}/api/locations/fetch`)
         .then((response) => {
           this.setState({
             locations: response.data,
@@ -164,7 +164,7 @@ export default class PackageForm extends React.Component {
           fd.append('gallery', img);
           return img;
         });
-        fd.append('pckg', JSON.stringify(pckg));
+        fd.append('packagePage', JSON.stringify(pckg));
 
         if(this.props.params.areaId) {
           // axios.patch('/api/locations/update', fd)
@@ -288,7 +288,7 @@ export default class PackageForm extends React.Component {
                             <Select
                               name="agent_id"
                               value={agent}
-                              onChange={value => this.setCity(value)}
+                              onChange={value => this.setAgent(value)}
                               options={agents}
                               valueKey="id"
                               labelKey="name"
@@ -322,7 +322,7 @@ export default class PackageForm extends React.Component {
                             <Select
                               name="agent_id"
                               value={location}
-                              onChange={value => this.setCity(value)}
+                              onChange={value => this.setLocation(value)}
                               options={locations}
                               valueKey="id"
                               labelKey="name"

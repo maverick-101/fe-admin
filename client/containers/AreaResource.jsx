@@ -16,7 +16,7 @@ export default class AreaResource extends React.Component {
       location: {
         name: '',
         city_id: '',
-        // location_id: this.props.params.areaId,
+        location_id: '',
         province: '',
         views: '',
         type: '',
@@ -58,23 +58,29 @@ export default class AreaResource extends React.Component {
   }
 
   componentDidMount() {
-    console.log('props',this.props);
-      if (this.props.params.areaId)
-      axios.get(`${this.endPoint}/api/locations/fetchById/${this.props.params.areaId}`)
-        .then((response) => {
-          this.setState({
-            location: response.data[0],
-            description: RichTextEditor.createValueFromString(response.data.description, 'html'),
-          }, () => {
-            axios.get(`${this.endPoint}/api/city/fetchById/${this.state.location.city_id}`)
-            .then((response) => {
-              this.setState({
-                city: response.data[0],
-              });
-            });
-          });
-        });
-      }
+    // this.setState(prevState => ({
+    //   location: {
+    //     ...prevState.location,
+    //     location_id: this.props.params.areaId,
+    //   },
+    // }));
+      // if (this.props.params.areaId) {
+      // axios.get(`${this.endPoint}/api/locations/fetchById/${this.props.params.areaId}`)
+      //   .then((response) => {
+      //     this.setState({
+      //       location: response.data[0],
+      //       description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+      //     }, () => {
+      //       axios.get(`${this.endPoint}/api/city/fetchById/${this.state.location.city_id}`)
+      //       .then((response) => {
+      //         this.setState({
+      //           city: response.data[0],
+      //         });
+      //       });
+      //     });
+      //   });
+      // }
+    }
 
   setDescription(description) {
     const { location } = this.state;
@@ -146,7 +152,7 @@ export default class AreaResource extends React.Component {
     }
 
   render() {
-    // console.log(this.state)
+    console.log(this.state)
     const {
       loading,
       location,

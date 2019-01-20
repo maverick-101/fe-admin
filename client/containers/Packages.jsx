@@ -93,6 +93,7 @@ export default class Packages extends React.Component {
             <table className="table table-striped">
               <thead>
                 <tr>
+                  <th>Image</th>
                   <th>Name</th>
                   {/* <th>Size</th> */}
                   <th>Views</th>

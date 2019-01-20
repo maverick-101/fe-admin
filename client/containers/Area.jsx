@@ -105,6 +105,7 @@ export default class Area extends React.Component {
                 {this.state.areas && this.state.areas.length >= 1 ?
                   this.state.areas.map((area, index) => (
                   <tr key={index}>
+                    <td>{<img style={{height: '50px', width: '50px'}} src={area.gallery[index].url} />}</td>
                     <td>{area.name}</td>
                     {/* <td>{area.size}</td> */}
                     <td>{area.views}</td>

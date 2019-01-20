@@ -18,6 +18,9 @@ export default class AgentForm extends React.Component {
         location_id: '',
         addresses: [],
       },
+      address: {
+
+      },
       gallery: '',
       city: '',
       cities: [],
@@ -119,14 +122,22 @@ export default class AgentForm extends React.Component {
     if (!loading) {
         this.setState({ loading: true });
 
+        let imgArray = [];
         const fd = new FormData();
+        for (let index = 0; index < gallery.length; index += 1) {
+          imgArray.push(gallery[index]);
+        }
+          imgArray.forEach((img) => {
+          fd.append('gallery_images', img);
+          return img;
+        });
  
-        fd.append('agent', JSON.stringify(agent));
+        fd.append('agentPage', JSON.stringify(agent));
 
         if(this.props.params.agentId) {
           axios.patch(`${this.endPoint}/api/agentPage/update`, fd)
           .then((response) => {
-            if (response.data === 'Location Updated!') {
+            if (response.data === 'AgentPage Updated!') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -137,7 +148,7 @@ export default class AgentForm extends React.Component {
         } else {
           axios.post(`${this.endPoint}/api/agentPage/save`, fd)
           .then((response) => {
-            if (response.data === 'Location Saved!') {
+            if (response.data === 'AgentPage Saved!') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -289,8 +300,8 @@ export default class AgentForm extends React.Component {
                       </div>
                     </div>
 
-                    {/* <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Location Gallery</label>
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Agent Gallery</label>
                       <div className="col-md-6 col-sm-6">
                         <input
                           type="file"
@@ -301,7 +312,7 @@ export default class AgentForm extends React.Component {
                           // required={coverForm.url ? 0 : 1}
                         />
                       </div>
-                    </div> */}
+                    </div>
 
                     {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Type</label>
