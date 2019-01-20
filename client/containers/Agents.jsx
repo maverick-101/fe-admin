@@ -106,10 +106,8 @@ export default class Agents extends React.Component {
                 {this.state.agents && this.state.agents.length >= 1 ?
                   this.state.agents.map((agent, index) => (
                   <tr key={index}>
-                  {console.log(agent.gallery[0])}
                     <td>{<img style={{height: '50px', width: '50px'}} src={agent.gallery.length ? agent.gallery[0].url : Broken} />}</td>
                     <td>{agent.name}</td>
-                    {/* <td>{agent.size}</td> */}
                     <td>{agent.views}</td>
                     {/* <td>{agent.marla_size}</td>
                     <td>{agent.population}</td>
