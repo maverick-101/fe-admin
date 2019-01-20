@@ -108,7 +108,7 @@ export default class Cities extends React.Component {
                   this.state.cities.map((city, index) => (
                   <tr key={index}>
                   {/* {console.log(city.gallery[index])} */}
-                    <td>{<img style={{height: '50px', width: '50px'}} src={city.gallery[index] ? city.gallery[index].url : Broken} />}</td>
+                    <td>{<img style={{height: '50px', width: '50px'}} src={city.gallery ? city.gallery[0].url : Broken} />}</td>
                     <td>{city.name}</td>
                     <td>{city.province}</td>
                     <td>{city.views}</td>
