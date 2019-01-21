@@ -93,9 +93,10 @@ export default class Agents extends React.Component {
             <table className="table table-striped">
               <thead>
                 <tr>
+                  <th>ID</th>
                   <th>Image</th>
                   <th>Name</th>
-                  <th>Views</th>
+                  <th>Address</th>
                   {/* <th>Marla-Size(Sqft)</th>
                   <th>Population</th>
                   <th>Latitude</th>
@@ -106,9 +107,10 @@ export default class Agents extends React.Component {
                 {this.state.agents && this.state.agents.length >= 1 ?
                   this.state.agents.map((agent, index) => (
                   <tr key={index}>
+                    <td>{agent.ID}</td>
                     <td>{<img style={{height: '50px', width: '50px'}} src={agent.gallery.length ? agent.gallery[0].url : Broken} />}</td>
                     <td>{agent.name}</td>
-                    <td>{agent.views}</td>
+                    <td>{agent.addresses.length ? `${agent.addresses[0].street} ${agent.addresses[0].address_type}` : ''}</td>
                     {/* <td>{agent.marla_size}</td>
                     <td>{agent.population}</td>
                     <td>{agent.lat}</td>

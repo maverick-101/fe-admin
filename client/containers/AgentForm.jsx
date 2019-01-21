@@ -19,10 +19,10 @@ export default class AgentForm extends React.Component {
         addresses: [],
       },
       address: {
-        type: '',
-        primary: '',
-        location_id: '',
-        city_id: '',
+        address_type: '',
+        primary: true,
+        location_id: 0,
+        city_id: 0,
         street: ''
       },
       gallery: '',
@@ -30,6 +30,7 @@ export default class AgentForm extends React.Component {
       cities: [],
       location: '',
       locations: [],
+      addressCount: 1,
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -189,6 +190,7 @@ export default class AgentForm extends React.Component {
       location,
       address,
       description,
+      addressCount
     } = this.state;
     const toolbarConfig = {
       // Optionally specify the groups to display (displayed in the order listed).
@@ -304,6 +306,9 @@ export default class AgentForm extends React.Component {
 
                         <div style={{backgroundColor: 'gainsboro'}}>
                       <h3>Address Details</h3>
+
+                      {[...Array(addressCount)].map((event, index) => {
+                        return <div>
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
@@ -313,9 +318,9 @@ export default class AgentForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="type"
+                          name="address_type"
                           className="form-control"
-                          value={address.type}
+                          value={address.address_type}
                           onChange={this.handleAddress}
                         />
                       </div>
@@ -388,7 +393,11 @@ export default class AgentForm extends React.Component {
                         />
                       </div>
                     </div>
-
+                    </div>
+                    })}
+                  <p>Add another address
+                  <button type="button" onClick={() => {this.setState({addressCount: addressCount + 1})}} className="btn btn-info btn-sm">Add</button>
+                  </p>
                     </div>
 
                     <div className="form-group row">
