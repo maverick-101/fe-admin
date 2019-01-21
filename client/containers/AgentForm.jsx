@@ -304,11 +304,13 @@ export default class AgentForm extends React.Component {
                           </div>
                         </div>
 
-                        <div style={{backgroundColor: 'gainsboro'}}>
+                      <div className="form-group row" style={{backgroundColor: 'gainsboro'}}>
+                        <div className="control-label col-md-3 col-sm-3"></div>
+                          <div className="col-md-6 col-sm-6">
                       <h3>Address Details</h3>
 
                       {[...Array(addressCount)].map((event, index) => {
-                        return <div>
+                        return <div key={index}>
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
@@ -393,12 +395,13 @@ export default class AgentForm extends React.Component {
                         />
                       </div>
                     </div>
-                    </div>
+                  </div>
                     })}
-                  <p>Add another address
-                  <button type="button" onClick={() => {this.setState({addressCount: addressCount + 1})}} className="btn btn-info btn-sm">Add</button>
-                  </p>
-                    </div>
+                    <p>Add another address
+                      <button type="button" onClick={() => {this.setState({addressCount: addressCount + 1})}} className="btn btn-info btn-sm">Add</button>
+                    </p>
+                  </div>
+                </div>
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Agent Gallery</label>
