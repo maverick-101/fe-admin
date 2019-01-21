@@ -92,8 +92,8 @@ export default class Area extends React.Component {
             <table className="table table-striped">
               <thead>
                 <tr>
+                  <th>Image</th>
                   <th>Name</th>
-                  {/* <th>Size</th> */}
                   <th>Views</th>
                   {/* <th>Marla-Size(Sqft)</th>
                   <th>Population</th>

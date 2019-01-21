@@ -24,7 +24,7 @@ export default class Agents extends React.Component {
       .then(response => {
         this.setState({
           agents: response.data,
-          pages: Math.ceil(response.data.total/10),
+          pages: Math.ceil(response.data.length/10),
           responseMessage: 'No Agents Found...'
         })
       })
