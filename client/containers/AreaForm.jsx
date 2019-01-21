@@ -306,10 +306,32 @@ export default class AreaForm extends React.Component {
                           className="form-control"
                           onChange={this.handleImages}
                           multiple
-                          // required={coverForm.url ? 0 : 1}
+                          required={location.gallery ? 0 : 1}
                         />
                       </div>
                     </div>
+
+                    {location.gallery
+                      ? (
+                        <div className="form-group row">
+                        <label className="control-label col-md-3 col-sm-3"></label>
+                        <div className="col-md-6 col-sm-6">
+                        {location.gallery.map((image,index) => {
+                          return (
+                          <img key={index}
+                          style={{marginRight: '5px'}}
+                          width="100"
+                          className="img-fluid"
+                          src={`${image.url}`}
+                          alt="cover"
+                        />
+                          )
+                        })}
+                          
+                        </div>
+                      </div>
+                      ) : null
+                              }
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Type</label>

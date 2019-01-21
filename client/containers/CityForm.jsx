@@ -41,7 +41,7 @@ export default class CityForm extends React.Component {
   componentDidMount() {
     console.log('props',this.props);
       if (window.location.href.split('/')[3] === 'edit_city')
-      axios.get(`/api/city/fetchById/${this.props.params.cityId}`)
+      axios.get(`${this.endPoint}/api/city/fetchById/${this.props.params.cityId}`)
         .then((response) => {
           this.setState({
             city: response.data[0],
@@ -244,9 +244,32 @@ export default class CityForm extends React.Component {
                           className="form-control"
                           onChange={this.handleImages}
                           multiple
+                          required={city.gallery ? 0 : 1}
                         />
                       </div>
                     </div>
+
+                    {city.gallery
+                      ? (
+                        <div className="form-group row">
+                        <label className="control-label col-md-3 col-sm-3"></label>
+                        <div className="col-md-6 col-sm-6">
+                        {city.gallery.map((image,index) => {
+                          return (
+                          <img key={index}
+                          style={{marginRight: '5px'}}
+                          width="100"
+                          className="img-fluid"
+                          src={`${image.url}`}
+                          alt="cover"
+                        />
+                          )
+                        })}
+                          
+                        </div>
+                      </div>
+                      ) : null
+                              }
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Type</label>

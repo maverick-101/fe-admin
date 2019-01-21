@@ -30,8 +30,8 @@ export default class Cities extends React.Component {
       })
   }
   deleteCity(cityId, index) {
-    if(confirm("Are you sure you want to delete this area?")) {
-      axios.delete(`/api/area/${cityId}`)
+    if(confirm("Are you sure you want to delete this city?")) {
+      axios.delete(`${this.endPoint}/api/delete/city-deleteById/${cityId}`)
         .then(response => {
           const cities = this.state.cities.slice();
           cities.splice(index, 1);
@@ -117,13 +117,13 @@ export default class Cities extends React.Component {
                     <td>{area.lat}</td>
                     <td>{area.lon}</td> */}
                     <td>
-                      <Link to={`/area_resource/${city.ID}`}>
+                      <Link to={`${this.endPoint}/area_resource/${city.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
                     </td>
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`/edit_city/${city.ID}`}>
+                        <Link to={`${this.endPoint}/edit_city/${city.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
