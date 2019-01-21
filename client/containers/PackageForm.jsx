@@ -26,22 +26,19 @@ export default class PackageForm extends React.Component {
         rating: '',
         description: '',
       },
-      price: [
-        {
+      price: {
           person: 0,
           packege_title: '',
-          wifi: boolean,
-          shuttle_service: boolean,
-          breakfast: boolean,
-          buffet: boolean,
-          dinner: boolean,
-          nights_stay: number,
-          price: number,
+          wifi: true,
+          shuttle_service: true,
+          breakfast: true,
+          buffet: true,
+          dinner: true,
+          nights_stay: 0,
+          price: 0,
           description: '',
-        }
-      ],
-      travelModes: [
-        {
+        },
+      travelModes: {
           route: 1,
           departure: "",
           destination: "",
@@ -49,8 +46,19 @@ export default class PackageForm extends React.Component {
           distance: "",
           travel_type: "",
           description : "",
-        }
-      ],
+        },
+      activities: {
+        activity_type: "",
+        description: "",
+        status: true,
+        },
+      food: {
+        food_type: '',
+        description: "",
+        start_time: "",
+        end_time: "",
+        items: []
+        },
       gallery: '',
       city: '',
       cities: [],
@@ -132,6 +140,63 @@ export default class PackageForm extends React.Component {
     pckg[name] = value;
     this.setState({ pckg });
   }
+
+  handleTravelMode = (event) => {
+    const { value, name } = event.target;
+
+    const { travelModes } = this.state;
+    travelModes[name] = value;
+    this.setState(prevState => ({ 
+      travelModes,
+      pckg: {
+        ...prevState.pckg,
+        travel_modes: [this.state.travelModes],
+      },
+     }));
+  }
+
+  handleActivities = (event) => {
+    const { value, name } = event.target;
+
+    const { activities } = this.state;
+    activities[name] = value;
+    this.setState(prevState => ({ 
+      activities,
+      pckg: {
+        ...prevState.pckg,
+        activities: [this.state.activities],
+      },
+     }));
+  }
+
+  handlePrice = (event) => {
+    const { value, name } = event.target;
+
+    const { price } = this.state;
+    price[name] = value;
+    this.setState(prevState => ({ 
+      price,
+      pckg: {
+        ...prevState.pckg,
+        price: [this.state.price],
+      },
+     }));
+  }
+
+  handleFood = (event) => {
+    const { value, name } = event.target;
+
+    const { food } = this.state;
+    food[name] = value;
+    this.setState(prevState => ({ 
+      food,
+      pckg: {
+        ...prevState.pckg,
+        food: [this.state.food],
+      },
+     }));
+  }
+  
 
   // handleFile = (event) => {
   //   this.setState({
@@ -230,6 +295,10 @@ export default class PackageForm extends React.Component {
       locations,
       location,
       description,
+      price,
+      activities,
+      food,
+      travelModes,
     } = this.state;
     const toolbarConfig = {
       display: ['INLINE_STYLE_BUTTONS', 'BLOCK_TYPE_BUTTONS', 'HISTORY_BUTTONS'],
@@ -293,7 +362,7 @@ export default class PackageForm extends React.Component {
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Location Name
+                      >Package Name
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -369,8 +438,8 @@ export default class PackageForm extends React.Component {
                           type="text"
                           name="price"
                           className="form-control"
-                          value={pckg.price}
-                          onChange={this.handleInputChange}
+                          value={price.price}
+                          onChange={this.handlePrice}
                         />
                       </div>
                     </div>
@@ -384,10 +453,10 @@ export default class PackageForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="travel_modes"
+                          name="distance"
                           className="form-control"
-                          value={pckg.travel_modes}
-                          onChange={this.handleInputChange}
+                          value={travelModes.distance}
+                          onChange={this.handleTravelMode}
                         />
                       </div>
                     </div>
@@ -401,10 +470,10 @@ export default class PackageForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="activities"
+                          name="activity_type"
                           className="form-control"
-                          value={pckg.activities}
-                          onChange={this.handleInputChange}
+                          value={activities.activity_type}
+                          onChange={this.handleActivities}
                         />
                       </div>
                     </div>
@@ -418,10 +487,10 @@ export default class PackageForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="food"
+                          name="food_type"
                           className="form-control"
-                          value={pckg.food}
-                          onChange={this.handleInputChange}
+                          value={food.food_type}
+                          onChange={this.handleFood}
                         />
                       </div>
                     </div>
