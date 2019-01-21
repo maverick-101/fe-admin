@@ -19,7 +19,11 @@ export default class AgentForm extends React.Component {
         addresses: [],
       },
       address: {
-
+        type: '',
+        primary: '',
+        location_id: '',
+        city_id: '',
+        street: ''
       },
       gallery: '',
       city: '',
@@ -75,6 +79,20 @@ export default class AgentForm extends React.Component {
       agent,
       description,
     });
+  }
+
+  handleAddress = (event) => {
+    const { value, name } = event.target;
+
+    const { address } = this.state;
+    address[name] = value;
+    this.setState(prevState => ({ 
+      address,
+      agent: {
+        ...prevState.agent,
+        addresses: [this.state.address],
+      },
+     }));
   }
 
   handleInputChange(event) {
@@ -169,6 +187,7 @@ export default class AgentForm extends React.Component {
       city,
       locations,
       location,
+      address,
       description,
     } = this.state;
     const toolbarConfig = {
@@ -283,21 +302,93 @@ export default class AgentForm extends React.Component {
                           </div>
                         </div>
 
+                        <div style={{backgroundColor: 'gainsboro'}}>
+                      <h3>Address Details</h3>
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Address
+                      >Address Type
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
                           required
                           type="text"
-                          name="views"
+                          name="type"
                           className="form-control"
-                          value={agent.views}
-                          onChange={this.handleInputChange}
+                          value={address.type}
+                          onChange={this.handleAddress}
                         />
                       </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Primary</label>
+                      <div className="col-md-6 col-sm-6">
+                        <select
+                          name="primary"
+                          value={address.primary}
+                          className="form-control custom-select"
+                          onChange={this.handleAddress}
+                          required
+                        >
+                          <option value="">Select Type</option>
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">City</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="city_id"
+                              value={city}
+                              onChange={value => this.setCity(value)}
+                              options={cities}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">Location</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="location_id"
+                              value={location}
+                              onChange={value => this.setLocation(value)}
+                              options={locations}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Street
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="street"
+                          className="form-control"
+                          value={address.street}
+                          onChange={this.handleAddress}
+                        />
+                      </div>
+                    </div>
+
                     </div>
 
                     <div className="form-group row">
