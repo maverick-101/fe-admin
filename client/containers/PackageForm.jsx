@@ -26,6 +26,31 @@ export default class PackageForm extends React.Component {
         rating: '',
         description: '',
       },
+      price: [
+        {
+          person: 0,
+          packege_title: '',
+          wifi: boolean,
+          shuttle_service: boolean,
+          breakfast: boolean,
+          buffet: boolean,
+          dinner: boolean,
+          nights_stay: number,
+          price: number,
+          description: '',
+        }
+      ],
+      travelModes: [
+        {
+          route: 1,
+          departure: "",
+          destination: "",
+          travel_time: "",
+          distance: "",
+          travel_type: "",
+          description : "",
+        }
+      ],
       gallery: '',
       city: '',
       cities: [],
