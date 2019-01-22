@@ -483,7 +483,7 @@ export default class PackageForm extends React.Component {
                     {this.state.activitiesCount === 1 ? null : <hr/>}
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >activities Type
+                      >Activities Type
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -566,7 +566,7 @@ export default class PackageForm extends React.Component {
                     </div>
                   </div>
                     })}
-                    <p>Add another activities
+                    <p>Add another activity
                       <button type="button" onClick={() => {this.setState({activitiesCount: activitiesCount + 1})}} className="btn btn-info btn-sm">Add</button>
                     </p>
                   {/* </div> */}
@@ -587,7 +587,7 @@ export default class PackageForm extends React.Component {
                     {this.state.foodsCount === 1 ? null : <hr/>}
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >food Type
+                      >Food Type
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -670,7 +670,7 @@ export default class PackageForm extends React.Component {
                     </div>
                   </div>
                     })}
-                    <p>Add another food
+                    <p>Add another food item
                       <button type="button" onClick={() => {this.setState({foodsCount: foodsCount + 1})}} className="btn btn-info btn-sm">Add</button>
                     </p>
                   {/* </div> */}
@@ -775,7 +775,7 @@ export default class PackageForm extends React.Component {
                   </div>
                     })}
                     
-                    <p>Add another price
+                    <p>Add another Price
                       <button type="button" onClick={() => {this.setState({priceCount: priceCount + 1})}} className="btn btn-info btn-sm">Add</button>
                     </p>
                   {/* </div> */}
@@ -784,7 +784,7 @@ export default class PackageForm extends React.Component {
                     <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
                         <div className="control-label col-md-3 col-sm-3"></div>
                           <div className="col-md-8 col-sm-8">
-                            <h3>travelModes Details</h3>
+                            <h3>Travel Mode Details</h3>
                         </div>
                       
                         
@@ -796,7 +796,7 @@ export default class PackageForm extends React.Component {
                     {this.state.travelModesCount === 1 ? null : <hr/>}
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >travelModes Type
+                      >Travel Mode Type
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -880,7 +880,7 @@ export default class PackageForm extends React.Component {
                   </div>
                     })}
                     
-                    <p>Add another travelModes
+                    <p>Add another Travel Mode
                       <button type="button" onClick={() => {this.setState({travelModesCount: travelModesCount + 1})}} className="btn btn-info btn-sm">Add</button>
                     </p>
                   {/* </div> */}
