@@ -59,6 +59,10 @@ export default class PackageForm extends React.Component {
         end_time: "",
         items: []
         },
+      activitiesCount: 1,
+      foodsCount: 1,
+      priceCount: 1,
+      travelModesCount: 1,
       gallery: '',
       city: '',
       cities: [],
@@ -299,6 +303,10 @@ export default class PackageForm extends React.Component {
       activities,
       food,
       travelModes,
+      activitiesCount,
+      foodsCount,
+      priceCount,
+      travelModesCount,
     } = this.state;
     const toolbarConfig = {
       display: ['INLINE_STYLE_BUTTONS', 'BLOCK_TYPE_BUTTONS', 'HISTORY_BUTTONS'],
@@ -461,27 +469,125 @@ export default class PackageForm extends React.Component {
                       </div>
                     </div>
 
+                    <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
+                        <div className="control-label col-md-3 col-sm-3"></div>
+                          <div className="col-md-8 col-sm-8">
+                            <h3>Activities Details</h3>
+                        </div>
+                        
+                        {/* <div className="control-label col-md-3 col-sm-3"></div>
+                      <div className="col-md-6 col-sm-6"> */}
+                      {[...Array(activitiesCount)].map((event, index) => {
+                        return <div key={index}>
                     <div className="form-group row">
+                    {this.state.activitiesCount === 1 ? null : <hr/>}
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Activities
+                      >activities Type
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
                           required
                           type="text"
-                          name="activity_type"
+                          name="activities_type"
                           className="form-control"
-                          value={activities.activity_type}
-                          onChange={this.handleActivities}
+                          value={activities.activities_type}
+                          onChange={this.handleactivities}
                         />
                       </div>
                     </div>
 
                     <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Primary</label>
+                      <div className="col-md-6 col-sm-6">
+                        <select
+                          name="primary"
+                          value={activities.primary}
+                          className="form-control custom-select"
+                          onChange={this.handleactivities}
+                          required
+                        >
+                          <option value="">Select Type</option>
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">City</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="city_id"
+                              value={city}
+                              onChange={value => this.setCity(value)}
+                              options={cities}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">Location</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="location_id"
+                              value={location}
+                              onChange={value => this.setLocation(value)}
+                              options={locations}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                    <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Food
+                      >Street
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="street"
+                          className="form-control"
+                          value={activities.street}
+                          onChange={this.handleactivities}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                    })}
+                    <p>Add another activities
+                      <button type="button" onClick={() => {this.setState({activitiesCount: activitiesCount + 1})}} className="btn btn-info btn-sm">Add</button>
+                    </p>
+                  {/* </div> */}
+                </div>
+
+                <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
+                        <div className="control-label col-md-3 col-sm-3"></div>
+                          <div className="col-md-8 col-sm-8">
+                            <h3>food Details</h3>
+                        </div>
+                      
+                        
+                        {/* <div className="control-label col-md-3 col-sm-3"></div>
+                      <div className="col-md-6 col-sm-6"> */}
+                      {[...Array(foodsCount)].map((event, index) => {
+                        return <div key={index}>
+                    <div className="form-group row">
+                    {this.state.foodsCount === 1 ? null : <hr/>}
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >food Type
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -490,10 +596,295 @@ export default class PackageForm extends React.Component {
                           name="food_type"
                           className="form-control"
                           value={food.food_type}
-                          onChange={this.handleFood}
+                          onChange={this.handlefood}
                         />
                       </div>
                     </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Primary</label>
+                      <div className="col-md-6 col-sm-6">
+                        <select
+                          name="primary"
+                          value={food.primary}
+                          className="form-control custom-select"
+                          onChange={this.handlefood}
+                          required
+                        >
+                          <option value="">Select Type</option>
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">City</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="city_id"
+                              value={city}
+                              onChange={value => this.setCity(value)}
+                              options={cities}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">Location</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="location_id"
+                              value={location}
+                              onChange={value => this.setLocation(value)}
+                              options={locations}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Street
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="street"
+                          className="form-control"
+                          value={food.street}
+                          onChange={this.handlefood}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                    })}
+                    <p>Add another food
+                      <button type="button" onClick={() => {this.setState({foodsCount: foodsCount + 1})}} className="btn btn-info btn-sm">Add</button>
+                    </p>
+                  {/* </div> */}
+                </div>
+
+                <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
+                        <div className="control-label col-md-3 col-sm-3"></div>
+                          <div className="col-md-8 col-sm-8">
+                            <h3>Price Details</h3>
+                        </div>
+                      
+                        
+                        {/* <div className="control-label col-md-3 col-sm-3"></div>
+                      <div className="col-md-6 col-sm-6"> */}
+                      {[...Array(priceCount)].map((event, index) => {
+                        return <div key={index}>
+                    <div className="form-group row">
+                    {this.state.priceCount === 1 ? null : <hr/>}
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Price Type
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="price_type"
+                          className="form-control"
+                          value={price.price_type}
+                          onChange={this.handleprice}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Primary</label>
+                      <div className="col-md-6 col-sm-6">
+                        <select
+                          name="primary"
+                          value={price.primary}
+                          className="form-control custom-select"
+                          onChange={this.handleprice}
+                          required
+                        >
+                          <option value="">Select Type</option>
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">City</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="city_id"
+                              value={city}
+                              onChange={value => this.setCity(value)}
+                              options={cities}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">Location</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="location_id"
+                              value={location}
+                              onChange={value => this.setLocation(value)}
+                              options={locations}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Street
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="street"
+                          className="form-control"
+                          value={price.street}
+                          onChange={this.handleprice}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                    })}
+                    
+                    <p>Add another price
+                      <button type="button" onClick={() => {this.setState({priceCount: priceCount + 1})}} className="btn btn-info btn-sm">Add</button>
+                    </p>
+                  {/* </div> */}
+                </div>
+
+                    <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
+                        <div className="control-label col-md-3 col-sm-3"></div>
+                          <div className="col-md-8 col-sm-8">
+                            <h3>travelModes Details</h3>
+                        </div>
+                      
+                        
+                        {/* <div className="control-label col-md-3 col-sm-3"></div>
+                      <div className="col-md-6 col-sm-6"> */}
+                      {[...Array(travelModesCount)].map((event, index) => {
+                        return <div key={index}>
+                    <div className="form-group row">
+                    {this.state.travelModesCount === 1 ? null : <hr/>}
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >travelModes Type
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="travelModes_type"
+                          className="form-control"
+                          value={travelModes.travelModes_type}
+                          onChange={this.handletravelModes}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Primary</label>
+                      <div className="col-md-6 col-sm-6">
+                        <select
+                          name="primary"
+                          value={travelModes.primary}
+                          className="form-control custom-select"
+                          onChange={this.handletravelModes}
+                          required
+                        >
+                          <option value="">Select Type</option>
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">City</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="city_id"
+                              value={city}
+                              onChange={value => this.setCity(value)}
+                              options={cities}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">Location</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="location_id"
+                              value={location}
+                              onChange={value => this.setLocation(value)}
+                              options={locations}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Street
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="street"
+                          className="form-control"
+                          value={travelModes.street}
+                          onChange={this.handletravelModes}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                    })}
+                    
+                    <p>Add another travelModes
+                      <button type="button" onClick={() => {this.setState({travelModesCount: travelModesCount + 1})}} className="btn btn-info btn-sm">Add</button>
+                    </p>
+                  {/* </div> */}
+                </div>
 
                     <div className="form-group row">
                       <label
