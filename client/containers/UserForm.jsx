@@ -32,7 +32,7 @@ export default class UserForm extends React.Component {
   componentDidMount() {
     console.log('props',this.props);
       if (this.props.params.userId)
-      axios.get(`/api/user/fetchById/${this.props.params.userId}`)
+      axios.get(`${this.endPoint}/api/user/fetchById/${this.props.params.userId}`)
         .then((response) => {
           this.setState({
             user: response.data[0],

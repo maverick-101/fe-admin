@@ -115,11 +115,11 @@ export default class Agents extends React.Component {
                     <td>{agent.population}</td>
                     <td>{agent.lat}</td>
                     <td>{agent.lon}</td> */}
-                    <td>
+                    {/* <td>
                       <Link to={`/area_resource/${agent.id}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
-                    </td>
+                    </td> */}
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
                         <Link to={`/edit_agent/${agent.ID}`}>

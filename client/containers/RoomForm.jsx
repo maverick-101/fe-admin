@@ -52,7 +52,7 @@ export default class RoomForm extends React.Component {
   }
 
   fetchRooms = () => {
-    axios.get(`/api/room/fetch/`)
+    axios.get(`${this.endPoint}/api/room/fetch/`)
         .then((response) => {
           this.setState({
             rooms: response.data,
@@ -67,7 +67,7 @@ export default class RoomForm extends React.Component {
     this.setState({
       room: {...room, hotel_id: this.props.params.hotelId}
     })
-    axios.get(`/api/hotel/fetchById/${this.props.params.hotelId}`)
+    axios.get(`${this.endPoint}/api/hotel/fetchById/${this.props.params.hotelId}`)
         .then((response) => {
           this.setState({
             hotel: response.data[0],
@@ -270,10 +270,32 @@ export default class RoomForm extends React.Component {
                           className="form-control"
                           onChange={this.handleImages}
                           multiple
-                          // required={coverForm.url ? 0 : 1}
+                          required={room.gallery ? 0 : 1}
                         />
                       </div>
                     </div>
+
+                    {room.gallery
+                      ? (
+                        <div className="form-group row">
+                        <label className="control-label col-md-3 col-sm-3"></label>
+                        <div className="col-md-6 col-sm-6">
+                        {room.gallery.map((image,index) => {
+                          return (
+                          <img key={index}
+                          style={{marginRight: '5px'}}
+                          width="100"
+                          className="img-fluid"
+                          src={`${image.url}`}
+                          alt="cover"
+                        />
+                          )
+                        })}
+                          
+                        </div>
+                      </div>
+                      ) : null
+                              }
 
                     <div className="form-group row">
                       <label

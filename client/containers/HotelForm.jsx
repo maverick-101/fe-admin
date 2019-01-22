@@ -75,18 +75,18 @@ export default class HotelForm extends React.Component {
   componentDidMount() {
     console.log('props',this.props);
       if (this.props.params.hotelId)
-      axios.get(`/api/hotel/fetchById/${this.props.params.hotelId}`)
+      axios.get(`${this.endPoint}/api/hotel/fetchById/${this.props.params.hotelId}`)
         .then((response) => {
           this.setState({
             hotel: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
-            axios.get(`/api/city/fetchById/${this.state.hotel.city_id}`)
+            axios.get(`${this.endPoint}/api/city/fetchById/${this.state.hotel.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
               }, () => {
-                axios.get(`/api/locations/fetchById/${this.state.hotel.location_id}`)
+                axios.get(`${this.endPoint}/api/locations/fetchById/${this.state.hotel.location_id}`)
                 .then((response) => {
                   this.setState({
                     location: response.data[0],
@@ -383,10 +383,32 @@ export default class HotelForm extends React.Component {
                           className="form-control"
                           onChange={this.handleImages}
                           multiple
-                          // required={coverForm.url ? 0 : 1}
+                          required={hotel.gallery ? 0 : 1}
                         />
                       </div>
                     </div>
+
+                    {hotel.gallery
+                      ? (
+                        <div className="form-group row">
+                        <label className="control-label col-md-3 col-sm-3"></label>
+                        <div className="col-md-6 col-sm-6">
+                        {hotel.gallery.map((image,index) => {
+                          return (
+                          <img key={index}
+                          style={{marginRight: '5px'}}
+                          width="100"
+                          className="img-fluid"
+                          src={`${image.url}`}
+                          alt="cover"
+                        />
+                          )
+                        })}
+                          
+                        </div>
+                      </div>
+                      ) : null
+                              }
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Type</label>

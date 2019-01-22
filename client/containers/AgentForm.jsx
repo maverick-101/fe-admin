@@ -56,14 +56,14 @@ export default class AgentForm extends React.Component {
 
   componentDidMount() {
     console.log('props',this.props);
-      if (this.props.params.areaId)
-      axios.get(`/api/locations/fetchById/${this.props.params.areaId}`)
+      if (this.props.params.agentId)
+      axios.get(`${this.endPoint}/api/agentPage/fetchById/${this.props.params.agentId}`)
         .then((response) => {
           this.setState({
             agent: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
-            axios.get(`/api/city/fetchById/${this.state.agent.city_id}`)
+            axios.get(`${this.endPoint}/api/city/fetchById/${this.state.agent.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
@@ -304,10 +304,10 @@ export default class AgentForm extends React.Component {
                           </div>
                         </div>
 
-                      <div className="row" style={{backgroundColor: 'gainsboro'}}>
+                      <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
                         <div className="control-label col-md-3 col-sm-3"></div>
                           <div className="col-md-8 col-sm-8">
-                      <h3>Address Details</h3>
+                            <h3>Address Details</h3>
                         </div>
                       
                         {/* <div className="control-label col-md-3 col-sm-3"></div>

@@ -116,11 +116,11 @@ export default class Cities extends React.Component {
                     <td>{area.population}</td>
                     <td>{area.lat}</td>
                     <td>{area.lon}</td> */}
-                    <td>
+                    {/* <td>
                       <Link to={`${this.endPoint}/area_resource/${city.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
-                    </td>
+                    </td> */}
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
                         <Link to={`${this.endPoint}/edit_city/${city.ID}`}>
