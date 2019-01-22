@@ -480,7 +480,7 @@ export default class PackageForm extends React.Component {
                       {[...Array(activitiesCount)].map((event, index) => {
                         return <div key={index}>
                     <div className="form-group row">
-                    {this.state.activitiesCount === 1 ? null : <hr/>}
+                    {index >=1 ? <hr style={{borderTop: '1px solid gray'}}/> : null}
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Activities Type
@@ -566,16 +566,16 @@ export default class PackageForm extends React.Component {
                     </div>
                   </div>
                     })}
-                    <p>Add another activity
-                      <button type="button" onClick={() => {this.setState({activitiesCount: activitiesCount + 1})}} className="btn btn-info btn-sm">Add</button>
-                    </p>
-                  {/* </div> */}
+                    <div>
+                      <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({activitiesCount: activitiesCount + 1})}} className="btn btn-info btn-sm">Add activities</button>
+                      <button type="button" onClick={() => {this.setState({activitiesCount: activitiesCount > 1 ? activitiesCount - 1 : activitiesCount})}} className={`btn btn-danger btn-sm ${activitiesCount === 1 ? 'disabled' : ''}`}>Remove activitiy</button>
+                    </div>
                 </div>
 
                 <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
                         <div className="control-label col-md-3 col-sm-3"></div>
                           <div className="col-md-8 col-sm-8">
-                            <h3>food Details</h3>
+                            <h3>Food Details</h3>
                         </div>
                       
                         
@@ -584,7 +584,9 @@ export default class PackageForm extends React.Component {
                       {[...Array(foodsCount)].map((event, index) => {
                         return <div key={index}>
                     <div className="form-group row">
-                    {this.state.foodsCount === 1 ? null : <hr/>}
+                    <div>
+                    {index >= 1 ? <hr style={{borderTop: '1px solid gray'}}/> : null}
+                    </div>
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Food Type
@@ -670,10 +672,10 @@ export default class PackageForm extends React.Component {
                     </div>
                   </div>
                     })}
-                    <p>Add another food item
-                      <button type="button" onClick={() => {this.setState({foodsCount: foodsCount + 1})}} className="btn btn-info btn-sm">Add</button>
-                    </p>
-                  {/* </div> */}
+                    <div>
+                      <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({foodsCount: foodsCount + 1})}} className="btn btn-info btn-sm">Add food item</button>
+                      <button type="button" onClick={() => {this.setState({foodsCount: foodsCount > 1 ? foodsCount - 1 : foodsCount})}} className={`btn btn-danger btn-sm ${foodsCount === 1 ? 'disabled' : ''}`}>Remove food item</button>
+                    </div>
                 </div>
 
                 <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
@@ -688,7 +690,7 @@ export default class PackageForm extends React.Component {
                       {[...Array(priceCount)].map((event, index) => {
                         return <div key={index}>
                     <div className="form-group row">
-                    {this.state.priceCount === 1 ? null : <hr/>}
+                    {index >= 1 ? <hr style={{borderTop: '1px solid gray'}}/> : null}
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Price Type
@@ -775,10 +777,10 @@ export default class PackageForm extends React.Component {
                   </div>
                     })}
                     
-                    <p>Add another Price
-                      <button type="button" onClick={() => {this.setState({priceCount: priceCount + 1})}} className="btn btn-info btn-sm">Add</button>
-                    </p>
-                  {/* </div> */}
+                    <div>
+                      <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({priceCount: priceCount + 1})}} className="btn btn-info btn-sm">Add another Price</button>
+                      <button type="button" onClick={() => {this.setState({priceCount: priceCount > 1 ? priceCount - 1 : priceCount})}} className={`btn btn-danger btn-sm ${priceCount === 1 ? 'disabled' : ''}`}>Remove price</button>
+                    </div>
                 </div>
 
                     <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
@@ -793,7 +795,7 @@ export default class PackageForm extends React.Component {
                       {[...Array(travelModesCount)].map((event, index) => {
                         return <div key={index}>
                     <div className="form-group row">
-                    {this.state.travelModesCount === 1 ? null : <hr/>}
+                    {index >= 1 ? <hr style={{borderTop: '1px solid gray'}}/> : null}
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Travel Mode Type
@@ -880,10 +882,10 @@ export default class PackageForm extends React.Component {
                   </div>
                     })}
                     
-                    <p>Add another Travel Mode
-                      <button type="button" onClick={() => {this.setState({travelModesCount: travelModesCount + 1})}} className="btn btn-info btn-sm">Add</button>
-                    </p>
-                  {/* </div> */}
+                    <div>
+                      <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({travelModesCount: travelModesCount + 1})}} className="btn btn-info btn-sm">Add Travel Modes item</button>
+                      <button type="button" onClick={() => {this.setState({travelModesCount: travelModesCount > 1 ? travelModesCount - 1 : travelModesCount})}} className={`btn btn-danger btn-sm ${travelModesCount === 1 ? 'disabled' : ''}`}>Remove Travel Mode item</button>
+                    </div>
                 </div>
 
                     <div className="form-group row">
