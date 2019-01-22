@@ -566,7 +566,7 @@ export default class PackageForm extends React.Component {
                     </div>
                   </div>
                     })}
-                    <div>
+                    <div style={{float: "right"}}>
                       <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({activitiesCount: activitiesCount + 1})}} className="btn btn-info btn-sm">Add activities</button>
                       <button type="button" onClick={() => {this.setState({activitiesCount: activitiesCount > 1 ? activitiesCount - 1 : activitiesCount})}} className={`btn btn-danger btn-sm ${activitiesCount === 1 ? 'disabled' : ''}`}>Remove activitiy</button>
                     </div>
@@ -672,7 +672,7 @@ export default class PackageForm extends React.Component {
                     </div>
                   </div>
                     })}
-                    <div>
+                    <div style={{float: "right"}}>
                       <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({foodsCount: foodsCount + 1})}} className="btn btn-info btn-sm">Add food item</button>
                       <button type="button" onClick={() => {this.setState({foodsCount: foodsCount > 1 ? foodsCount - 1 : foodsCount})}} className={`btn btn-danger btn-sm ${foodsCount === 1 ? 'disabled' : ''}`}>Remove food item</button>
                     </div>
@@ -777,7 +777,7 @@ export default class PackageForm extends React.Component {
                   </div>
                     })}
                     
-                    <div>
+                    <div style={{float: "right"}}>
                       <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({priceCount: priceCount + 1})}} className="btn btn-info btn-sm">Add another Price</button>
                       <button type="button" onClick={() => {this.setState({priceCount: priceCount > 1 ? priceCount - 1 : priceCount})}} className={`btn btn-danger btn-sm ${priceCount === 1 ? 'disabled' : ''}`}>Remove price</button>
                     </div>
@@ -882,7 +882,7 @@ export default class PackageForm extends React.Component {
                   </div>
                     })}
                     
-                    <div>
+                    <div style={{float: "right"}}>
                       <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({travelModesCount: travelModesCount + 1})}} className="btn btn-info btn-sm">Add Travel Modes item</button>
                       <button type="button" onClick={() => {this.setState({travelModesCount: travelModesCount > 1 ? travelModesCount - 1 : travelModesCount})}} className={`btn btn-danger btn-sm ${travelModesCount === 1 ? 'disabled' : ''}`}>Remove Travel Mode item</button>
                     </div>
