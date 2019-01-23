@@ -20,7 +20,7 @@ export default class Agents extends React.Component {
     this.endPoint = 'https://api.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/agentPage/fetch`)
+    axios.get(`${this.endPoint}/api/fetch/agentPage-fetch`)
       .then(response => {
         this.setState({
           agents: response.data,

@@ -41,7 +41,7 @@ export default class CityForm extends React.Component {
   componentDidMount() {
     console.log('props',this.props);
       if (window.location.href.split('/')[3] === 'edit_city')
-      axios.get(`${this.endPoint}/api/city/fetchById/${this.props.params.cityId}`)
+      axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.props.params.cityId}`)
         .then((response) => {
           this.setState({
             city: response.data[0],
@@ -91,7 +91,7 @@ export default class CityForm extends React.Component {
 
         if(this.props.params.cityId) {
         // axios.patch('/api/city/update', fd)
-        axios.patch(`${this.endPoint}/api/city/update`, fd)
+        axios.patch(`${this.endPoint}/api/update/city-update`, fd)
           .then((response) => {
             if (response.data === 'City Updated!') {
               window.alert(response.data);
@@ -104,7 +104,7 @@ export default class CityForm extends React.Component {
         }
         else {
           // axios.post('/api/city/save', fd)
-          axios.post(`${this.endPoint}/api/city/save`, fd)
+          axios.post(`${this.endPoint}/api/save/city-save`, fd)
           .then((response) => {
             if (response.data === 'City Saved!') {
               window.alert(response.data);

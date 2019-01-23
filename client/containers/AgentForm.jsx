@@ -40,7 +40,7 @@ export default class AgentForm extends React.Component {
   }
 
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/city/fetch`)
+    axios.get(`${this.endPoint}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
             cities: response.data,
@@ -57,13 +57,13 @@ export default class AgentForm extends React.Component {
   componentDidMount() {
     console.log('props',this.props);
       if (this.props.params.agentId)
-      axios.get(`${this.endPoint}/api/agentPage/fetchById/${this.props.params.agentId}`)
+      axios.get(`${this.endPoint}/api/fetchById/agentPage-fetchById/${this.props.params.agentId}`)
         .then((response) => {
           this.setState({
             agent: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
-            axios.get(`${this.endPoint}/api/city/fetchById/${this.state.agent.city_id}`)
+            axios.get(`${this.endPoint}/api/fetchByCity/agentPage-fetchByCity/${this.state.agent.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
@@ -154,7 +154,7 @@ export default class AgentForm extends React.Component {
         fd.append('agentPage', JSON.stringify(agent));
 
         if(this.props.params.agentId) {
-          axios.patch(`${this.endPoint}/api/agentPage/update`, fd)
+          axios.patch(`${this.endPoint}/api/update/agentPage-update`, fd)
           .then((response) => {
             if (response.data === 'AgentPage Updated!') {
               window.alert(response.data);
@@ -165,7 +165,7 @@ export default class AgentForm extends React.Component {
             }
           });
         } else {
-          axios.post(`${this.endPoint}/api/agentPage/save`, fd)
+          axios.post(`${this.endPoint}/api/save/agentPage-save`, fd)
           .then((response) => {
             if (response.data === 'AgentPage Saved!') {
               window.alert(response.data);
