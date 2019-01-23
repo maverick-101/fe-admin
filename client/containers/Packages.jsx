@@ -19,12 +19,18 @@ export default class Packages extends React.Component {
     this.endPoint = 'https://api.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/packagePage/fetch`)
+    axios.get(`${this.endPoint}/api/fetch/packagePage-fetch`)
       .then(response => {
+        if(response.status === '200') {
         this.setState({
           packages: response.data,
-          pages: Math.ceil(response.data.total/10),
-          responseMessage: 'No Packages found...'
+          pages: Math.ceil(response.data.length/10),
+        })
+      }
+      })
+      .catch(err => {
+        this.setState({ 
+          responseMessage: 'No Packages Found'
         })
       })
   }
