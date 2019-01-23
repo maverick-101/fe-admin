@@ -67,6 +67,13 @@ export default class AgentForm extends React.Component {
             .then((response) => {
               this.setState({
                 city: response.data[0],
+              }, () => {
+                axios.get(`${this.endPoint}/api/locations/fetchById/${this.state.agent.location_id}`)
+                .then((response) => {
+                  this.setState({
+                    location: response.data[0]
+                  })
+                })
               });
             });
           });
@@ -156,7 +163,7 @@ export default class AgentForm extends React.Component {
         if(this.props.params.agentId) {
           axios.patch(`${this.endPoint}/api/update/agentPage-update`, fd)
           .then((response) => {
-            if (response.data === 'AgentPage Updated!') {
+            if (response.status === '200') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -167,7 +174,7 @@ export default class AgentForm extends React.Component {
         } else {
           axios.post(`${this.endPoint}/api/save/agentPage-save`, fd)
           .then((response) => {
-            if (response.data === 'AgentPage Saved!') {
+            if (response.status === '200') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -310,11 +317,10 @@ export default class AgentForm extends React.Component {
                             <h3>Address Details</h3>
                         </div>
                       
-                        {/* <div className="control-label col-md-3 col-sm-3"></div>
-                      <div className="col-md-6 col-sm-6"> */}
                       {[...Array(addressCount)].map((event, index) => {
                         return <div key={index}>
                     <div className="form-group row">
+                    {index >=1 ? <hr style={{borderTop: '1px solid gray'}}/> : null}
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Address Type
@@ -400,10 +406,10 @@ export default class AgentForm extends React.Component {
                     </div>
                   </div>
                     })}
-                    <p>Add another address
-                      <button type="button" onClick={() => {this.setState({addressCount: addressCount + 1})}} className="btn btn-info btn-sm">Add</button>
-                    </p>
-                  {/* </div> */}
+                    <div style={{float: "right"}}>
+                      <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({addressCount: addressCount + 1})}} className="btn btn-info btn-sm">Add Address</button>
+                      <button type="button" onClick={() => {this.setState({addressCount: addressCount > 1 ? addressCount - 1 : addressCount})}} className={`btn btn-danger btn-sm ${addressCount === 1 ? 'disabled' : ''}`}>Remove Address</button>
+                    </div>
                 </div>
 
                     <div className="form-group row">
@@ -415,10 +421,32 @@ export default class AgentForm extends React.Component {
                           className="form-control"
                           onChange={this.handleImages}
                           multiple
-                          // required={coverForm.url ? 0 : 1}
+                          required={agent.gallery ? 0 : 1}
                         />
                       </div>
                     </div>
+
+                    {agent.gallery
+                      ? (
+                        <div className="form-group row">
+                        <label className="control-label col-md-3 col-sm-3"></label>
+                        <div className="col-md-6 col-sm-6">
+                        {agent.gallery.map((image,index) => {
+                          return (
+                          <img key={index}
+                          style={{marginRight: '5px'}}
+                          width="100"
+                          className="img-fluid"
+                          src={`${image.url}`}
+                          alt="cover"
+                        />
+                          )
+                        })}
+                          
+                        </div>
+                      </div>
+                      ) : null
+                              }
 
                     {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Type</label>

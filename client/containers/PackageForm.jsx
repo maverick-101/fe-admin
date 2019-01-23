@@ -29,17 +29,17 @@ export default class PackageForm extends React.Component {
       price: {
           person: '',
           package_title: '',
-          wifi: '',
-          shuttle_service: '',
-          breakfast: '',
-          buffet: '',
-          dinner: '',
+          wifi: true,
+          shuttle_service: true,
+          breakfast: true,
+          buffet: true,
+          dinner: true,
           nights_stay: '',
           price: '',
           description: '',
         },
       travelModes: {
-          route: 1,
+          route: '',
           departure: "",
           destination: "",
           travel_time: "",
@@ -50,7 +50,7 @@ export default class PackageForm extends React.Component {
       activities: {
         activity_type: "",
         description: "",
-        status: '',
+        status: true,
         },
       food: {
         food_type: '',
@@ -73,7 +73,7 @@ export default class PackageForm extends React.Component {
     // this.rteState = RichTextEditor.createEmptyValue();
     this.endPoint = 'https://api.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postArea = this.postArea.bind(this);
+    this.postPackage = this.postPackage.bind(this);
   }
 
   componentWillMount() {
@@ -242,7 +242,7 @@ export default class PackageForm extends React.Component {
     this.setState({ gallery: event.target.files });
   }
 
-  postArea(event) {
+  postPackage(event) {
     event.preventDefault();
     const { match, history } = this.props;
     const { loading, pckg, gallery } = this.state;
@@ -255,16 +255,16 @@ export default class PackageForm extends React.Component {
           imgArray.push(gallery[index]);
         }
           imgArray.forEach((img) => {
-          fd.append('gallery', img);
+          fd.append('gallery_images', img);
           return img;
         });
         fd.append('packagePage', JSON.stringify(pckg));
 
-        if(this.props.params.areaId) {
+        if(this.props.params.packageId) {
           // axios.patch('/api/locations/update', fd)
           axios.patch(`${this.endPoint}/api/update/packagePage-update`, fd)
           .then((response) => {
-            if (response.data === 'Package Updated!') {
+            if (response.status === '200') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -275,7 +275,7 @@ export default class PackageForm extends React.Component {
         } else {
           axios.post(`${this.endPoint}/api/save/packagePage-save`, fd)
           .then((response) => {
-            if (response.data === 'Package Saved!') {
+            if (response.status === '200') {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -365,7 +365,7 @@ export default class PackageForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postArea}
+                    onSubmit={this.postPackage}
                   >
                     <div className="form-group row">
                       <label
@@ -441,8 +441,6 @@ export default class PackageForm extends React.Component {
                             <h3>Activities Details</h3>
                         </div>
                         
-                        {/* <div className="control-label col-md-3 col-sm-3"></div>
-                      <div className="col-md-6 col-sm-6"> */}
                       {[...Array(activitiesCount)].map((event, index) => {
                         return <div key={index}>
                     <div className="form-group row">
@@ -473,7 +471,7 @@ export default class PackageForm extends React.Component {
                           onChange={this.handleActivities}
                           required
                         >
-                          <option value="">Select Type</option>
+                          <option value="">Select</option>
                           <option value="true">Active</option>
                           <option value="false">Inactive</option>
                         </select>
@@ -481,17 +479,17 @@ export default class PackageForm extends React.Component {
                     </div>
 
                     <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Description</label>
-                      <div className="col-md-6 col-sm-6">
-                        <RichTextEditor
-                          value={description}
-                          toolbarConfig={toolbarConfig}
-                          onChange={(e) => {
-                            this.setDescription(e);
-                          }}
-                        />
+                        <label className="control-label col-md-3 col-sm-3">Description</label>
+                        <div className="col-md-6 col-sm-6">
+                          <textarea
+                            rows="4"
+                            name="description"
+                            className="form-control"
+                            value={activities.description}
+                            onChange={this.handleActivities}
+                          />
+                        </div>
                       </div>
-                    </div>
                   </div>
                     })}
 
@@ -507,10 +505,7 @@ export default class PackageForm extends React.Component {
                           <div className="col-md-8 col-sm-8">
                             <h3>Food Details</h3>
                         </div>
-                      
-                        
-                        {/* <div className="control-label col-md-3 col-sm-3"></div>
-                      <div className="col-md-6 col-sm-6"> */}
+
                       {[...Array(foodsCount)].map((event, index) => {
                         return <div key={index}>
                     <div className="form-group row">
@@ -533,7 +528,7 @@ export default class PackageForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Description</label>
                       <div className="col-md-6 col-sm-6">
                         <select
@@ -548,7 +543,7 @@ export default class PackageForm extends React.Component {
                           <option value="false">No</option>
                         </select>
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
                       <label
@@ -558,7 +553,7 @@ export default class PackageForm extends React.Component {
                       <div className="col-md-6 col-sm-6">
                         <input
                           required
-                          type="text"
+                          type="time"
                           name="start_time"
                           className="form-control"
                           value={food.start_time}
@@ -575,7 +570,7 @@ export default class PackageForm extends React.Component {
                       <div className="col-md-6 col-sm-6">
                         <input
                           required
-                          type="text"
+                          type="time"
                           name="end_time"
                           className="form-control"
                           value={food.end_time}
@@ -602,6 +597,19 @@ export default class PackageForm extends React.Component {
                         />
                       </div>
                     </div>
+
+                    <div className="form-group row">
+                        <label className="control-label col-md-3 col-sm-3">Description</label>
+                        <div className="col-md-6 col-sm-6">
+                          <textarea
+                            rows="4"
+                            name="description"
+                            className="form-control"
+                            value={food.description}
+                            onChange={this.handleFood}
+                          />
+                        </div>
+                      </div>
 
                     <div style={{float: "right"}}>
                       <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({foodsCount: foodsCount + 1})}} className="btn btn-info btn-sm">Add food item</button>
@@ -695,7 +703,7 @@ export default class PackageForm extends React.Component {
                           onChange={this.handlePrice}
                           required
                         >
-                          <option value="">Select Type</option>
+                          <option value="">Select</option>
                           <option value="true">Yes</option>
                           <option value="false">No</option>
                         </select>
@@ -712,7 +720,7 @@ export default class PackageForm extends React.Component {
                           onChange={this.handlePrice}
                           required
                         >
-                          <option value="">Select Type</option>
+                          <option value="">Select</option>
                           <option value="true">Yes</option>
                           <option value="false">No</option>
                         </select>
@@ -729,7 +737,7 @@ export default class PackageForm extends React.Component {
                           onChange={this.handlePrice}
                           required
                         >
-                          <option value="">Select Type</option>
+                          <option value="">Select</option>
                           <option value="true">Yes</option>
                           <option value="false">No</option>
                         </select>
@@ -763,7 +771,7 @@ export default class PackageForm extends React.Component {
                           onChange={this.handlePrice}
                           required
                         >
-                          <option value="">Select Type</option>
+                          <option value="">Select</option>
                           <option value="true">Yes</option>
                           <option value="false">No</option>
                         </select>
@@ -771,17 +779,17 @@ export default class PackageForm extends React.Component {
                     </div>
 
                     <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Description</label>
-                      <div className="col-md-6 col-sm-6">
-                        <RichTextEditor
-                          value={description}
-                          toolbarConfig={toolbarConfig}
-                          onChange={(e) => {
-                            this.setDescription(e);
-                          }}
-                        />
+                        <label className="control-label col-md-3 col-sm-3">Description</label>
+                        <div className="col-md-6 col-sm-6">
+                          <textarea
+                            rows="4"
+                            name="description"
+                            className="form-control"
+                            value={price.description}
+                            onChange={this.handlePrice}
+                          />
+                        </div>
                       </div>
-                    </div>
                   </div>
                     })}
                     
@@ -886,31 +894,14 @@ export default class PackageForm extends React.Component {
                     </div>
 
                     <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Destination
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="destination"
-                          className="form-control"
-                          value={travelModes.destination}
-                          onChange={this.handleTravelMode}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Description</label>
                       <div className="col-md-6 col-sm-6">
-                        <RichTextEditor
-                          value={description}
-                          toolbarConfig={toolbarConfig}
-                          onChange={(e) => {
-                            this.setDescription(e);
-                          }}
+                        <textarea
+                          rows="4"
+                          name="description"
+                          className="form-control"
+                          value={travelModes.description}
+                          onChange={this.handleTravelMode}
                         />
                       </div>
                     </div>
@@ -990,17 +981,17 @@ export default class PackageForm extends React.Component {
                     </div>
 
                     <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Description</label>
-                      <div className="col-md-6 col-sm-6">
-                        <RichTextEditor
-                          value={description}
-                          toolbarConfig={toolbarConfig}
-                          onChange={(e) => {
-                            this.setDescription(e);
-                          }}
-                        />
+                        <label className="control-label col-md-3 col-sm-3">Description</label>
+                        <div className="col-md-6 col-sm-6">
+                          <textarea
+                            rows="4"
+                            name="description"
+                            className="form-control"
+                            value={pckg.description}
+                            onChange={this.handleInputChange}
+                          />
+                        </div>
                       </div>
-                    </div>
                     <div className="ln_solid" />
                     <div className="form-group row">
                       <div className="col-md-12 col-sm-12 text-center offset-md-3">

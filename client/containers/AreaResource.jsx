@@ -37,7 +37,7 @@ export default class AreaResource extends React.Component {
   }
 
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/city/fetch`)
+    axios.get(`${this.endPoint}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
             cities: response.data,
@@ -58,28 +58,28 @@ export default class AreaResource extends React.Component {
   }
 
   componentDidMount() {
-    // this.setState(prevState => ({
-    //   location: {
-    //     ...prevState.location,
-    //     location_id: this.props.params.areaId,
-    //   },
-    // }));
-      // if (this.props.params.areaId) {
-      // axios.get(`${this.endPoint}/api/locations/fetchById/${this.props.params.areaId}`)
-      //   .then((response) => {
-      //     this.setState({
-      //       location: response.data[0],
-      //       description: RichTextEditor.createValueFromString(response.data.description, 'html'),
-      //     }, () => {
-      //       axios.get(`${this.endPoint}/api/city/fetchById/${this.state.location.city_id}`)
-      //       .then((response) => {
-      //         this.setState({
-      //           city: response.data[0],
-      //         });
-      //       });
-      //     });
-      //   });
-      // }
+    this.setState(prevState => ({
+      location: {
+        ...prevState.location,
+        location_id: this.props.params.areaId,
+      },
+    }));
+      if (this.props.params.areaId) {
+      axios.get(`${this.endPoint}/api/locations/fetchById/${this.props.params.areaId}`)
+        .then((response) => {
+          this.setState({
+            location: response.data[0],
+            description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+          }, () => {
+            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.location.city_id}`)
+            .then((response) => {
+              this.setState({
+                city: response.data[0],
+              });
+            });
+          });
+        });
+      }
     }
 
   setDescription(description) {

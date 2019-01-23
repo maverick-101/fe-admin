@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
+import Broken from '../static/broken.png';
 
 import HasRole from '../hoc/HasRole';
 
@@ -21,12 +22,11 @@ export default class Packages extends React.Component {
   componentWillMount() {
     axios.get(`${this.endPoint}/api/fetch/packagePage-fetch`)
       .then(response => {
-        if(response.status === '200') {
+        console.log(response)
         this.setState({
           packages: response.data,
           pages: Math.ceil(response.data.length/10),
         })
-      }
       })
       .catch(err => {
         this.setState({ 
@@ -64,6 +64,7 @@ export default class Packages extends React.Component {
       })
   }
   render() {
+    console.log(this.state)
     return (
       <div className="row">
         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -99,6 +100,7 @@ export default class Packages extends React.Component {
             <table className="table table-striped">
               <thead>
                 <tr>
+                  <th>ID</th>
                   <th>Image</th>
                   <th>Name</th>
                   {/* <th>Size</th> */}
@@ -113,17 +115,18 @@ export default class Packages extends React.Component {
                 {this.state.packages && this.state.packages.length >= 1 ?
                   this.state.packages.map((pckg, index) => (
                   <tr key={index}>
+                    <td>{pckg.ID}</td>
+                    <td>{<img style={{height: '50px', width: '50px'}} src={pckg.gallery ? pckg.gallery[0].url : Broken} />}</td>
                     <td>{pckg.name}</td>
-                    {/* <td>{pckg.size}</td> */}
                     <td>{pckg.views}</td>
                     {/* <td>{pckg.marla_size}</td>
                     <td>{pckg.population}</td>
                     <td>{pckg.lat}</td>
                     <td>{pckg.lon}</td> */}
                     <td>
-                      <Link to={`/area_resource/${pckg.ID}`}>
+                      {/* <Link to={`/area_resource/${pckg.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
-                      </Link>
+                      </Link> */}
                     </td>
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>

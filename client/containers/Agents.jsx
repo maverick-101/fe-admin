@@ -29,9 +29,9 @@ export default class Agents extends React.Component {
         })
       })
   }
-  deleteArea(areaId, index) {
+  deleteAgent(agentId, index) {
     if(confirm("Are you sure you want to delete this agent?")) {
-      axios.delete(`/api/agent/${areaId}`)
+      axios.delete(`${this.endPoint}/api/delete/agentPage-deleteById/${agentId}`)
         .then(response => {
           const agents = this.state.agents.slice();
           agents.splice(index, 1);
@@ -127,7 +127,7 @@ export default class Agents extends React.Component {
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteArea(agent.ID, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteAgent(agent.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                   </tr>
