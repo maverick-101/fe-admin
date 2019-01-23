@@ -13,7 +13,7 @@ export default class PackageForm extends React.Component {
     this.state = {
       loading: false,
       pckg: {
-        name: '',
+        package_title: '',
         city_id: '',
         agent_id: '',
         location_id: '',
@@ -28,7 +28,7 @@ export default class PackageForm extends React.Component {
       },
       price: {
           person: '',
-          package_title: '',
+          // package_title: '',
           wifi: true,
           shuttle_service: true,
           breakfast: true,
@@ -376,9 +376,9 @@ export default class PackageForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="name"
+                          name="package_title"
                           className="form-control"
-                          value={pckg.name}
+                          value={pckg.package_title}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -676,7 +676,7 @@ export default class PackageForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Package Title
@@ -691,7 +691,7 @@ export default class PackageForm extends React.Component {
                           onChange={this.handlePrice}
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Wifi</label>
@@ -817,9 +817,9 @@ export default class PackageForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="travelModes_type"
+                          name="route"
                           className="form-control"
-                          value={travelModes.travelModes_type}
+                          value={travelModes.route}
                           onChange={this.handleTravelMode}
                         />
                       </div>
