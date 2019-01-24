@@ -37,6 +37,9 @@ import Agents from './containers/Agents';
 import PackageForm from './containers/PackageForm';
 import Packages from './containers/Packages';
 
+import BookingForm from './containers/BookingForm';
+import Bookings from './containers/Bookings';
+
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -77,6 +80,10 @@ ReactDOM.render(
         <Route path="/packages" component={Packages}/>
         <Route path="/package_form" component={PackageForm}/>
         <Route path="/edit_package/:packageId" component={PackageForm}/>
+
+        <Route path="/bookings" component={Bookings}/>
+        <Route path="/booking_form" component={BookingForm}/>
+        <Route path="/edit_booking/:bookingId" component={BookingForm}/>
 
       </Route>
     </Router>
