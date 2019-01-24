@@ -22,7 +22,6 @@ export default class Packages extends React.Component {
   componentWillMount() {
     axios.get(`${this.endPoint}/api/fetch/packagePage-fetch`)
       .then(response => {
-        console.log(response)
         this.setState({
           packages: response.data,
           pages: Math.ceil(response.data.length/10),
@@ -103,12 +102,13 @@ export default class Packages extends React.Component {
                   <th>ID</th>
                   <th>Image</th>
                   <th>Name</th>
-                  {/* <th>Size</th> */}
-                  <th>Views</th>
+                  <th>City ID</th>
+                  <th>Agent ID</th>
+                  <th>Location ID</th>
                   {/* <th>Marla-Size(Sqft)</th>
-                  <th>Population</th>
+                  <th>Population</th> */}
                   <th>Latitude</th>
-                  <th>Longitude</th> */}
+                  <th>Longitude</th>
                 </tr>
               </thead>
               <tbody>
@@ -117,12 +117,14 @@ export default class Packages extends React.Component {
                   <tr key={index}>
                     <td>{pckg.ID}</td>
                     <td>{<img style={{height: '50px', width: '50px'}} src={pckg.gallery ? pckg.gallery[0].url : Broken} />}</td>
-                    <td>{pckg.name}</td>
-                    <td>{pckg.views}</td>
+                    <td>{pckg.package_title}</td>
+                    <td>{pckg.city_id}</td>
+                    <td>{pckg.agent_id}</td>
+                    <td>{pckg.location_id}</td>
                     {/* <td>{pckg.marla_size}</td>
-                    <td>{pckg.population}</td>
-                    <td>{pckg.lat}</td>
-                    <td>{pckg.lon}</td> */}
+                    <td>{pckg.population}</td> */}
+                    <td>{pckg.latitude}</td>
+                    <td>{pckg.longitude}</td>
                     <td>
                       {/* <Link to={`/area_resource/${pckg.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
