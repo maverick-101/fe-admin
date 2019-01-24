@@ -26,9 +26,11 @@ export default class AgentForm extends React.Component {
         street: ''
       },
       gallery: '',
-      city: '',
+      addressCity: '',
+      agentCity: '',
       cities: [],
-      location: '',
+      addressLocation: '',
+      agentLocation: '',
       locations: [],
       addressCount: 1,
       description: RichTextEditor.createEmptyValue(),
@@ -117,25 +119,42 @@ export default class AgentForm extends React.Component {
   //   });
   // }
 
-  setCity(selectedCity) {
-    this.setState(prevState => ({
-      city: selectedCity,
-      agent: {
-        ...prevState.agent,
-        city_id: selectedCity.ID,
-      },
-    }));
+  setCity(selectedCity, fnCaller) {
+    if(fnCaller === 'agent') {
+      this.setState(prevState => ({
+        agentCity: selectedCity,
+        agent: {...prevState.agent, city_id: selectedCity.ID},
+      }));
+    } else {
+      this.setState(prevState => ({
+        addressCity: selectedCity,
+        address: {
+          ...prevState.address,
+          city_id: selectedCity.ID,
+        },
+      }));
+    }
   }
 
-  setLocation(selectedLocation) {
+  setLocation(selectedLocation, fnCaller) {
+    if(fnCaller === 'agent') {
     this.setState(prevState => ({
-      location: selectedLocation,
+      agentLocation: selectedLocation,
       agent: {
         ...prevState.agent,
         location_id: selectedLocation.ID,
       },
     }));
+  } else {
+    this.setState(prevState => ({
+      addressLocation: selectedLocation,
+      address: {
+        ...prevState.address,
+        location_id: selectedLocation.ID,
+      },
+    }));
   }
+}
 
   handleImages = (event) => {
     this.setState({ gallery: event.target.files });
@@ -192,9 +211,11 @@ export default class AgentForm extends React.Component {
       loading,
       agent,
       cities,
-      city,
+      addressCity,
+      agentCity,
       locations,
-      location,
+      addressLocation,
+      agentLocation,
       address,
       description,
       addressCount
@@ -282,8 +303,8 @@ export default class AgentForm extends React.Component {
                           <div className="col-md-6 col-sm-6">
                             <Select
                               name="city_id"
-                              value={city}
-                              onChange={value => this.setCity(value)}
+                              value={agentCity}
+                              onChange={value => this.setCity(value, 'agent')}
                               options={cities}
                               valueKey="id"
                               labelKey="name"
@@ -299,8 +320,8 @@ export default class AgentForm extends React.Component {
                           <div className="col-md-6 col-sm-6">
                             <Select
                               name="location_id"
-                              value={location}
-                              onChange={value => this.setLocation(value)}
+                              value={agentLocation}
+                              onChange={value => this.setLocation(value, 'agent')}
                               options={locations}
                               valueKey="id"
                               labelKey="name"
@@ -359,8 +380,8 @@ export default class AgentForm extends React.Component {
                           <div className="col-md-6 col-sm-6">
                             <Select
                               name="city_id"
-                              value={city}
-                              onChange={value => this.setCity(value)}
+                              value={addressCity}
+                              onChange={value => this.setCity(value, 'address')}
                               options={cities}
                               valueKey="id"
                               labelKey="name"
@@ -376,8 +397,8 @@ export default class AgentForm extends React.Component {
                           <div className="col-md-6 col-sm-6">
                             <Select
                               name="location_id"
-                              value={location}
-                              onChange={value => this.setLocation(value)}
+                              value={addressLocation}
+                              onChange={value => this.setLocation(value, 'address')}
                               options={locations}
                               valueKey="id"
                               labelKey="name"
