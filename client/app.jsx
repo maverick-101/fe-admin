@@ -40,6 +40,9 @@ import Packages from './containers/Packages';
 import BookingForm from './containers/BookingForm';
 import Bookings from './containers/Bookings';
 
+import OrderForm from './containers/OrderForm';
+import Orders from './containers/Orders';
+
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -84,6 +87,10 @@ ReactDOM.render(
         <Route path="/bookings" component={Bookings}/>
         <Route path="/booking_form" component={BookingForm}/>
         <Route path="/edit_booking/:bookingId" component={BookingForm}/>
+
+        <Route path="/orders" component={Orders}/>
+        <Route path="/order_form" component={OrderForm}/>
+        <Route path="/edit_order/:orderId" component={OrderForm}/>
 
       </Route>
     </Router>
