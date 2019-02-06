@@ -14,7 +14,6 @@ export default class UserForm extends React.Component {
         last_name: '',
         email: '',
         phone: '',
-        description: '',
         password: '',
         address: '',
 
@@ -64,7 +63,9 @@ export default class UserForm extends React.Component {
     const { loading, user, profile_picture } = this.state;
     if (!loading) {
         const fd = new FormData();
+        if(profile_picture) {
         fd.append('profile_picture', profile_picture);
+        }
         fd.append('user', JSON.stringify(user));
 
         this.setState({ loading: true });
@@ -72,27 +73,30 @@ export default class UserForm extends React.Component {
           // axios.patch('/api/user/update', fd)
           axios.patch(`${this.endPoint}/api/user/update`, fd)
           .then((response) => {
-            if (response.data === 'User Updated!') {
+            if (response.data && response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
-              window.alert('ERROR')
+              window.alert('ERROR', response.data)
               this.setState({ loading: false });
             }
           });
         }
         else {
-        // axios.post('/api/user/save', fd)
-        axios.post(`${this.endPoint}/api/user/save`, fd)
+          axios.post(`${this.endPoint}/api/user/save`, fd)
           .then((response) => {
-            if (response.data === 'User Saved!') {
+            if (response.data && response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
-              window.alert('ERROR')
+              window.alert('ERROR', response.data)
               this.setState({ loading: false });
             }
-          });
+          })
+          .catch((err) => {
+            window.alert('ERROR', err)
+            this.setState({ loading: false });
+          })
         }
     }
   }
@@ -247,7 +251,7 @@ export default class UserForm extends React.Component {
                           name="profile_picture"
                           className="form-control"
                           onChange={this.handleFile}
-                          required
+                          // required
                           // required={coverForm.url ? 0 : 1}
                         />
                       </div>
