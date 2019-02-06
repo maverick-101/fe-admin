@@ -19,7 +19,7 @@ export default class Area extends React.Component {
     this.endPoint = 'https://api.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/locations/fetch`)
+    axios.get(`${this.endPoint}/api/fetch/locations-fetch`)
       .then(response => {
         this.setState({
           areas: response.data,

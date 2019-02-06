@@ -101,7 +101,7 @@ export default class PackageForm extends React.Component {
   }
 
   getLocation = () => {
-    axios.get(`${this.endPoint}/api/locations/fetch`)
+    axios.get(`${this.endPoint}/api/fetch/locations-fetch`)
         .then((response) => {
           this.setState({
             locations: response.data,

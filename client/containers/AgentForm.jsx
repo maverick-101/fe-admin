@@ -48,7 +48,7 @@ export default class AgentForm extends React.Component {
             cities: response.data,
           });
         });
-    axios.get(`${this.endPoint}/api/locations/fetch`)
+    axios.get(`${this.endPoint}/api/fetch/locations-fetch`)
     .then((response) => {
       this.setState({
         locations: response.data,
