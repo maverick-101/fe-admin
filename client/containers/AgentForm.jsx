@@ -65,15 +65,15 @@ export default class AgentForm extends React.Component {
             agent: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
-            axios.get(`${this.endPoint}/api/fetchByCity/agentPage-fetchByCity/${this.state.agent.city_id}`)
+            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.agent.city_id}`)
             .then((response) => {
               this.setState({
-                city: response.data[0],
+                agentCity: response.data[0],
               }, () => {
-                axios.get(`${this.endPoint}/api/locations/fetchById/${this.state.agent.location_id}`)
+                axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.state.agent.location_id}`)
                 .then((response) => {
                   this.setState({
-                    location: response.data[0]
+                    agentLocation: response.data[0]
                   })
                 })
               });
@@ -182,7 +182,7 @@ export default class AgentForm extends React.Component {
         if(this.props.params.agentId) {
           axios.patch(`${this.endPoint}/api/update/agentPage-update`, fd)
           .then((response) => {
-            if (response.status === '200') {
+            if (response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -193,7 +193,7 @@ export default class AgentForm extends React.Component {
         } else {
           axios.post(`${this.endPoint}/api/save/agentPage-save`, fd)
           .then((response) => {
-            if (response.status === '200') {
+            if (response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {

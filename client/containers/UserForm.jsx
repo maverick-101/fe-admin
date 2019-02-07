@@ -94,7 +94,7 @@ export default class UserForm extends React.Component {
             }
           })
           .catch((err) => {
-            window.alert('ERROR', err)
+            window.alert('ERROR', 'User Already Exists')
             this.setState({ loading: false });
           })
         }
