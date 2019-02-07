@@ -52,7 +52,7 @@ export default class HotelForm extends React.Component {
   }
 
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/city/fetch`)
+    axios.get(`${this.endPoint}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
             cities: response.data,
