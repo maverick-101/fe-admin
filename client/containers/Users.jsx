@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
+import Broken from '../static/broken.png';
 
 import HasRole from '../hoc/HasRole';
 
@@ -115,7 +116,7 @@ export default class Users extends React.Component {
                 this.state.users.map((user, index) => (
                   <tr key={index}>
                   <td>{user.ID}</td>
-                  <td>{<img style={{height: '50px', width: '50px'}} src={user.profile_picture.url}/>}</td>
+                  <td>{<img style={{height: '50px', width: '50px'}} src={user.profile_picture ? user.profile_picture.url : Broken}/>}</td>
                   <td>{user.first_name}</td>
                   <td>{user.last_name}</td>
                   <td>{user.email}</td>
