@@ -43,13 +43,13 @@ export default class AreaForm extends React.Component {
   componentDidMount() {
     console.log('props',this.props);
       if (this.props.params.areaId)
-      axios.get(`${this.endPoint}/api/locations/fetchById/${this.props.params.areaId}`)
+      axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.props.params.areaId}`)
         .then((response) => {
           this.setState({
             location: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
-            axios.get(`${this.endPoint}/api/city/fetchById/${this.state.location.city_id}`)
+            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.location.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
