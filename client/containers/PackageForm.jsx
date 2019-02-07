@@ -65,6 +65,8 @@ export default class PackageForm extends React.Component {
       travelModesCount: 1,
       gallery: '',
       city: '',
+      location: '',
+      agent: '',
       cities: [],
       agents: [],
       locations: [],
@@ -111,17 +113,31 @@ export default class PackageForm extends React.Component {
 
   componentDidMount() {
     console.log('props',this.props);
-      if (this.props.params.areaId)
-      axios.get(`/api/locations/fetchById/${this.props.params.areaId}`)
+      if (this.props.params.packageId)
+      axios.get(`${this.endPoint}/api/fetchById/packagePage-fetchById/${this.props.params.packageId}`)
         .then((response) => {
           this.setState({
             pckg: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
-            axios.get(`/api/city/fetchById/${this.state.pckg.city_id}`)
+            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.pckg.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
+              }, () => {
+                axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.state.pckg.location_id}`)
+                .then((response) => {
+                  this.setState({
+                    location: response.data[0],
+                  }, () => {
+                      axios.get(`${this.endPoint}/api/fetchById/agentPage-fetchById/${this.state.pckg.agent_id}`)
+                      .then((response) => {
+                        this.setState({
+                          agent: response.data[0],
+                        });
+                    });
+                  });
+                });
               });
             });
           });
@@ -975,10 +991,32 @@ export default class PackageForm extends React.Component {
                           className="form-control"
                           onChange={this.handleImages}
                           multiple
-                          // required={coverForm.url ? 0 : 1}
+                          required={pckg.gallery ? 0 : 1}
                         />
                       </div>
                     </div>
+
+                    {pckg.gallery
+                      ? (
+                        <div className="form-group row">
+                        <label className="control-label col-md-3 col-sm-3"></label>
+                        <div className="col-md-6 col-sm-6">
+                        {pckg.gallery.map((image,index) => {
+                          return (
+                          <img key={index}
+                          style={{marginRight: '5px'}}
+                          width="100"
+                          className="img-fluid"
+                          src={`${image.url}`}
+                          alt="cover"
+                        />
+                          )
+                        })}
+                          
+                        </div>
+                      </div>
+                      ) : null
+                              }
 
                     <div className="form-group row">
                         <label className="control-label col-md-3 col-sm-3">Description</label>
