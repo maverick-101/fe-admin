@@ -4,6 +4,9 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
+
 export default class UserForm extends React.Component {
   constructor(props) {
     super(props);
@@ -12,12 +15,15 @@ export default class UserForm extends React.Component {
       user: {
         first_name: '',
         last_name: '',
+        city_id: '',
         email: '',
         phone: '',
         password: '',
         address: '',
 
       },
+      cities: [],
+      city: '',
       userId: '',
       profile_picture: '',
       description: RichTextEditor.createEmptyValue(),
@@ -28,6 +34,15 @@ export default class UserForm extends React.Component {
     this.postUser = this.postUser.bind(this);
   }
 
+  componentWillMount() {
+    axios.get(`${this.endPoint}/api/fetch/city-fetch`)
+      .then(response => {
+        this.setState({
+          cities: response.data,
+        })
+      })
+  }
+
   componentDidMount() {
     console.log('props',this.props);
       if (this.props.params.userId)
@@ -36,8 +51,25 @@ export default class UserForm extends React.Component {
           this.setState({
             user: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+          }, () => {
+            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.user.city_id}`)
+            .then((response) => {
+              this.setState({
+                city: response.data[0],
+              });
+            });
           });
         });
+    }
+
+    setCity(selectedCity) {
+      this.setState(prevState => ({
+        city: selectedCity,
+        user: {
+          ...prevState.user,
+          city_id: selectedCity.ID,
+        },
+      }));
     }
 
   setDescription(description) {
@@ -113,6 +145,8 @@ export default class UserForm extends React.Component {
       loading,
       user,
       description,
+      city,
+      cities,
     } = this.state;
     const toolbarConfig = {
       // Optionally specify the groups to display (displayed in the order listed).
@@ -210,6 +244,23 @@ export default class UserForm extends React.Component {
                     </div>
 
                     <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">City</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="city_id"
+                              value={city}
+                              onChange={value => this.setCity(value)}
+                              options={cities}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                    <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Email
@@ -256,6 +307,24 @@ export default class UserForm extends React.Component {
                         />
                       </div>
                     </div>
+
+                    {user.profile_picture
+                      ? (
+                        <div className="form-group row">
+                        <label className="control-label col-md-3 col-sm-3"></label>
+                        <div className="col-md-6 col-sm-6">
+                          <img
+                          style={{marginRight: '5px'}}
+                          width="100"
+                          className="img-fluid"
+                          src={`${user.profile_picture.url}`}
+                          alt="profile_picture"
+                        />
+                          
+                        </div>
+                      </div>
+                      ) : null
+                              }
 
                     <div className="form-group row">
                       <label
