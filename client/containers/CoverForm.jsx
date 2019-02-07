@@ -60,12 +60,12 @@ export default class CoverForm extends React.Component {
   }
 
   componentWillMount() {
-    // axios.get(`${this.endPoint}/api/hotel/fetch`)
-    //     .then((response) => {
-    //       this.setState({
-    //         hotels: response.data,
-    //       });
-    //     });
+    axios.get(`${this.endPoint}/api/hotel/fetch`)
+        .then((response) => {
+          this.setState({
+            hotels: response.data,
+          });
+        });
   }
 
   setHotel(selectedHotel) {
@@ -314,6 +314,23 @@ export default class CoverForm extends React.Component {
                     </div> */}
 
                     <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">Hotel</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="hotel_id"
+                              value={hotel}
+                              onChange={value => this.setHotel(value)}
+                              options={hotels}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                    <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Upload</label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -322,15 +339,34 @@ export default class CoverForm extends React.Component {
                           className="form-control"
                           onChange={this.handleImages}
                           // multiple
+                          required
                         />
                       </div>
                     </div>
+
+                    {cover.image
+                      ? (
+                        <div className="form-group row">
+                        <label className="control-label col-md-3 col-sm-3"></label>
+                        <div className="col-md-6 col-sm-6">
+                          <img
+                          style={{marginRight: '5px'}}
+                          width="100"
+                          className="img-fluid"
+                          src={`${cover.image.url}`}
+                          alt="cover"
+                        />
+                          
+                        </div>
+                      </div>
+                      ) : null
+                              }
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Date Range</label>
                       <div className="col-md-6 col-sm-6">
                         <DateRangePicker
-                            startDate={cover.startDate ? moment(cover.start_date) : startDate}
+                            startDate={cover.start_date ? moment(cover.start_date) : startDate}
                             endDate={cover.end_date ? moment(cover.end_date) : endDate}
                             startDateId="date_input_start"
                             endDateId="date_input_end"

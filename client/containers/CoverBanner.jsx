@@ -108,7 +108,7 @@ export default class CoverBanner extends React.Component {
                   this.state.coverBanners.map((coverBanner, index) => (
                   <tr key={index}>
                     <td>{coverBanner.ID}</td>
-                    <td>{<img style={{height: '50px', width: '70px'}} src={coverBanner.image.url}/>}</td>
+                    <td>{<img style={{height: '50px', width: '70px'}} src={coverBanner.image ? coverBanner.image.url : null}/>}</td>
                     <td>{moment(coverBanner.start_date).format('DD-MMM-YYYY')}</td>
                     <td>{moment(coverBanner.end_date).format('DD-MMM-YYYY')}</td>
                     {/* <td>{area.marla_size}</td>
