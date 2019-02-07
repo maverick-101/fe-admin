@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
+import Swal from 'sweetalert2';
 
 import HasRole from '../hoc/HasRole';
 
@@ -33,6 +34,14 @@ export default class Cities extends React.Component {
     if(confirm("Are you sure you want to delete this city?")) {
       axios.delete(`${this.endPoint}/api/delete/city-deleteById/${cityId}`)
         .then(response => {
+          if(response.status === 200) {
+            Swal.fire({
+              type: 'success',
+              title: 'Deleted...',
+              text: 'City has been deleted successfully!',
+            })
+          }
+          
           const cities = this.state.cities.slice();
           cities.splice(index, 1);
           this.setState({ cities });
