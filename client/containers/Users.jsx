@@ -33,8 +33,8 @@ export default class Users extends React.Component {
       })
   }
   deleteUser(userId, index) {
-    if(confirm("Are you sure you want to delete this area?")) {
-      axios.delete(`/api/area/${userId}`)
+    if(confirm("Are you sure you want to delete this user?")) {
+      axios.delete(`${this.endPoint}/api/delete/user-deleteById/${userId}`)
         .then(response => {
           const users = this.state.users.slice();
           users.splice(index, 1);
