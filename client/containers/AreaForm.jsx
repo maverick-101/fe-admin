@@ -116,7 +116,7 @@ export default class AreaForm extends React.Component {
 
         if(this.props.params.areaId) {
           // axios.patch('/api/locations/update', fd)
-          axios.patch(`${this.endPoint}/api/locations/update`, fd)
+          axios.patch(`${this.endPoint}/api/update/location-update`, fd)
           .then((response) => {
             if (response.data === 'Location Updated!') {
               window.alert(response.data);
@@ -128,9 +128,9 @@ export default class AreaForm extends React.Component {
           });
         } else {
           // axios.post('/api/locations/save', fd)
-          axios.post(`${this.endPoint}/api/locations/save`, fd)
+          axios.post(`${this.endPoint}/api/save/location-save`, fd)
           .then((response) => {
-            if (response.data === 'Location Saved!') {
+            if (response.data && response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -333,7 +333,7 @@ export default class AreaForm extends React.Component {
                       ) : null
                               }
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Type</label>
                       <div className="col-md-6 col-sm-6">
                         <select
@@ -348,7 +348,7 @@ export default class AreaForm extends React.Component {
                           <option value="main_hall">Main Hall Image</option>
                         </select>
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Description</label>
