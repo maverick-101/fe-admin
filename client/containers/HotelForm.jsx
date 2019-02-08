@@ -4,8 +4,22 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 
+import _amenities from '../static/_amenities';
+
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+
+const style = {
+  amenitiesBox : {
+    border: '1px solid #e5e5e5',
+    borderRadius: '2px',
+    marginBottom: '5px',
+    // &:hover{
+    //   backgroundColor: '#efefef',
+    //   cursor: pointer,
+    // },
+  }
+}
 
 export default class HotelForm extends React.Component {
   constructor(props) {
@@ -33,7 +47,7 @@ export default class HotelForm extends React.Component {
           longitude: '',
         },
         description: '',
-        amenities: [],
+        hotel_amenities: [],
       },
       hotel_gallery: '',
       cities: [],
@@ -42,6 +56,8 @@ export default class HotelForm extends React.Component {
       city: '',
       location: '',
       user: '',
+      showAmenities: false,
+      amenities: _amenities.items,
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -81,12 +97,12 @@ export default class HotelForm extends React.Component {
             hotel: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
-            axios.get(`${this.endPoint}/api/city/fetchById/${this.state.hotel.city_id}`)
+            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.hotel.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
               }, () => {
-                axios.get(`${this.endPoint}/api/locations/fetchById/${this.state.hotel.location_id}`)
+                axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.state.hotel.location_id}`)
                 .then((response) => {
                   this.setState({
                     location: response.data[0],
@@ -110,6 +126,20 @@ export default class HotelForm extends React.Component {
     //     });
     // }
   // }
+
+  changeSelection(index) {
+    const { amenities } = this.state;
+    amenities[index].selected = !amenities[index].selected;
+    // this.setState({ amenities });
+
+    this.setState(prevState => ({
+      amenities,
+      hotel: {
+        ...prevState.hotel,
+        hotel_amenities: amenities,
+      },
+    }));
+  }
 
   setDescription(description) {
     const { hotel } = this.state;
@@ -226,6 +256,8 @@ export default class HotelForm extends React.Component {
       users,
       user,
       description,
+      amenities,
+      showAmenities
     } = this.state;
     const toolbarConfig = {
       // Optionally specify the groups to display (displayed in the order listed).
@@ -428,21 +460,61 @@ export default class HotelForm extends React.Component {
                     </div>
 
                     <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Hotel Amenities
-                      </label>
+                      <div className="control-label col-md-3 col-sm-3">
+                        {/* <button className="btn btn-info" onClick={() => this.setState({ showAmenities: !this.state.showAmenities})}>Show Amenities</button> */}
+                        <label style={{color: 'red'}} onClick={() => this.setState({ showAmenities: !showAmenities})}>Show Amenities<i style={{marginLeft: '5px'}} className={`${showAmenities ? 'fa fa-chevron-up' : 'fa fa-chevron-down'}`}></i></label>
+                      </div>
                       <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="amenities"
-                          className="form-control"
-                          value={hotel.amenities}
-                          onChange={this.handleInputChange}
-                        />
                       </div>
                     </div>
+
+                    {
+                      this.state.showAmenities ?
+                      <div className="row" style={{marginBottom: '10px'}}>
+                      {amenities.map((amenity, index) => (
+                        <div className="col-sm-4" key={amenity.name}>
+                          <div
+                            className="form-group row amenitiesBox"
+                            role="presentation"
+                            tabIndex="-1"
+                            style={style.amenitiesBox}
+                            onClick={() => this.changeSelection(index)}
+                          >
+                            <table style={{ width: `${100}%` }}>
+                              <tbody>
+                                <tr>
+                                  <td style={{
+                                    width: `${100}px`,
+                                    maxHeight: `${100}px`,
+                                  }}
+                                  >
+                                    <img src={amenity.image} alt={amenity.name} className="float-left img-fluid" style={{width: '100%', objectFit: 'contain'}} />
+                                  </td>
+                                  <td>
+                                    <span style={{
+                                      marginLeft: `${15}px`,
+                                      display: 'inline-block',
+                                    }}
+                                    >{amenity.name}
+                                    </span>
+                                  </td>
+                                  <td style={{ width: `${25}px` }}>
+                                    <input
+                                      type="checkbox"
+                                      name={amenity.name}
+                                      checked={amenity.selected}
+                                    />
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      ))
+                      }
+                      </div>
+                      : null
+                    }
 
                     <div className="form-group row">
                       <label
@@ -461,22 +533,6 @@ export default class HotelForm extends React.Component {
                       </div>
                     </div>
 
-                    {/* <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Logo
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="logo"
-                          className="form-control"
-                          value={hotel.logo}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div> */}
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"

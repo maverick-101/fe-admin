@@ -118,7 +118,7 @@ export default class AreaForm extends React.Component {
           // axios.patch('/api/locations/update', fd)
           axios.patch(`${this.endPoint}/api/update/location-update`, fd)
           .then((response) => {
-            if (response.data === 'Location Updated!') {
+            if (response.data && response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
