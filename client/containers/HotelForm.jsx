@@ -442,7 +442,7 @@ export default class HotelForm extends React.Component {
                       ) : null
                               }
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Type</label>
                       <div className="col-md-6 col-sm-6">
                         <select
@@ -457,7 +457,7 @@ export default class HotelForm extends React.Component {
                           <option value="main_hall">Main Hall Image</option>
                         </select>
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
                       <div className="control-label col-md-3 col-sm-3">

@@ -23,6 +23,8 @@ import CityForm from './containers/CityForm';
 
 import Hotels from './containers/Hotels';
 import HotelForm from './containers/HotelForm';
+import HotelResource from './containers/HotelResource';
+
 import Users from './containers/Users';
 import UserForm from './containers/UserForm';
 
@@ -64,6 +66,7 @@ ReactDOM.render(
         <Route path="/hotels" component={Hotels}/>
         <Route path="/hotel_form" component={HotelForm}/>
         <Route path="/edit_hotel/:hotelId" component={HotelForm}/>
+        <Route path="/hotel_resource/:hotelId" component={HotelResource}/>
 
         <Route path="/users" component={Users}/>
         <Route path="/user_form" component={UserForm}/>

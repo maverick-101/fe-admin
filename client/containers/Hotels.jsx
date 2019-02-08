@@ -123,6 +123,11 @@ export default class Hotels extends React.Component {
                         <button type="button" className="btn btn-info btn-sm">Rooms</button>
                       </Link>
                     </td>
+                    <td>
+                      <Link to={`/hotel_resource/${hotel.ID}`}>
+                        <button type="button" className="btn btn-info btn-sm">Resources</button>
+                      </Link>
+                    </td>
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
                         <Link to={`/edit_hotel/${hotel.ID}`}>
