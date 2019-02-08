@@ -461,7 +461,6 @@ export default class HotelForm extends React.Component {
 
                     <div className="form-group row">
                       <div className="control-label col-md-3 col-sm-3">
-                        {/* <button className="btn btn-info" onClick={() => this.setState({ showAmenities: !this.state.showAmenities})}>Show Amenities</button> */}
                         <label style={{color: 'red'}} onClick={() => this.setState({ showAmenities: !showAmenities})}>Show Amenities<i style={{marginLeft: '5px'}} className={`${showAmenities ? 'fa fa-chevron-up' : 'fa fa-chevron-down'}`}></i></label>
                       </div>
                       <div className="col-md-6 col-sm-6">
@@ -488,7 +487,7 @@ export default class HotelForm extends React.Component {
                                     maxHeight: `${100}px`,
                                   }}
                                   >
-                                    <img src={amenity.image} alt={amenity.name} className="float-left img-fluid" style={{width: '100%', objectFit: 'contain'}} />
+                                    <img src={amenity.image} alt={amenity.name} className="float-left img-fluid" style={{width: '100%', height: '100px', objectFit: 'contain'}} />
                                   </td>
                                   <td>
                                     <span style={{
