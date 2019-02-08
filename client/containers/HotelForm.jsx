@@ -14,10 +14,6 @@ const style = {
     border: '1px solid #e5e5e5',
     borderRadius: '2px',
     marginBottom: '5px',
-    // &:hover{
-    //   backgroundColor: '#efefef',
-    //   cursor: pointer,
-    // },
   }
 }
 
@@ -106,6 +102,13 @@ export default class HotelForm extends React.Component {
                 .then((response) => {
                   this.setState({
                     location: response.data[0],
+                  }, () => {
+                    axios.get(`${this.endPoint}/api/fetchById/user-fetchById/${this.state.hotel.user_id}`)
+                    .then((response) => {
+                      this.setState({
+                        user: response.data[0],
+                      })
+                    })
                   })
                 })
               });

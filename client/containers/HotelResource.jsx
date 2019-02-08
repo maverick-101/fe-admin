@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
@@ -7,6 +8,8 @@ import moment from 'moment';
 
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/initialize';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -20,10 +23,13 @@ export default class HotelResource extends React.Component {
         image_type: '',
         hotel_id: '',
         description: '',
+        created_At: new Date(),
       },
+      resources: [],
       gallery: '',
       hotel: '',
       focusedInput: null,
+      responseMessage: 'Loading Hotel Resources...',
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -60,6 +66,22 @@ export default class HotelResource extends React.Component {
           hotel_id: this.props.params.hotelId,
         },
       }));
+      this.fetchResources();
+    }
+    
+    fetchResources = () => {
+      axios.get(`${this.endPoint}/api/fetchByHotelId/hotelImage-fetchByHotelId/${this.props.params.hotelId}`)
+      .then((response) => {
+        this.setState({
+          resources: response.data,
+          responseMessage: 'No Hotel Resources Found',
+        })
+      })
+      .catch(() => {
+        this.setState({
+          responseMessage: 'No Hotel Resources Found',
+        })
+      })
     }
 
   // setHotel(selectedHotel) {
@@ -89,6 +111,15 @@ export default class HotelResource extends React.Component {
     this.setState({ hotelResource });
   }
 
+  handleDateChange = (selectedDate) => {
+    this.setState(prevState => ({
+      hotelResource: {
+        ...prevState.hotelResource,
+        created_At: selectedDate
+      },
+    }));
+  }
+
   handleImages = (event) => {
     this.setState({ gallery: event.target.files });
   }
@@ -106,38 +137,38 @@ export default class HotelResource extends React.Component {
           imgArray.push(gallery[index]);
         }
           imgArray.forEach((img) => {
-          fd.append('resource_images', img);
+          fd.append('hotel_images', img);
           return img;
         });
 
-        fd.append('hotelResource', JSON.stringify(hotelResource));
+        fd.append('hotelImage', JSON.stringify(hotelResource));
 
-        if(this.props.params.coverBannerId) {
-        axios.patch('/api/coverbanner/update', fd)
-        axios.patch(`${this.endPoint}/api/coverbanner/update`, fd)
+        // if(this.props.params.hotelId) {
+        // axios.patch(`${this.endPoint}/api/update/hotelImage-update`, fd)
+        //   .then((response) => {
+        //     if (response.data && response.status === 200) {
+        //       window.alert(response.data);
+        //       this.setState({ loading: false });
+        //     } else {
+        //       window.alert('ERROR')
+        //       this.setState({ loading: false });
+        //     }
+        //   });
+        // }
+        // else {
+          axios.post(`${this.endPoint}/api/save/hotelImage-save`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
+              this.fetchResources();
             } else {
               window.alert('ERROR')
               this.setState({ loading: false });
             }
           });
-        }
-        else {
-          axios.post(`${this.endPoint}/api/coverbanner/save`, fd)
-          .then((response) => {
-            if (response.data && response.status === 200) {
-              window.alert(response.data);
-              this.setState({ loading: false });
-            } else {
-              window.alert('ERROR')
-              this.setState({ loading: false });
-            }
-          });
-        }
-        }
+        // }
+      }
 
   render() {
     const {
@@ -146,6 +177,7 @@ export default class HotelResource extends React.Component {
       hotel,
       description,
       focusedInput,
+      responseMessage,
     } = this.state;
     console.log(this.state);
     const toolbarConfig = {
@@ -259,6 +291,19 @@ export default class HotelResource extends React.Component {
                       ) : null
                               }
 
+                      <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Created At</label>
+                      <div className="col-md-6 col-sm-6">
+                      <DatePicker
+                        className="form-control"
+                        // selected={this.state.startDate}
+                        selected={hotelResource.created_At}
+                        onChange={this.handleDateChange}
+                        style={{border: 'none'}}
+                      />
+                      </div>
+                    </div>
+
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Description</label>
                       <div className="col-md-6 col-sm-6">
@@ -285,6 +330,44 @@ export default class HotelResource extends React.Component {
                     </div>
                   </form>
                 </div>
+            <h1>Resources Available at {this.props.location.state.hotelName}</h1>
+                <div className="table-responsive">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>No. of Images</th>
+                  <th>Image Type</th>
+                  <th>Created At</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.resources && this.state.resources.length >= 1 ?
+                this.state.resources.map((resource, index) => (
+                  <tr key={index}>
+                  <td>{resource.ID}</td>
+                  <td>{resource.images.length}</td>
+                  <td>{resource.image_type}</td>
+                  <td>{moment(resource.created_At).format('DD-MMM-YYYY HH:mm:ss')}</td>
+                      <td>
+                        <Link to={`/edit_room/${resource.ID}`}>
+                          <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </Link>
+                      </td>
+                      <td>
+                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteUser(resource.ID, index)}></span>
+                      </td>
+                    </tr>
+                )) :
+                (
+                  <tr>
+                    <td colSpan="15" className="text-center">{responseMessage}</td>
+                  </tr>
+                )
+                }
+              </tbody>
+            </table>
+          </div>
               </div>
             </div>
           </div>
