@@ -103,7 +103,7 @@ export default class HotelForm extends React.Component {
                   this.setState({
                     location: response.data[0],
                   }, () => {
-                    axios.get(`${this.endPoint}/api/fetchById/user-fetchById/${this.state.hotel.user_id}`)
+                    axios.get(`${this.endPoint}/api/user/fetchById/${this.state.hotel.user_id}`)
                     .then((response) => {
                       this.setState({
                         user: response.data[0],
