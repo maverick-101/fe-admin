@@ -132,7 +132,7 @@ export default class HotelForm extends React.Component {
 
   changeSelection(index) {
     const { amenities } = this.state;
-    amenities[index].selected = !amenities[index].selected;
+    amenities[index].value = !amenities[index].value;
     // this.setState({ amenities });
 
     this.setState(prevState => ({
@@ -504,7 +504,7 @@ export default class HotelForm extends React.Component {
                                     <input
                                       type="checkbox"
                                       name={amenity.name}
-                                      checked={amenity.selected}
+                                      checked={amenity.value}
                                     />
                                   </td>
                                 </tr>

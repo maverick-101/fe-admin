@@ -115,11 +115,11 @@ export default class CoverBanner extends React.Component {
                     <td>{area.population}</td>
                     <td>{area.lat}</td>
                     <td>{area.lon}</td> */}
-                    <td>
+                    {/* <td>
                       <Link to={`/area_resource/${coverBanner.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
-                    </td>
+                    </td> */}
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
                         <Link to={`/edit_coverBanner/${coverBanner.ID}`}>
