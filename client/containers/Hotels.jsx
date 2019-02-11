@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
+import Broken from '../static/broken.png';
 
 import HasRole from '../hoc/HasRole';
 
@@ -109,7 +110,7 @@ export default class Hotels extends React.Component {
                 {hotels && hotels.length >= 1 ?
                 hotels.map((hotel, index) => (
                   <tr key={index}>
-                    <td>{<img style={{height: '50px', width: '50px'}} src={hotel.gallery[index].url} />}</td>
+                    <td>{<img style={{height: '50px', width: '50px'}} src={hotel.gallery[index] ? hotel.gallery[index].url : Broken} />}</td>
                     <td>{hotel.name}</td>
                     <td>{hotel.star_rating}</td>
                     <td>{hotel.address}</td>

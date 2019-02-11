@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
+import _ from 'lodash';
 
 import _amenities from '../static/_amenities';
 
@@ -132,14 +133,18 @@ export default class HotelForm extends React.Component {
 
   changeSelection(index) {
     const { amenities } = this.state;
+    let headerAmenities= [];
     amenities[index].value = !amenities[index].value;
-    // this.setState({ amenities });
+
+    amenities.forEach((amenity, index) => {
+      headerAmenities.push(_.omit(amenities[index], ['image']))
+    })
 
     this.setState(prevState => ({
       amenities,
       hotel: {
         ...prevState.hotel,
-        hotel_amenities: amenities,
+        hotel_amenities: headerAmenities,
       },
     }));
   }
@@ -216,14 +221,14 @@ export default class HotelForm extends React.Component {
           fd.append('gallery_images', img);
           return img;
         });
-
+        
         fd.append('hotel', JSON.stringify(hotel));
         this.setState({ loading: true });
 
         if(this.props.params.hotelId) {
           axios.patch(`${this.endPoint}/api/hotel/update`, fd)
           .then((response) => {
-            if (response.data === 'Hotel Updated!') {
+            if (response.data && response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -234,7 +239,7 @@ export default class HotelForm extends React.Component {
         } else {
           axios.post(`${this.endPoint}/api/hotel/save`, fd)
           .then((response) => {
-            if (response.data === 'Hotel Saved!') {
+            if (response.data && response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
