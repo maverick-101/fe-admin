@@ -45,6 +45,9 @@ import Bookings from './containers/Bookings';
 import OrderForm from './containers/OrderForm';
 import Orders from './containers/Orders';
 
+import Ratings from './containers/Ratings';
+import RatingsForm from './containers/RatingsForm';
+
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -94,6 +97,10 @@ ReactDOM.render(
         <Route path="/orders" component={Orders}/>
         <Route path="/order_form" component={OrderForm}/>
         <Route path="/edit_order/:orderId" component={OrderForm}/>
+
+        <Route path="/ratings" component={Ratings}/>
+        <Route path="/ratings_form" component={RatingsForm}/>
+        
 
       </Route>
     </Router>
