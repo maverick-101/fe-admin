@@ -6,36 +6,40 @@ import moment from 'moment';
 
 import HasRole from '../hoc/HasRole';
 
-export default class CoverBanner extends React.Component {
+export default class FeaturedPackages extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      coverBanners: [],
+      featuredPackages: [],
       activePage: 1,
       pages: 1,
       q: '',
-      responseMessage: 'Loading Cover Banners...'
+      responseMessage: 'Loading Featured Packages...'
     }
     this.endPoint = 'https://api.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/coverbanner/fetch`)
+    axios.get(`${this.endPoint}/api/fetch/featuredPackage-fetch`)
       .then(response => {
         this.setState({
-          coverBanners: response.data,
+          featuredPackages: response.data,
           pages: Math.ceil(response.data.length/10),
-          responseMessage: 'No Cover Banners Found...'
         })
       })
+      .catch((error) => {
+        this.setState({ 
+          responseMessage: 'No Featured Packages Found'
+        })
+    })
   }
   deleteCity(coverBannerId, index) {
     if(confirm("Are you sure you want to delete this area?")) {
       axios.delete(`/api/area/${coverBannerId}`)
         .then(response => {
-          const coverBanners = this.state.coverBanners.slice();
-          coverBanners.splice(index, 1);
-          this.setState({ coverBanners });
+          const featuredPackages = this.state.featuredPackages.slice();
+          featuredPackages.splice(index, 1);
+          this.setState({ featuredPackages });
         });
     }
   }
@@ -64,7 +68,7 @@ export default class CoverBanner extends React.Component {
         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <div className="row space-1">
             <div className="col-sm-4">
-              <h3>List of Cover Banners</h3>
+              <h3>List of Featured Packages</h3>
             </div>
             <div style={{marginTop: '20px'}} className="col-sm-4">
               <div className='input-group'>
@@ -83,8 +87,11 @@ export default class CoverBanner extends React.Component {
             </div> */}
 
             <div className="col-sm-2 pull-right">
-                <Link to="/cover_banner_form">
-                  <button type="button" className="btn btn-success marginTop">Add new Cover</button>
+                <Link to={{
+                        pathname: `/featured_packages_form`,
+                        state: { selectedForm: 'featuredPackages'}
+                      }}>
+                  <button type="button" className="btn btn-success marginTop">Add new Featured Package</button>
                 </Link>
             </div>
 
@@ -104,30 +111,30 @@ export default class CoverBanner extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.coverBanners && this.state.coverBanners.length >= 1 ?
-                  this.state.coverBanners.map((coverBanner, index) => (
+                {this.state.featuredPackages && this.state.featuredPackages.length >= 1 ?
+                  this.state.featuredPackages.map((featuredPackage, index) => (
                   <tr key={index}>
-                    <td>{coverBanner.ID}</td>
-                    <td>{<img style={{height: '50px', width: '70px'}} src={coverBanner.image ? coverBanner.image.url : null}/>}</td>
-                    <td>{moment(coverBanner.start_date).format('DD-MMM-YYYY')}</td>
-                    <td>{moment(coverBanner.end_date).format('DD-MMM-YYYY')}</td>
+                    <td>{featuredPackage.ID}</td>
+                    <td>{<img style={{height: '50px', width: '70px'}} src={featuredPackage.image ? featuredPackage.image.url : null}/>}</td>
+                    <td>{moment(featuredPackage.start_date).format('DD-MMM-YYYY')}</td>
+                    <td>{moment(featuredPackage.end_date).format('DD-MMM-YYYY')}</td>
                     {/* <td>{area.marla_size}</td>
                     <td>{area.population}</td>
                     <td>{area.lat}</td>
                     <td>{area.lon}</td> */}
                     {/* <td>
-                      <Link to={`/area_resource/${coverBanner.ID}`}>
+                      <Link to={`/area_resource/${featuredPackage.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
                     </td> */}
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`/edit_coverBanner/${coverBanner.ID}`}>
+                        <Link to={`/edit_coverBanner/${featuredPackage.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteCity(coverBanner.ID, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteCity(featuredPackage.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                   </tr>

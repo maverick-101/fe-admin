@@ -48,6 +48,10 @@ import Orders from './containers/Orders';
 import Ratings from './containers/Ratings';
 import RatingsForm from './containers/RatingsForm';
 
+import FeaturedPackages from './containers/FeaturedPackages';
+import FeaturedHotels from './containers/FeaturedHotels';
+import FeaturedForm from './containers/FeaturedForm';
+
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -100,6 +104,12 @@ ReactDOM.render(
 
         <Route path="/ratings" component={Ratings}/>
         <Route path="/ratings_form" component={RatingsForm}/>
+
+        <Route path="/featured_hotels" component={FeaturedHotels}/>
+        <Route path="/featured_hotels_form" component={FeaturedForm}/>
+
+        <Route path="/featured_packages" component={FeaturedPackages}/>
+        <Route path="/featured_packages_form" component={FeaturedForm}/>
         
 
       </Route>

@@ -45,6 +45,9 @@ export default class SideNav extends React.Component {
             <Link onClick={() => {this.setState({active:'hotels'})}} to="/hotels">
               <li className={`side_nav ${this.state.active == 'hotels' ? 'active' : ''}`}>Hotels</li>
             </Link>
+            <Link onClick={() => {this.setState({active:'featured_hotels'})}} to="/featured_hotels">
+              <li className={`side_nav ${this.state.active == 'featured_hotels' ? 'active' : ''}`}>Featured Hotels</li>
+            </Link>
             <Link onClick={() => {this.setState({active:'users'})}} to="/users">
               <li className={`side_nav ${this.state.active == 'users' ? 'active' : ''}`}>Users</li>
             </Link>
@@ -56,6 +59,9 @@ export default class SideNav extends React.Component {
             </Link>
             <Link onClick={() => {this.setState({active:'packages'})}} to="/packages">
               <li className={`side_nav ${this.state.active == 'packages' ? 'active' : ''}`}>Packages</li>
+            </Link>
+            <Link onClick={() => {this.setState({active:'featured_packages'})}} to="/featured_packages">
+              <li className={`side_nav ${this.state.active == 'featured_packages' ? 'active' : ''}`}>Featured Packages</li>
             </Link>
             {/* <Link onClick={() => {this.setState({active:'bookings'})}} to="/bookings">
               <li className={`side_nav ${this.state.active == 'bookings' ? 'active' : ''}`}>Bookings</li>
