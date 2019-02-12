@@ -83,7 +83,7 @@ export default class FeaturedForm extends React.Component {
         pckg: selectedPackage,
         featured: {
             ...prevState.featured,
-            city_id: selectedPackage.ID,
+            package_id: selectedPackage.ID,
         },
         }));
     }
@@ -254,7 +254,7 @@ export default class FeaturedForm extends React.Component {
                             onChange={value => this.setPackage(value)}
                             options={packages}
                             valueKey="id"
-                            labelKey="name"
+                            labelKey="package_title"
                             clearable={false}
                             backspaceRemoves={false}
                             required

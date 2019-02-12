@@ -101,7 +101,8 @@ export default class FeaturedHotels extends React.Component {
               <thead>
                 <tr>
                   <th>Id</th>
-                  <th>Image</th>
+                  <th>Hotel Id</th>
+                  <th>Created At</th>
                   <th>Start Date</th>
                   <th>End Date</th>
                   {/* <th>Marla-Size(Sqft)</th>
@@ -115,7 +116,8 @@ export default class FeaturedHotels extends React.Component {
                   this.state.featuredHotels.map((featuredHotel, index) => (
                   <tr key={index}>
                     <td>{featuredHotel.ID}</td>
-                    <td>{<img style={{height: '50px', width: '70px'}} src={featuredHotel.image ? featuredHotel.image.url : null}/>}</td>
+                    <td>{featuredHotel.hotel_id}</td>
+                    <td>{moment(featuredHotel.createdAt).format('DD-MMM-YYYY')}</td>
                     <td>{moment(featuredHotel.start_date).format('DD-MMM-YYYY')}</td>
                     <td>{moment(featuredHotel.end_date).format('DD-MMM-YYYY')}</td>
                     {/* <td>{area.marla_size}</td>

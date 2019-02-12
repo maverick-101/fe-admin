@@ -101,7 +101,8 @@ export default class FeaturedPackages extends React.Component {
               <thead>
                 <tr>
                   <th>Id</th>
-                  <th>Image</th>
+                  <th>Package Id</th>
+                  <th>Created At</th>
                   <th>Start Date</th>
                   <th>End Date</th>
                   {/* <th>Marla-Size(Sqft)</th>
@@ -115,7 +116,8 @@ export default class FeaturedPackages extends React.Component {
                   this.state.featuredPackages.map((featuredPackage, index) => (
                   <tr key={index}>
                     <td>{featuredPackage.ID}</td>
-                    <td>{<img style={{height: '50px', width: '70px'}} src={featuredPackage.image ? featuredPackage.image.url : null}/>}</td>
+                    <td>{featuredPackage.package_id}</td>
+                    <td>{moment(featuredPackage.createdAt).format('DD-MMM-YYYY')}</td>
                     <td>{moment(featuredPackage.start_date).format('DD-MMM-YYYY')}</td>
                     <td>{moment(featuredPackage.end_date).format('DD-MMM-YYYY')}</td>
                     {/* <td>{area.marla_size}</td>
