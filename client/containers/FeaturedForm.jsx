@@ -150,6 +150,12 @@ export default class FeaturedForm extends React.Component {
                         window.alert('ERROR')
                         this.setState({ loading: false });
                         }
+                    })
+                    .catch((error) => {
+                        this.setState({
+                            loading: false,
+                        });
+                    window.alert('Failure: Some issue has occured.')
                     });
                 } else {
                     let featuredPackage = _.omit(featured, ['hotel_id'])
@@ -163,6 +169,12 @@ export default class FeaturedForm extends React.Component {
                         window.alert('ERROR')
                         this.setState({ loading: false });
                         }
+                    })
+                    .catch((error) => {
+                        this.setState({
+                            loading: false,
+                        });
+                    window.alert('Failure: Some issue has occured.')
                     });
                 }
     }
