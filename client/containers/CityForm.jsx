@@ -12,7 +12,7 @@ export default class CityForm extends React.Component {
       city: {
         name: '',
         province: '',
-        views: '',
+        // views: '',
         image_type: '',
         description: '',
       },
@@ -218,7 +218,7 @@ export default class CityForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Views
@@ -233,7 +233,7 @@ export default class CityForm extends React.Component {
                           onChange={this.handleInputChange}
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">City Gallery</label>
