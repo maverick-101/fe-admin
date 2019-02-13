@@ -608,10 +608,10 @@ export default class HotelForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Star Rating
+                      >Hotel Star Rating
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -623,7 +623,30 @@ export default class HotelForm extends React.Component {
                           onChange={this.handleInputChange}
                         />
                       </div>
+                    </div> */}
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Hotel Star Rating</label>
+                      <div className="col-md-6 col-sm-6">
+                        <select
+                          name="star_rating"
+                          value={hotel.star_rating}
+                          className="form-control custom-select"
+                          onChange={this.handleInputChange}
+                          required
+                        >
+                          <option value="">Select Type</option>
+                          <option value="1 Star">1 Star</option>
+                          <option value="2 Star">2 Star</option>
+                          <option value="3 Star">3 Star</option>
+                          <option value="4 Star">4 Star</option>
+                          <option value="5 Star">5 Star</option>
+                          <option value="6 Star">6 Star</option>
+                          <option value="7 Star">7 Star</option>
+                        </select>
+                      </div>
                     </div>
+
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
