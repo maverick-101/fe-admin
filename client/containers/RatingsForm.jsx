@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
+import _ from 'lodash';
+
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 export default class RatingsForm extends React.Component {
   constructor(props) {
@@ -10,12 +14,18 @@ export default class RatingsForm extends React.Component {
     this.state = {
       loading: false,
       rating: {
-        name: '',
-        province: '',
-        views: '',
-        image_type: '',
-        description: '',
+        user_id: '',
+        hotel_id: '',
+        package_id: '',
+        status: '',
+        comment: '',
       },
+      packages: [],
+      pckg: '',
+      hotels: [],
+      hotel: '',
+      users: [],
+      user: '',
       gallery: '',
       description: RichTextEditor.createEmptyValue(),
     };
@@ -25,35 +35,89 @@ export default class RatingsForm extends React.Component {
     this.postCity = this.postCity.bind(this);
   }
 
-  // componentDidMount() {
-    // const { match } = this.props;
-    // if (match.params.cityId) {
-    //   axios.get(`/api/rating/${match.params.cityId}`)
+  componentWillMount() {
+    const { location } = this.props;
+    this.fetchUsers();
+    if (location.state.selectedRating === 'packages'){
+      this.fetchPackages();
+    }
+    else {
+      this.fetchHotels();
+    }
+  }
+
+  componentDidMount() {
+    console.log('props',this.props);
+    //   if (window.location.href.split('/')[3] === 'edit_city')
+    //   axios.get(`${this.endPoint}/api/fetchById/rating-fetchById/${this.props.params.cityId}`)
     //     .then((response) => {
     //       this.setState({
-    //         rating: response.data,
+    //         rating: response.data[0],
     //         description: RichTextEditor.createValueFromString(response.data.description, 'html'),
     //       });
     //     });
-    // }
-  // }
-
-  componentDidMount() {
-      window.alert(this.props.location.state.selectedRating)
-    console.log('props',this.props);
-      if (window.location.href.split('/')[3] === 'edit_city')
-      axios.get(`${this.endPoint}/api/fetchById/rating-fetchById/${this.props.params.cityId}`)
-        .then((response) => {
-          this.setState({
-            rating: response.data[0],
-            description: RichTextEditor.createValueFromString(response.data.description, 'html'),
-          });
-        });
     }
+
+    fetchUsers() {
+        axios.get(`${this.endPoint}/api/user/fetch`)
+        .then(response => {
+        this.setState({
+          users: response.data,
+        })
+      })
+    }
+
+    fetchHotels() {
+        axios.get(`${this.endPoint}/api/hotel/fetch`)
+        .then(response => {
+        this.setState({
+          hotels: response.data,
+        })
+      })
+    }
+
+    fetchPackages() {
+        axios.get(`${this.endPoint}/api/fetch/packagePage-fetch`)
+        .then(response => {
+        this.setState({
+          packages: response.data,
+        })
+      })
+    }
+
+    setHotel = (selectedHotel) => {
+        this.setState(prevState => ({
+            hotel: selectedHotel,
+            rating: {
+                ...prevState.rating,
+                hotel_id: selectedHotel.ID,
+            },
+            }));
+        }
+    
+    setPackage = (selectedPackage) => {
+    this.setState(prevState => ({
+        pckg: selectedPackage,
+        rating: {
+            ...prevState.rating,
+            package_id: selectedPackage.ID,
+        },
+        }));
+    }
+
+    setUser = (selectedUser) => {
+        this.setState(prevState => ({
+            user: selectedUser,
+            rating: {
+                ...prevState.rating,
+                user_id: selectedUser.ID,
+            },
+            }));
+        }
 
   setDescription(description) {
     const { rating } = this.state;
-    rating.description = description.toString('html');
+    rating.comment = description.toString('html');
     this.setState({
       rating,
       description,
@@ -91,7 +155,6 @@ export default class RatingsForm extends React.Component {
         fd.append('rating', JSON.stringify(rating));
 
         if(this.props.params.cityId) {
-        // axios.patch('/api/rating/update', fd)
         axios.patch(`${this.endPoint}/api/update/rating-update`, fd)
           .then((response) => {
             if (response.data === 'Rating Updated!') {
@@ -104,7 +167,6 @@ export default class RatingsForm extends React.Component {
           });
         }
         else {
-          // axios.post('/api/rating/save', fd)
           axios.post(`${this.endPoint}/api/save/rating-save`, fd)
           .then((response) => {
             if (response.data === 'Rating Saved!') {
@@ -123,7 +185,15 @@ export default class RatingsForm extends React.Component {
       loading,
       rating,
       description,
+      packages,
+      pckg,
+      hotels,
+      hotel,
+      users,
+      user,
     } = this.state;
+    const { location } = this.props;
+    const selectedFormName = _.startCase(location.state.selectedRating);
     const toolbarConfig = {
       // Optionally specify the groups to display (displayed in the order listed).
       display: ['INLINE_STYLE_BUTTONS', 'BLOCK_TYPE_BUTTONS', 'HISTORY_BUTTONS'],
@@ -163,7 +233,7 @@ export default class RatingsForm extends React.Component {
         },
       ],
     };
-    // console.log(this.state);
+    console.log(this.state);
 
     return (
       <div className="row animated fadeIn">
@@ -175,7 +245,7 @@ export default class RatingsForm extends React.Component {
             <div className="col-md-10 col-sm-10">
               <div className="x_panel">
                 <div className="x_title">
-                  <h2>Enter Rating Details</h2>
+                  <h2>Enter {selectedFormName} Rating Details</h2>
                 </div>
                 <div className="x_content">
                   <br />
@@ -185,112 +255,84 @@ export default class RatingsForm extends React.Component {
                     className="form-horizontal form-label-left"
                     onSubmit={this.postCity}
                   >
-                    <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Rating Name
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="name"
-                          className="form-control"
-                          value={rating.name}
-                          onChange={this.handleInputChange}
+                  <div className="form-group row">
+                    <label className="control-label col-md-3 col-sm-3">User</label>
+                    <div className="col-md-6 col-sm-6">
+                        <Select
+                            name="user_id"
+                            value={user}
+                            onChange={value => this.setUser(value)}
+                            options={users}
+                            valueKey="id"
+                            labelKey="first_name"
+                            clearable={false}
+                            backspaceRemoves={false}
+                            required
                         />
-                      </div>
                     </div>
+                </div>
 
-                    <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Province
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="province"
-                          className="form-control"
-                          value={rating.province}
-                          onChange={this.handleInputChange}
+                    {location.state.selectedRating === 'packages' ?
+                  <div className="form-group row">
+                    <label className="control-label col-md-3 col-sm-3">Package</label>
+                    <div className="col-md-6 col-sm-6">
+                        <Select
+                            name="package_id"
+                            value={pckg}
+                            onChange={value => this.setPackage(value)}
+                            options={packages}
+                            valueKey="id"
+                            labelKey="package_title"
+                            clearable={false}
+                            backspaceRemoves={false}
+                            required
                         />
-                      </div>
                     </div>
+                </div>
+                  :
+                  null
+                }
 
-                    <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Views
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="views"
-                          className="form-control"
-                          value={rating.views}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Rating Gallery</label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          type="file"
-                          name="cover"
-                          className="form-control"
-                          onChange={this.handleImages}
-                          multiple
-                          required={rating.gallery ? 0 : 1}
-                        />
-                      </div>
-                    </div>
-
-                    {rating.gallery
-                      ? (
-                        <div className="form-group row">
-                        <label className="control-label col-md-3 col-sm-3"></label>
-                        <div className="col-md-6 col-sm-6">
-                        {rating.gallery.map((image,index) => {
-                          return (
-                          <img key={index}
-                          style={{marginRight: '5px'}}
-                          width="100"
-                          className="img-fluid"
-                          src={`${image.url}`}
-                          alt="cover"
-                        />
-                          )
-                        })}
-                          
+                {location.state.selectedRating === 'hotels' ?
+                  <div className="form-group row">
+                    <label className="control-label col-md-3 col-sm-3">Hotel</label>
+                    <div className="col-md-6 col-sm-6">
+                        <Select
+                            name="hotel_id"
+                            value={hotel}
+                            onChange={value => this.setHotel(value)}
+                            options={hotels}
+                            valueKey="id"
+                            labelKey="name"
+                            clearable={false}
+                            backspaceRemoves={false}
+                            required
+                            />
                         </div>
-                      </div>
-                      ) : null
-                              }
+                    </div>
+                      :
+                    null
+                }
 
-                    {/* <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Image Type</label>
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Status</label>
                       <div className="col-md-6 col-sm-6">
                         <select
-                          name="image_type"
-                          value={rating.image_type}
+                          name="status"
+                          value={rating.status}
                           className="form-control custom-select"
                           onChange={this.handleInputChange}
                           required
                         >
-                          <option value="">Select Type</option>
-                          <option value="lounge">Lounge Image</option>
-                          <option value="main_hall">Main Hall Image</option>
+                          <option value="">Select Value</option>
+                          <option value="pending">Pending</option>
+                          <option value="active">Active</option>
                         </select>
                       </div>
-                    </div> */}
+                    </div>
 
                     <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Description</label>
+                      <label className="control-label col-md-3 col-sm-3">Comment</label>
                       <div className="col-md-6 col-sm-6">
                         <RichTextEditor
                           value={description}
