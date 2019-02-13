@@ -202,19 +202,23 @@ export default class CityForm extends React.Component {
                     </div>
 
                     <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Province
-                      </label>
+                      <label className="control-label col-md-3 col-sm-3">Province</label>
                       <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
+                        <select
                           name="province"
-                          className="form-control"
                           value={city.province}
+                          className="form-control custom-select"
                           onChange={this.handleInputChange}
-                        />
+                          required
+                        >
+                          <option value="">Select Type</option>
+                          <option value="punjab">Punjab</option>
+                          <option value="sindh">Sindh</option>
+                          <option value="balochistan">Balochistan</option>
+                          <option value="khyberPakhtunKhawa">Khyber PakhtunKhawa</option>
+                          <option value="gilgitBaltistan">Gilgit Baltistan</option>
+                          <option value="azadKashmir">Azad Kashmir</option>
+                        </select>
                       </div>
                     </div>
 
@@ -270,23 +274,6 @@ export default class CityForm extends React.Component {
                       </div>
                       ) : null
                               }
-
-                    {/* <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Image Type</label>
-                      <div className="col-md-6 col-sm-6">
-                        <select
-                          name="image_type"
-                          value={city.image_type}
-                          className="form-control custom-select"
-                          onChange={this.handleInputChange}
-                          required
-                        >
-                          <option value="">Select Type</option>
-                          <option value="lounge">Lounge Image</option>
-                          <option value="main_hall">Main Hall Image</option>
-                        </select>
-                      </div>
-                    </div> */}
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Description</label>
