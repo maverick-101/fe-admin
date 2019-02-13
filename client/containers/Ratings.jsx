@@ -31,14 +31,13 @@ export default class Ratings extends React.Component {
     //   })
   }
 
-  fetchOrders(orderName) {
-    if(orderName === 'hotels') {
-    axios.get(`${this.endPoint}/api/fetch/hotelContact-fetch`)
+  fetchRatings(ratingName) {
+    if(ratingName === 'hotels') {
+    axios.get(`${this.endPoint}/api/fetch/hotelRating-fetch`)
       .then(response => {
         this.setState({
           ratings: response.data,
           pages: Math.ceil(response.data.length/10),
-          responseMessage: 'No Ratings Found...'
         })
       })
       .catch(err => {
@@ -46,13 +45,12 @@ export default class Ratings extends React.Component {
           responseMessage: 'No Ratings for Hotels Found...'
         })
       })
-    } else if(orderName === 'packages') {
-      axios.get(`${this.endPoint}/api/fetch/packageContact-fetch`)
+    } else if(ratingName === 'packages') {
+      axios.get(`${this.endPoint}/api/fetch/packageRating-fetch`)
       .then(response => {
         this.setState({
           ratings: response.data,
           pages: Math.ceil(response.data.length/10),
-          responseMessage: 'No Ratings Found...'
         })
       })
       .catch(err => {
@@ -92,11 +90,11 @@ export default class Ratings extends React.Component {
       })
   }
 
-  handleOrderSelection(event) {
+  handleRatingSelection(event) {
     this.setState({
       selectedRating: event.target.value,
     }, () => {
-      this.fetchOrders(this.state.selectedRating)
+      this.fetchRatings(this.state.selectedRating)
     })
   }
 
@@ -157,7 +155,7 @@ export default class Ratings extends React.Component {
                           name="selectedRating"
                           value={this.state.selectedRating}
                           className="form-control custom-select"
-                          onChange={(event) => this.handleOrderSelection(event)}
+                          onChange={(event) => this.handleRatingSelection(event)}
                           required
                         >
                           <option value="">Select Rating Type</option>

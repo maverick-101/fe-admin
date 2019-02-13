@@ -32,7 +32,7 @@ export default class RatingsForm extends React.Component {
     // this.rteState = RichTextEditor.createEmptyValue();
     this.endPoint = 'https://api.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postCity = this.postCity.bind(this);
+    this.postRating = this.postRating.bind(this);
   }
 
   componentWillMount() {
@@ -136,48 +136,65 @@ export default class RatingsForm extends React.Component {
     this.setState({ gallery: event.target.files });
   }
 
-  postCity(event) {
+  postRating(event) {
     event.preventDefault();
-    const { match, history } = this.props;
-    const { loading, rating, gallery } = this.state;
+    const { match, history, location } = this.props;
+    const { loading, rating } = this.state;
         this.setState({ loading: true });
 
-        let imgArray = [];
         const fd = new FormData();
-        for (let index = 0; index < gallery.length; index += 1) {
-          imgArray.push(gallery[index]);
-        }
-          imgArray.forEach((img) => {
-          fd.append('gallery_images', img);
-          return img;
-        });
 
-        fd.append('rating', JSON.stringify(rating));
-
-        if(this.props.params.cityId) {
-        axios.patch(`${this.endPoint}/api/update/rating-update`, fd)
-          .then((response) => {
-            if (response.data === 'Rating Updated!') {
-              window.alert(response.data);
-              this.setState({ loading: false });
-            } else {
-              window.alert('ERROR')
-              this.setState({ loading: false });
+        if(this.props.params.featuredPackageId || this.props.params.featuredHotelId) {
+            axios.patch(`${this.endPoint}/api/update/rating-update`, fd)
+            .then((response) => {
+                if (response.data === 'Featured Updated!') {
+                window.alert(response.data);
+                this.setState({ loading: false });
+                } else {
+                window.alert('ERROR')
+                this.setState({ loading: false });
+                }
+            });
             }
-          });
-        }
         else {
-          axios.post(`${this.endPoint}/api/save/rating-save`, fd)
-          .then((response) => {
-            if (response.data === 'Rating Saved!') {
-              window.alert(response.data);
-              this.setState({ loading: false });
-            } else {
-              window.alert('ERROR')
-              this.setState({ loading: false });
+            if(location.state.selectedRating === 'hotels') {
+                // let hotelRating = _.omit(rating, ['package_id'])
+                fd.append('hotelRating', JSON.stringify(rating));
+                    axios.post(`${this.endPoint}/api/save/hotelRating-save`, fd)
+                    .then((response) => {
+                        if (response.data && response.status === 200) {
+                        window.alert(response.data);
+                        this.setState({ loading: false });
+                        } else {
+                        window.alert('ERROR')
+                        this.setState({ loading: false });
+                        }
+                    })
+                    .catch((error) => {
+                        this.setState({
+                            loading: false,
+                        })
+                    });
+                } else {
+                    // let packageRating = _.omit(rating, ['hotel_id'])
+                    fd.append('packageRating', JSON.stringify(rating));
+                        axios.post(`${this.endPoint}/api/save/packageRating-save`, fd)
+                        .then((response) => {
+                        if (response.data && response.status === 200) {
+                        window.alert(response.data);
+                        this.setState({ loading: false });
+                        } else {
+                        window.alert('ERROR')
+                        this.setState({ loading: false });
+                        }
+                    })
+                    .catch((error) => {
+                        this.setState({
+                            loading: false,
+                        })
+                    });
+                }
             }
-          });
-        }
         }
 
   render() {
@@ -253,7 +270,7 @@ export default class RatingsForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postCity}
+                    onSubmit={this.postRating}
                   >
                   <div className="form-group row">
                     <label className="control-label col-md-3 col-sm-3">User</label>
