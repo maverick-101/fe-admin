@@ -110,7 +110,7 @@ export default class Hotels extends React.Component {
                 {hotels && hotels.length >= 1 ?
                 hotels.map((hotel, index) => (
                   <tr key={index}>
-                    <td>{<img style={{height: '50px', width: '50px'}} src={hotel.gallery[index] ? hotel.gallery[index].url : Broken} />}</td>
+                    <td>{<img style={{height: '50px', width: '50px'}} src={hotel.gallery.length ? hotel.gallery[0].url : Broken} />}</td>
                     <td>{hotel.name}</td>
                     <td>{hotel.star_rating}</td>
                     <td>{hotel.address}</td>
