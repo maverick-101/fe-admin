@@ -16,7 +16,7 @@ export default class AreaForm extends React.Component {
         name: '',
         city_id: '',
         province: '',
-        views: '',
+        // views: '',
         image_type: '',
         description: '',
       },
@@ -280,7 +280,7 @@ export default class AreaForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Views
@@ -295,7 +295,7 @@ export default class AreaForm extends React.Component {
                           onChange={this.handleInputChange}
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Location Gallery</label>
