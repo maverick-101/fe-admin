@@ -598,7 +598,7 @@ export default class HotelForm extends React.Component {
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
-                          required
+                          // required
                           type="text"
                           name="postalCode"
                           className="form-control"
@@ -607,6 +607,7 @@ export default class HotelForm extends React.Component {
                         />
                       </div>
                     </div>
+
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
