@@ -99,6 +99,7 @@ export default class Test extends React.Component {
             }
           }).catch((error) => {
               window.alert('Same error');
+              this.setState({ loading: false })
           });
         }
         }
