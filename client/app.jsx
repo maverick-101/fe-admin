@@ -52,6 +52,9 @@ import FeaturedPackages from './containers/FeaturedPackages';
 import FeaturedHotels from './containers/FeaturedHotels';
 import FeaturedForm from './containers/FeaturedForm';
 
+
+import Test from './containers/Test';
+
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -110,8 +113,9 @@ ReactDOM.render(
 
         <Route path="/featured_packages" component={FeaturedPackages}/>
         <Route path="/featured_packages_form" component={FeaturedForm}/>
-        
 
+        <Route path="/test" component={Test}/>
+        
       </Route>
     </Router>
   </Provider>,

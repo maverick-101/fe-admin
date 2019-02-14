@@ -531,10 +531,10 @@ export default class HotelForm extends React.Component {
                       <div className="col-md-6 col-sm-6">
                         <input
                           required
-                          type="text"
-                          name="stars"
+                          type="number"
+                          name="star_rating"
                           className="form-control"
-                          value={hotel.stars}
+                          value={hotel.star_rating}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -629,8 +629,8 @@ export default class HotelForm extends React.Component {
                       <label className="control-label col-md-3 col-sm-3">Hotel Star Rating</label>
                       <div className="col-md-6 col-sm-6">
                         <select
-                          name="star_rating"
-                          value={hotel.star_rating}
+                          name="stars"
+                          value={hotel.stars}
                           className="form-control custom-select"
                           onChange={this.handleInputChange}
                           required
