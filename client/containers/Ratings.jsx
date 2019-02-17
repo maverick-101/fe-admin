@@ -16,7 +16,8 @@ export default class Ratings extends React.Component {
       pages: 1,
       q: '',
       selectedRating: undefined,
-      responseMessage: 'Loading Ratings...'
+      responseMessage: 'Loading Ratings...',
+      listingType: 'active'
     }
     this.endPoint = 'https://api.saaditrips.com';
   }
@@ -38,6 +39,7 @@ export default class Ratings extends React.Component {
         this.setState({
           ratings: response.data,
           pages: Math.ceil(response.data.length/10),
+          listingType: 'pending',
         })
       })
       .catch(err => {
@@ -99,6 +101,7 @@ export default class Ratings extends React.Component {
   }
 
   render() {
+    const { listingType } = this.state;
     console.log(this.state);
     return (
       <div className="row">
@@ -164,6 +167,74 @@ export default class Ratings extends React.Component {
                         </select>
                       </div>
                     </div>
+
+                    <div className="row justify-content-between">
+            <div className="float-left col-sm-6 space-1">
+              <button
+                type="button"
+                style={{ borderRadius: 0 }}
+                className={`${listingType === 'active' ? 'btn-primary' : ''} btn btn-default`}
+                onClick={() => this.fetchRatings('active')}
+              >Active
+              </button>
+              <button
+                type="button"
+                style={{
+                  marginLeft: 5,
+                  borderRadius: 0,
+                }}
+                className={`${listingType === 'pending' ? 'btn-primary' : ''} btn btn-default`}
+                onClick={() => this.fetchRatings('pending')}
+              >Deactivated
+              </button>
+            </div>
+            {/* <div className="float-right col-sm-6 text-right">
+              <button
+                type="button"
+                style={{
+                  marginRight: 5,
+                  marginBottom: 5,
+                  borderRadius: 0,
+                }}
+                className={`${activeButton === 'pending' ? 'btn-primary' : ''} btn btn-default`}
+                onClick={() => this.handleFilter('pending')}
+              >Pending
+              </button>
+              <button
+                type="button"
+                style={{
+                  marginRight: 5,
+                  marginBottom: 5,
+                  borderRadius: 0,
+                }}
+                className={`${activeButton === 'mop' ? 'btn-primary' : ''} btn btn-default`}
+                onClick={() => this.handleFilter('mop')}
+              >Pending MOP
+              </button>
+              <button
+                type="button"
+                style={{
+                  marginRight: 5,
+                  marginBottom: 5,
+                  borderRadius: 0,
+                }}
+                className={`${activeButton === 'mop_cleared' ? 'btn-primary' : ''} btn btn-default`}
+                onClick={() => this.handleFilter('mop_cleared')}
+              >MOP Cleared
+              </button>
+              <button
+                type="button"
+                style={{
+                  marginRight: 5,
+                  marginBottom: 5,
+                  borderRadius: 0,
+                }}
+                className={`${activeButton === 'published' ? 'btn-primary' : ''} btn btn-default`}
+                onClick={() => this.handleFilter('published')}
+              >Published
+              </button>
+            </div> */}
+          </div>
 
           {this.state.selectedRating ?
           <div> 
