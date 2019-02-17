@@ -52,15 +52,15 @@ export default class PackageForm extends React.Component {
         description: "",
         status: true,
         },
-      food: {
-        food_type: '',
-        description: "",
-        start_time: "",
-        end_time: "",
-        items: []
-        },
+      // food: {
+      //   food_type: '',
+      //   description: "",
+      //   start_time: "",
+      //   end_time: "",
+      //   items: []
+      //   },
       activitiesCount: 1,
-      foodsCount: 1,
+      // foodsCount: 1,
       priceCount: 1,
       travelModesCount: 1,
       gallery: '',
@@ -117,9 +117,14 @@ export default class PackageForm extends React.Component {
       axios.get(`${this.endPoint}/api/fetchById/packagePage-fetchById/${this.props.params.packageId}`)
         .then((response) => {
           this.setState({
-            pckg: response.data[0],
+            pckg: response.data,
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
+            this.setState({
+              travelModes: this.state.pckg.travel_modes[0],
+              price: this.state.pckg.price[0],
+              activities: this.state.pckg.activities[0],
+            })
             axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.pckg.city_id}`)
             .then((response) => {
               this.setState({
@@ -280,24 +285,26 @@ export default class PackageForm extends React.Component {
           // axios.patch('/api/locations/update', fd)
           axios.patch(`${this.endPoint}/api/update/packagePage-update`, fd)
           .then((response) => {
-            if (response.status === '200') {
+            if (response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
-            } else {
-              window.alert('ERROR')
-              this.setState({ loading: false });
             }
+          })
+          .catch((error) => {
+            this.setState({ loading: false });
+            window.alert('Error')
           });
         } else {
           axios.post(`${this.endPoint}/api/save/packagePage-save`, fd)
           .then((response) => {
-            if (response.status === '200') {
+            if (response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
-            } else {
-              window.alert('ERROR')
-              this.setState({ loading: false });
             }
+          })
+          .catch((error) => {
+            this.setState({ loading: false });
+            window.alert('Error')
           });
         }
       }
@@ -516,7 +523,7 @@ export default class PackageForm extends React.Component {
 
                 </div>
 
-                <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
+                {/* <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
                         <div className="control-label col-md-3 col-sm-3"></div>
                           <div className="col-md-8 col-sm-8">
                             <h3>Food Details</h3>
@@ -543,23 +550,6 @@ export default class PackageForm extends React.Component {
                         />
                       </div>
                     </div>
-
-                    {/* <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Description</label>
-                      <div className="col-md-6 col-sm-6">
-                        <select
-                          name="primary"
-                          value={food.primary}
-                          className="form-control custom-select"
-                          onChange={this.handleFood}
-                          required
-                        >
-                          <option value="">Select Type</option>
-                          <option value="true">Yes</option>
-                          <option value="false">No</option>
-                        </select>
-                      </div>
-                    </div> */}
 
                     <div className="form-group row">
                       <label
@@ -631,7 +621,7 @@ export default class PackageForm extends React.Component {
                       <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({foodsCount: foodsCount + 1})}} className="btn btn-info btn-sm">Add food item</button>
                       <button type="button" onClick={() => {this.setState({foodsCount: foodsCount > 1 ? foodsCount - 1 : foodsCount})}} className={`btn btn-danger btn-sm ${foodsCount === 1 ? 'disabled' : ''}`}>Remove food item</button>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
                         <div className="control-label col-md-3 col-sm-3"></div>
