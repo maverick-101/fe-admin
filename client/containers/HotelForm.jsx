@@ -25,8 +25,8 @@ export default class HotelForm extends React.Component {
       loading: false,
       hotel: {
         name: '',
-        city_id: '',
         location_id: '',
+        city_id: '',
         user_id: '',
         address: '',
         image_type: '',
@@ -39,10 +39,8 @@ export default class HotelForm extends React.Component {
         star_rating: '',
         email: '',
         phone: '',
-        geo: {
-          latitude: '',
-          longitude: '',
-        },
+        latitude: '',
+        longitude: '',
         description: '',
         hotel_amenities: [],
       },
@@ -91,7 +89,7 @@ export default class HotelForm extends React.Component {
       axios.get(`${this.endPoint}/api/hotel/fetchById/${this.props.params.hotelId}`)
         .then((response) => {
           this.setState({
-            hotel: response.data[0],
+            hotel: response.data,
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
             axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.hotel.city_id}`)
@@ -117,19 +115,6 @@ export default class HotelForm extends React.Component {
           });
         });
       }
-
-  // componentDidMount() {
-    // const { match } = this.props;
-    // if (match.params.cityId) {
-    //   axios.get(`/api/city/${match.params.cityId}`)
-    //     .then((response) => {
-    //       this.setState({
-    //         city: response.data,
-    //         description: RichTextEditor.createValueFromString(response.data.description, 'html'),
-    //       });
-    //     });
-    // }
-  // }
 
   changeSelection(index) {
     const { amenities } = this.state;
