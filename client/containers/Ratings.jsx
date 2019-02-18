@@ -175,7 +175,7 @@ export default class Ratings extends React.Component {
                 style={{ borderRadius: 0 }}
                 className={`${listingType === 'active' ? 'btn-primary' : ''} btn btn-default`}
                 onClick={() => this.fetchRatings('active')}
-              >Active
+              >Accepted
               </button>
               <button
                 type="button"
@@ -185,7 +185,17 @@ export default class Ratings extends React.Component {
                 }}
                 className={`${listingType === 'pending' ? 'btn-primary' : ''} btn btn-default`}
                 onClick={() => this.fetchRatings('pending')}
-              >Deactivated
+              >Rejected
+              </button>
+              <button
+                type="button"
+                style={{
+                  marginLeft: 5,
+                  borderRadius: 0,
+                }}
+                className={`${listingType === 'pending' ? 'btn-primary' : ''} btn btn-default`}
+                onClick={() => this.fetchRatings('pending')}
+              >Pending
               </button>
             </div>
             {/* <div className="float-right col-sm-6 text-right">
