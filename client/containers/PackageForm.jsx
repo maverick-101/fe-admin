@@ -39,7 +39,7 @@ export default class PackageForm extends React.Component {
           description: '',
         },
       travelModes: {
-          route: '',
+          travelmodes_title: '',
           departure: "",
           destination: "",
           travel_time: "",
@@ -817,7 +817,7 @@ export default class PackageForm extends React.Component {
                     {index >= 1 ? <hr style={{borderTop: '1px solid gray'}}/> : null}
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Route
+                      >Title
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -825,7 +825,7 @@ export default class PackageForm extends React.Component {
                           type="text"
                           name="route"
                           className="form-control"
-                          value={travelModes.route}
+                          value={travelModes.travelmodes_title}
                           onChange={this.handleTravelMode}
                         />
                       </div>
