@@ -88,8 +88,9 @@ export default class AreaForm extends React.Component {
       location: {
         ...prevState.location,
         city_id: selectedCity.ID,
+        province: selectedCity.province
       },
-    }));
+    }))
   }
 
   handleImages = (event) => {
@@ -263,7 +264,7 @@ export default class AreaForm extends React.Component {
                           </div>
                         </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Province</label>
                       <div className="col-md-6 col-sm-6">
                         <select
@@ -282,24 +283,25 @@ export default class AreaForm extends React.Component {
                           <option value="azadKashmir">Azad Kashmir</option>
                         </select>
                       </div>
-                    </div>
+                    </div> */}
 
-                    {/* <div className="form-group row">
+                    <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Views
+                      >Province
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
                           required
                           type="text"
-                          name="views"
+                          name="province"
                           className="form-control"
-                          value={location.views}
+                          value={location.province}
                           onChange={this.handleInputChange}
+                          disabled={location.city_id ? 1 : 0}
                         />
                       </div>
-                    </div> */}
+                    </div>
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Location Gallery</label>
