@@ -158,9 +158,10 @@ export default class RatingsForm extends React.Component {
             }
         else {
             if(location.state.selectedRating === 'hotels') {
-                // let hotelRating = _.omit(rating, ['package_id'])
+                let hotelRating = _.omit(rating, ['package_id'])
+                let requestBody = { 'hotelRating' : JSON.stringify(hotelRating)};
                 fd.append('hotelRating', JSON.stringify(rating));
-                    axios.post(`${this.endPoint}/api/save/hotelRating-save`, fd)
+                    axios.post(`${this.endPoint}/api/save/hotelRating-save`, requestBody)
                     .then((response) => {
                         if (response.data && response.status === 200) {
                         window.alert(response.data);
@@ -176,9 +177,10 @@ export default class RatingsForm extends React.Component {
                         })
                     });
                 } else {
-                    // let packageRating = _.omit(rating, ['hotel_id'])
+                    let packageRating = _.omit(rating, ['hotel_id'])
+                    let requestBody = { 'packageRating' : JSON.stringify(packageRating)};
                     fd.append('packageRating', JSON.stringify(rating));
-                        axios.post(`${this.endPoint}/api/save/packageRating-save`, fd)
+                        axios.post(`${this.endPoint}/api/save/packageRating-save`, requestBody)
                         .then((response) => {
                         if (response.data && response.status === 200) {
                         window.alert(response.data);
