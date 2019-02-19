@@ -141,8 +141,9 @@ export default class FeaturedForm extends React.Component {
         else {
             if(location.state.selectedForm === 'featuredHotels') {
                 let featuredHotel = _.omit(featured, ['package_id'])
-                fd.append('featuredHotel', JSON.stringify(featuredHotel));
-                    axios.post(`${this.endPoint}/api/save/featuredHotel-save`, fd)
+                let requestBody = { 'featuredHotel' : JSON.stringify(featuredHotel)};
+                // fd.append('featuredHotel', JSON.stringify(featuredHotel));
+                    axios.post(`${this.endPoint}/api/save/featuredHotel-save`, requestBody)
                     .then((response) => {
                         if (response.data && response.status === 200) {
                         window.alert(response.data);
@@ -159,9 +160,10 @@ export default class FeaturedForm extends React.Component {
                     window.alert('Failure: Some issue has occured.')
                     });
                 } else {
-                    let featuredPackage = _.omit(featured, ['hotel_id'])
-                    fd.append('featuredPackage', JSON.stringify(featuredPackage));
-                        axios.post(`${this.endPoint}/api/save/featuredPackage-save`, fd)
+                    let featuredPackage = _.omit(featured, ['hotel_id']);
+                    let requestBody = { 'featuredPackage' : JSON.stringify(featuredPackage)};
+                    // fd.append('featuredPackage', JSON.stringify(featuredPackage));
+                        axios.post(`${this.endPoint}/api/save/featuredPackage-save`, requestBody)
                         .then((response) => {
                         if (response.data && response.status === 200) {
                         window.alert(response.data);
