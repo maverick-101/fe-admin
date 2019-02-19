@@ -52,9 +52,6 @@ import FeaturedPackages from './containers/FeaturedPackages';
 import FeaturedHotels from './containers/FeaturedHotels';
 import FeaturedForm from './containers/FeaturedForm';
 
-
-import Test from './containers/Test';
-
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 
