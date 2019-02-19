@@ -33,6 +33,7 @@ export default class Ratings extends React.Component {
   }
 
   fetchRatings(ratingName) {
+    this.setState({ ratings: [] })
     if(ratingName === 'hotels') {
     axios.get(`${this.endPoint}/api/fetch/hotelRating-fetch`)
       .then(response => {
@@ -62,7 +63,7 @@ export default class Ratings extends React.Component {
       })
     }
   }
-  deleteCity(cityId, index) {
+  deleteRating(cityId, index) {
     if(confirm("Are you sure you want to delete this rating?")) {
       axios.delete(`${this.endPoint}/api/delete/rating-deleteById/${cityId}`)
         .then(response => {
@@ -101,7 +102,7 @@ export default class Ratings extends React.Component {
   }
 
   render() {
-    const { listingType } = this.state;
+    const { listingType, selectedRating } = this.state;
     console.log(this.state);
     return (
       <div className="row">
@@ -246,31 +247,47 @@ export default class Ratings extends React.Component {
             </div> */}
           </div>
 
-          {this.state.selectedRating ?
+          {selectedRating ?
           <div> 
           <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>Image</th>
-                  <th>Name</th>
-                  <th>Province</th>
-                  <th>Views</th>
+                  <th>ID</th>
+                  <th>{selectedRating === 'hotels' ? 'Hotel ID' : 'Package ID'}</th>
+                  <th>User ID</th>
+                  <th>Rating</th>
+                  <th>Comment</th>
                 </tr>
               </thead>
               <tbody>
                 {this.state.ratings && this.state.ratings.length >= 1 ?
                   this.state.ratings.map((rating, index) => (
                   <tr key={index}>
-                    <td>{<img style={{height: '50px', width: '50px'}} src={rating.gallery ? rating.gallery[0].url : Broken} />}</td>
-                    <td>{rating.name}</td>
-                    <td>{rating.province}</td>
-                    <td>{rating.views}</td>
+                    {/* <td>{<img style={{height: '50px', width: '50px'}} src={rating.gallery ? rating.gallery[0].url : Broken} />}</td> */}
+                    <td>{rating.ID}</td>
+                    <td>{selectedRating === 'hotels' ? rating.hotel_id : rating.package_id}</td>
+                    <td>{rating.user_id}</td>
+                    <td>{rating.rating}</td>
+                    <td>{rating.comment}</td>
                     <td>
                       <Link to={`${this.endPoint}/area_resource/${rating.ID}`}>
-                        <button type="button" className="btn btn-info btn-sm">Resource</button>
+                        <button type="button" className="btn btn-success btn-sm">Approve</button>
                       </Link>
                     </td>
+                    <td>
+                      <Link to={`${this.endPoint}/area_resource/${rating.ID}`}>
+                        <button type="button" className="btn btn-danger btn-sm">Reject</button>
+                      </Link>
+                    </td>
+                    <td>
+                        <Link to={`/edit_rating/${rating.ID}`}>
+                          <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </Link>
+                      </td>
+                    <td>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteRating(rating.ID, index)}></span>
+                      </td>
                   </tr>
                 )):
                 <tr>
