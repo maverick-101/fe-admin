@@ -621,13 +621,13 @@ export default class HotelForm extends React.Component {
                           required
                         >
                           <option value="">Select Type</option>
-                          <option value="1 Star">1 Star</option>
-                          <option value="2 Star">2 Star</option>
-                          <option value="3 Star">3 Star</option>
-                          <option value="4 Star">4 Star</option>
-                          <option value="5 Star">5 Star</option>
-                          <option value="6 Star">6 Star</option>
-                          <option value="7 Star">7 Star</option>
+                          <option value="1">1 Star</option>
+                          <option value="2">2 Star</option>
+                          <option value="3">3 Star</option>
+                          <option value="4">4 Star</option>
+                          <option value="5">5 Star</option>
+                          <option value="6">6 Star</option>
+                          <option value="7">7 Star</option>
                         </select>
                       </div>
                     </div>
