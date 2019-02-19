@@ -22,6 +22,7 @@ export default class FeaturedForm extends React.Component {
         package_id: '',
         start_date: '',
         end_date: '',
+        starting_price: '',
       },
       gallery: '',
       hotels: [],
@@ -278,6 +279,7 @@ export default class FeaturedForm extends React.Component {
                 }
 
                 {location.state.selectedForm === 'featuredHotels' ?
+                <div>
                   <div className="form-group row">
                     <label className="control-label col-md-3 col-sm-3">Hotel</label>
                     <div className="col-md-6 col-sm-6">
@@ -294,6 +296,24 @@ export default class FeaturedForm extends React.Component {
                             />
                         </div>
                     </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Starting Price
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="starting_price"
+                          className="form-control"
+                          value={featured.starting_price}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
                       :
                     null
                 }
