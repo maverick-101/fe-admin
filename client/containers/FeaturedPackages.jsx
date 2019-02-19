@@ -105,6 +105,7 @@ export default class FeaturedPackages extends React.Component {
                   <th>Created At</th>
                   <th>Start Date</th>
                   <th>End Date</th>
+                  <th>Starting Price</th>
                   {/* <th>Marla-Size(Sqft)</th>
                   <th>Population</th>
                   <th>Latitude</th>
@@ -120,6 +121,7 @@ export default class FeaturedPackages extends React.Component {
                     <td>{moment(featuredPackage.createdAt).format('DD-MMM-YYYY')}</td>
                     <td>{moment(featuredPackage.start_date).format('DD-MMM-YYYY')}</td>
                     <td>{moment(featuredPackage.end_date).format('DD-MMM-YYYY')}</td>
+                    <td>{featuredPackage.starting_price}</td>
                     {/* <td>{area.marla_size}</td>
                     <td>{area.population}</td>
                     <td>{area.lat}</td>
