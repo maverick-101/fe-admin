@@ -17,7 +17,7 @@ export default class Ratings extends React.Component {
       q: '',
       selectedRating: undefined,
       responseMessage: 'Loading Ratings...',
-      listingType: 'active'
+      status: 'pending'
     }
     this.endPoint = 'https://api.saaditrips.com';
   }
@@ -40,7 +40,7 @@ export default class Ratings extends React.Component {
         this.setState({
           ratings: response.data,
           pages: Math.ceil(response.data.length/10),
-          listingType: 'pending',
+          status: 'pending',
         })
       })
       .catch(err => {
@@ -63,6 +63,12 @@ export default class Ratings extends React.Component {
       })
     }
   }
+
+  switchRatingType = (type) => {
+    window.alert(type);
+    this.setState({ status: type })
+  }
+
   deleteRating(cityId, index) {
     if(confirm("Are you sure you want to delete this rating?")) {
       axios.delete(`${this.endPoint}/api/delete/rating-deleteById/${cityId}`)
@@ -102,7 +108,7 @@ export default class Ratings extends React.Component {
   }
 
   render() {
-    const { listingType, selectedRating } = this.state;
+    const { status, selectedRating } = this.state;
     console.log(this.state);
     return (
       <div className="row">
@@ -121,33 +127,6 @@ export default class Ratings extends React.Component {
                   </Link>
                 </div>
               : null}
-              
-            {/* <div className="col-sm-6">
-                <Link to="/area_form">
-                  <button type="button" className="btn btn-lg btn-success marginTop">Packages</button>
-                </Link>
-            </div>
-            <div className="col-sm-6">
-                <Link to="/area_form">
-                  <button type="button" className="btn btn-lg btn-success marginTop">Hotels</button>
-                </Link>
-            </div> */}
-            {/* <div style={{marginTop: '20px'}} className="col-sm-4">
-              <div className='input-group'>
-                <input  className='form-control' type="text" name="search" placeholder="Enter keyword" value={this.state.q} onChange={(event) => this.setState({q: event.target.value})}/>
-                <span className="input-group-btn" >
-                  <button type="button" onClick={() => this.handleSearch()} className="btn btn-info search-btn">Search</button>
-                </span>
-              </div>
-            </div> */}
-            {/* <div className="col-sm-2 pull-right">
-              <HasRole requiredRole={['admin', 'data-entry']} requiredDepartment={['admin', 'sales']}>
-                <Link to="/area_form">
-                  <button type="button" className="btn btn-success marginTop">Add new Area</button>
-                </Link>
-              </HasRole>
-            </div> */}
-
           </div>
 
           <div className="form-group row">
@@ -174,8 +153,18 @@ export default class Ratings extends React.Component {
               <button
                 type="button"
                 style={{ borderRadius: 0 }}
-                className={`${listingType === 'active' ? 'btn-primary' : ''} btn btn-default`}
-                onClick={() => this.fetchRatings('active')}
+                className={`${status === 'pending' ? 'btn-primary' : ''} btn btn-default`}
+                onClick={() => this.switchRatingType('pending')}
+              >Pending
+              </button>
+              <button
+                type="button"
+                style={{
+                  marginLeft: 5,
+                  borderRadius: 0,
+                }}
+                className={`${status === 'accepted' ? 'btn-primary' : ''} btn btn-default`}
+                onClick={() => this.switchRatingType('accepted')}
               >Accepted
               </button>
               <button
@@ -184,67 +173,11 @@ export default class Ratings extends React.Component {
                   marginLeft: 5,
                   borderRadius: 0,
                 }}
-                className={`${listingType === 'pending' ? 'btn-primary' : ''} btn btn-default`}
-                onClick={() => this.fetchRatings('pending')}
+                className={`${status === 'rejected' ? 'btn-primary' : ''} btn btn-default`}
+                onClick={() => this.switchRatingType('rejected')}
               >Rejected
               </button>
-              <button
-                type="button"
-                style={{
-                  marginLeft: 5,
-                  borderRadius: 0,
-                }}
-                className={`${listingType === 'pending' ? 'btn-primary' : ''} btn btn-default`}
-                onClick={() => this.fetchRatings('pending')}
-              >Pending
-              </button>
             </div>
-            {/* <div className="float-right col-sm-6 text-right">
-              <button
-                type="button"
-                style={{
-                  marginRight: 5,
-                  marginBottom: 5,
-                  borderRadius: 0,
-                }}
-                className={`${activeButton === 'pending' ? 'btn-primary' : ''} btn btn-default`}
-                onClick={() => this.handleFilter('pending')}
-              >Pending
-              </button>
-              <button
-                type="button"
-                style={{
-                  marginRight: 5,
-                  marginBottom: 5,
-                  borderRadius: 0,
-                }}
-                className={`${activeButton === 'mop' ? 'btn-primary' : ''} btn btn-default`}
-                onClick={() => this.handleFilter('mop')}
-              >Pending MOP
-              </button>
-              <button
-                type="button"
-                style={{
-                  marginRight: 5,
-                  marginBottom: 5,
-                  borderRadius: 0,
-                }}
-                className={`${activeButton === 'mop_cleared' ? 'btn-primary' : ''} btn btn-default`}
-                onClick={() => this.handleFilter('mop_cleared')}
-              >MOP Cleared
-              </button>
-              <button
-                type="button"
-                style={{
-                  marginRight: 5,
-                  marginBottom: 5,
-                  borderRadius: 0,
-                }}
-                className={`${activeButton === 'published' ? 'btn-primary' : ''} btn btn-default`}
-                onClick={() => this.handleFilter('published')}
-              >Published
-              </button>
-            </div> */}
           </div>
 
           {selectedRating ?
