@@ -110,8 +110,6 @@ ReactDOM.render(
 
         <Route path="/featured_packages" component={FeaturedPackages}/>
         <Route path="/featured_packages_form" component={FeaturedForm}/>
-
-        <Route path="/test" component={Test}/>
         
       </Route>
     </Router>
