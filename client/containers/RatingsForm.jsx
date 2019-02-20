@@ -364,8 +364,9 @@ export default class RatingsForm extends React.Component {
                           required
                         >
                           <option value="">Select Value</option>
-                          <option value="pending">Pending</option>
-                          <option value="active">Active</option>
+                          <option value="PENDING">Pending</option>
+                          <option value="ACCEPTED">Accepted</option>
+                          <option value="REJECTED">Rejected</option>
                         </select>
                       </div>
                     </div>
