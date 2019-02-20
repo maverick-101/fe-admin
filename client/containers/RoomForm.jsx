@@ -70,7 +70,7 @@ export default class RoomForm extends React.Component {
     axios.get(`${this.endPoint}/api/hotel/fetchById/${this.props.params.hotelId}`)
         .then((response) => {
           this.setState({
-            hotel: response.data[0],
+            hotel: response.data,
           });
         });
     // if (match.params.cityId) {
@@ -425,7 +425,7 @@ export default class RoomForm extends React.Component {
                     </div>
                   </form>
                 </div>
-                <h1>Rooms available at {hotel.name}</h1>
+                <h1>Rooms available at {this.props.location.state.hotelName}</h1>
                 <div className="table-responsive">
             <table className="table table-striped">
               <thead>

@@ -120,7 +120,10 @@ export default class Hotels extends React.Component {
                     <td>{area.lat}</td>
                     <td>{area.lon}</td> */}
                     <td>
-                      <Link to={`/rooms/${hotel.ID}`}>
+                      <Link to={{
+                          pathname: `/rooms/${hotel.ID}`,
+                          state: { hotelName: hotel.name}
+                        }}>
                         <button type="button" className="btn btn-info btn-sm">Rooms</button>
                       </Link>
                     </td>
