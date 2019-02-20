@@ -17,6 +17,7 @@ export default class RatingsForm extends React.Component {
         user_id: '',
         hotel_id: '',
         package_id: '',
+        rating: '',
         status: '',
         comment: '',
       },
@@ -332,6 +333,25 @@ export default class RatingsForm extends React.Component {
                       :
                     null
                 }
+
+                <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Ratings
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="rating"
+                          className="form-control"
+                          value={rating.rating}
+                          onChange={this.handleInputChange}
+                          pattern="^[1-5]$"
+                          title="Rating should only range between 1 to 5"
+                        />
+                      </div>
+                    </div>
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Status</label>
