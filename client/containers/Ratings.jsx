@@ -17,7 +17,7 @@ export default class Ratings extends React.Component {
       q: '',
       selectedRating: undefined,
       responseMessage: 'Loading Ratings...',
-      status: 'pending'
+      status: 'Pending'
     }
     this.endPoint = 'https://api.saaditrips.com';
   }
@@ -40,7 +40,6 @@ export default class Ratings extends React.Component {
         this.setState({
           ratings: response.data,
           pages: Math.ceil(response.data.length/10),
-          status: 'pending',
         })
       })
       .catch(err => {
@@ -65,8 +64,41 @@ export default class Ratings extends React.Component {
   }
 
   switchRatingType = (type) => {
-    window.alert(type);
-    this.setState({ status: type })
+    const { selectedRating } = this.state;
+    this.setState({
+      status: type,
+      ratings: [],
+    })
+    if(selectedRating === 'hotels') {
+    axios.get(`${this.endPoint}/api/fetchAll${type}/hotelRating-fetchAll${type}`)
+      .then(response => {
+        this.setState({
+          ratings: response.data,
+          pages: Math.ceil(response.data.length/10),
+          responseMessage: 'No Ratings Found...'
+        })
+      })
+      .catch((error) => {
+        this.setState({
+          responseMessage: 'No Ratings Found...'
+        })
+      })
+    }
+    else {
+      axios.get(`${this.endPoint}/api/fetchAll${type}/packageRating-fetchAll${type}`)
+      .then(response => {
+        this.setState({
+          ratings: response.data,
+          pages: Math.ceil(response.data.length/10),
+          responseMessage: 'No Ratings Found...'
+        })
+      })
+      .catch((error) => {
+        this.setState({
+          responseMessage: 'No Ratings Found...'
+        })
+      })
+    }
   }
 
   deleteRating(cityId, index) {
@@ -148,13 +180,15 @@ export default class Ratings extends React.Component {
                       </div>
                     </div>
 
-                    <div className="row justify-content-between">
+            {selectedRating ?
+          <div>         
+            <div className="row justify-content-between">
             <div className="float-left col-sm-6 space-1">
               <button
                 type="button"
                 style={{ borderRadius: 0 }}
-                className={`${status === 'pending' ? 'btn-primary' : ''} btn btn-default`}
-                onClick={() => this.switchRatingType('pending')}
+                className={`${status === 'Pending' ? 'btn-primary' : ''} btn btn-default`}
+                onClick={() => this.switchRatingType('Pending')}
               >Pending
               </button>
               <button
@@ -163,8 +197,8 @@ export default class Ratings extends React.Component {
                   marginLeft: 5,
                   borderRadius: 0,
                 }}
-                className={`${status === 'accepted' ? 'btn-primary' : ''} btn btn-default`}
-                onClick={() => this.switchRatingType('accepted')}
+                className={`${status === 'Accepted' ? 'btn-primary' : ''} btn btn-default`}
+                onClick={() => this.switchRatingType('Accepted')}
               >Accepted
               </button>
               <button
@@ -173,15 +207,14 @@ export default class Ratings extends React.Component {
                   marginLeft: 5,
                   borderRadius: 0,
                 }}
-                className={`${status === 'rejected' ? 'btn-primary' : ''} btn btn-default`}
-                onClick={() => this.switchRatingType('rejected')}
+                className={`${status === 'Rejected' ? 'btn-primary' : ''} btn btn-default`}
+                onClick={() => this.switchRatingType('Rejected')}
               >Rejected
               </button>
             </div>
           </div>
 
-          {selectedRating ?
-          <div> 
+          
           <div className="table-responsive">
             <table className="table table-striped">
               <thead>
