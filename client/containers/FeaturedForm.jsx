@@ -42,12 +42,35 @@ export default class FeaturedForm extends React.Component {
 
   componentDidMount() {
     console.log('props',this.props);
-    const { location } = this.props;
+    const { location, params } = this.props;
       if (location.state.selectedForm === 'featuredPackages'){
-        this.fetchPackages();
-      }
-      else {
-        this.fetchHotels();
+        axios.get(`${this.endPoint}/api/fetchById/featuredPackage-fetchById/${params.featuredPackageId}`)
+        .then(response => {
+        this.setState({
+          featured: response.data[0],
+        }, () => {
+          axios.get(`${this.endPoint}/api/fetchById/packagePage-fetchById/${this.state.featured.package_id}`)
+          .then((response) => {
+            this.setState({
+              pckg: response.data,
+            })
+          })
+        })
+      })} else {
+        axios.get(`${this.endPoint}/api/fetchById/featuredHotel-fetchById/${params.featuredHotelId}`)
+        .then(response => {
+        this.setState({
+          featured: response.data[0],
+        }, () => {
+          axios.get(`${this.endPoint}/api/hotel/fetchById/${this.state.featured.hotel_id}`)
+            .then((response) => {
+              console.log('REsponse from api', JSON.stringify(response.data))
+              this.setState({
+                hotel: response.data,
+              })
+            })
+          })
+        })
       }
     }
 
