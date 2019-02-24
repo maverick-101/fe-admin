@@ -133,7 +133,10 @@ export default class FeaturedPackages extends React.Component {
                     </td> */}
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`/edit_coverBanner/${featuredPackage.ID}`}>
+                        <Link to={{
+                        pathname: `/edit_featured_packages/${featuredPackage.ID}`,
+                        state: { selectedForm: 'featuredPackages'}
+                        }}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
