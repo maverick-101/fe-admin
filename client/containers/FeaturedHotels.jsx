@@ -133,7 +133,10 @@ export default class FeaturedHotels extends React.Component {
                     </td> */}
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`/edit_coverBanner/${featuredHotel.ID}`}>
+                        <Link to={{
+                        pathname: `/edit_featured_hotels/${featuredHotel.ID}`,
+                        state: { selectedForm: 'featuredHotels'}
+                        }}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
