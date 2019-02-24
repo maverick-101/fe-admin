@@ -107,9 +107,11 @@ ReactDOM.render(
 
         <Route path="/featured_hotels" component={FeaturedHotels}/>
         <Route path="/featured_hotels_form" component={FeaturedForm}/>
+        <Route path="/edit_featured_hotels/:featuredHotelId" component={FeaturedForm}/>
 
         <Route path="/featured_packages" component={FeaturedPackages}/>
         <Route path="/featured_packages_form" component={FeaturedForm}/>
+        <Route path="/edit_featured_packages/:featuredPackageId" component={FeaturedForm}/>
         
       </Route>
     </Router>
