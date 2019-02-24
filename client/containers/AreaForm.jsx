@@ -19,6 +19,7 @@ export default class AreaForm extends React.Component {
         // views: '',
         image_type: '',
         description: '',
+        recommended: false,
       },
       gallery: '',
       city: '',
@@ -339,22 +340,20 @@ export default class AreaForm extends React.Component {
                       ) : null
                               }
 
-                    {/* <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Image Type</label>
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Recommended</label>
                       <div className="col-md-6 col-sm-6">
-                        <select
-                          name="image_type"
-                          value={location.image_type}
-                          className="form-control custom-select"
-                          onChange={this.handleInputChange}
-                          required
-                        >
-                          <option value="">Select Type</option>
-                          <option value="lounge">Lounge Image</option>
-                          <option value="main_hall">Main Hall Image</option>
-                        </select>
+                      <input
+                        type="checkbox"
+                        name='recommended'
+                        checked={location.recommended}
+                        onClick={() => {
+                          location.recommended = !location.recommended;
+                          this.setState({ location })
+                        }}
+                      />
                       </div>
-                    </div> */}
+                    </div>
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Description</label>
