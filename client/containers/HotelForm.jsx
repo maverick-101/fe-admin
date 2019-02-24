@@ -29,6 +29,7 @@ export default class HotelForm extends React.Component {
         city_id: '',
         user_id: '',
         address: '',
+        minimum_price: '',
         image_type: '',
         stars: '',
         logo: '',
@@ -434,6 +435,23 @@ export default class HotelForm extends React.Component {
                       </div>
                       ) : null
                               }
+
+                      <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Minimum Price
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="number"
+                          name="minimum_price"
+                          className="form-control"
+                          value={hotel.minimum_price}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
 
                     {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Type</label>
