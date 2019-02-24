@@ -33,9 +33,9 @@ export default class Packages extends React.Component {
         })
       })
   }
-  deleteArea(areaId, index) {
-    if(confirm("Are you sure you want to delete this pckg?")) {
-      axios.delete(`/api/pckg/${areaId}`)
+  deletePackage(pckgId, index) {
+    if(confirm("Are you sure you want to delete this packge?")) {
+      axios.delete(`${this.endPoint}/api/delete/packagePage-deleteById/${pckgId}`)
         .then(response => {
           const packages = this.state.packages.slice();
           packages.splice(index, 1);
@@ -137,7 +137,7 @@ export default class Packages extends React.Component {
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteArea(pckg.ID, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deletePackage(pckg.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                   </tr>
