@@ -18,6 +18,7 @@ export default class PackageForm extends React.Component {
         agent_id: '',
         location_id: '',
         price: [],
+        minimum_price: '',
         travel_modes: [],
         activities: [],
         food: [],
@@ -457,6 +458,23 @@ export default class PackageForm extends React.Component {
                             />
                           </div>
                         </div>
+
+                        <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Minimum Price
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="number"
+                          name="minimum_price"
+                          className="form-control"
+                          value={pckg.minimum_price}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
 
                     <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
                         <div className="control-label col-md-3 col-sm-3"></div>
