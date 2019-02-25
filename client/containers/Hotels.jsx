@@ -32,8 +32,8 @@ export default class Hotels extends React.Component {
   }
 
   deleteHotel(hotelId, index) {
-    if(confirm("Are you sure you want to delete this area?")) {
-      axios.delete(`/api/area/${hotelId}`)
+    if(confirm("Are you sure you want to delete this hotel?")) {
+      axios.delete(`${this.endPoint}/api/delete/hotel-deleteById/${hotelId}`)
         .then(response => {
           const hotels = this.state.hotels.slice();
           hotels.splice(index, 1);
@@ -142,7 +142,7 @@ export default class Hotels extends React.Component {
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" onClick={() => this.deleteArea(area.id, index)}></span>
+                        <span style={{cursor: 'pointer'}} className="glyphicon glyphicon-trash" aria-hidden="true" onClick={() => this.deleteHotel(hotel.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                   </tr>
