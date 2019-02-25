@@ -20,6 +20,7 @@ export default class HotelResource extends React.Component {
     this.state = {
       loading: false,
       hotelResource: {
+        title: '',
         image_type: '',
         hotel_id: '',
         description: '',
@@ -241,6 +242,23 @@ export default class HotelResource extends React.Component {
                     className="form-horizontal form-label-left"
                     onSubmit={this.postHotelResource}
                   >
+
+                  <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Title
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="title"
+                          className="form-control"
+                          value={hotel.title}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
 
                   <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Image Type</label>
