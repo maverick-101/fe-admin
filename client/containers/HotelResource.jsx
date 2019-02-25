@@ -273,6 +273,10 @@ export default class HotelResource extends React.Component {
                           <option value="">Select Type</option>
                           <option value="lounge">Lounge Image</option>
                           <option value="main_hall">Main Hall Image</option>
+                          <option value="restaurant">Restaurant Image</option>
+                          <option value="front_view">Front View Image</option>
+                          <option value="lounge">Passage Images</option>
+                          <option value="main_hall">Amenities Image</option>
                         </select>
                       </div>
                     </div>
