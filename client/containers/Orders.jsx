@@ -165,25 +165,30 @@ export default class Orders extends React.Component {
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>Image</th>
-                  <th>Name</th>
-                  <th>Province</th>
-                  <th>Views</th>
+                  <th>ID</th>
+                  <th>Room Id</th>
+                  <th>User Name</th>
+                  <th>User Email</th>
+                  <th>User Phone</th>
                 </tr>
               </thead>
               <tbody>
                 {this.state.orders && this.state.orders.length >= 1 ?
                   this.state.orders.map((order, index) => (
                   <tr key={index}>
-                    <td>{<img style={{height: '50px', width: '50px'}} src={order.gallery ? order.gallery[0].url : Broken} />}</td>
-                    <td>{order.name}</td>
-                    <td>{order.province}</td>
-                    <td>{order.views}</td>
-                    <td>
+                    <td>{order.ID}</td>
+                    <td>{order.room_id}</td>
+                    <td>{order.user_name}</td>
+                    <td>{order.user_email}</td>
+                    <td>{order.user_phone}</td>
+                    {/* <td>
                       <Link to={`${this.endPoint}/area_resource/${order.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
-                    </td>
+                    </td> */}
+                     <td>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}}></span>
+                      </td>
                   </tr>
                 )):
                 <tr>
