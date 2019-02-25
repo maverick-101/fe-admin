@@ -154,11 +154,14 @@ export default class Ratings extends React.Component {
 
   deleteRating(ratingId, index) {
     if(confirm("Are you sure you want to delete this rating?")) {
-      axios.delete(`${this.endPoint}/api/delete/${selectedRating === 'hotels'? '' : ''}rating-deleteById/${ratingId}`)
+      axios.delete(`${this.endPoint}/api/delete/${this.state.selectedRating === 'hotels'? 'hotel' : 'package'}Rating-deleteById/${ratingId}`)
         .then(response => {
           const ratings = this.state.ratings.slice();
           ratings.splice(index, 1);
           this.setState({ ratings });
+          if(response.status === 200) {
+            window.alert('Rating deleted Successfully')
+          }
         });
     }
   }
@@ -302,9 +305,15 @@ export default class Ratings extends React.Component {
                     <td>{rating.comment}</td>
                     {status !== 'All' ?
                       <td>
-                          <button type="button" className="btn btn-info btn-sm ml-2" onClick={() => this.changeStatus(rating.ID, 'PENDING')} style={{marginRight: '5px'}}>Pending</button>
-                          <button type="button" className="btn btn-success btn-sm" onClick={() => this.changeStatus(rating.ID, 'ACCEPTED')}style={{marginRight: '5px'}}>Accepted</button>
-                          <button type="button" className="btn btn-danger btn-sm" onClick={() => this.changeStatus(rating.ID, 'REJECTED')}>Rejected</button>
+                      {status === 'Accepted' || status === 'Rejected' ? 
+                        <button type="button" className="btn btn-info btn-sm ml-2" onClick={() => this.changeStatus(rating.ID, 'PENDING')} style={{marginRight: '5px'}}>Pending</button>
+                          : null}
+                          {status === 'Pending' || status === 'Rejected' ? 
+                          <button type="button" className="btn btn-success btn-sm" onClick={() => this.changeStatus(rating.ID, 'ACCEPTED')}style={{marginRight: '5px'}}>Accept</button>
+                          : null}
+                          {status === 'Pending' || status === 'Accepted' ? 
+                          <button type="button" className="btn btn-danger btn-sm" onClick={() => this.changeStatus(rating.ID, 'REJECTED')}>Reject</button>
+                          : null}
                       </td>
                     : null}
                     <td>
