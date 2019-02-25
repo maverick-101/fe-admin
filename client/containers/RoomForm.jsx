@@ -19,32 +19,18 @@ export default class RoomForm extends React.Component {
         persons: '',
         beds: '',
         bed_type: '',
-        // image_type: '',
         pets_allowed: '',
         smoking_allowed: '',
-        // postalCode: '',
-        // star_rating: '',
-        // email: '',
-        // phone: '',
-        // geo: {
-        //   latitude: '',
-        //   longitude: '',
-        // },
-        packages: [],
         responseMessage: 'Loading Rooms...'
-        // room_amenities: [],
       },
       gallery: '',
-      // cities: [],
-      // locations: [],
       hotel: '',
       rooms: [],
-      // location: '',
       description: RichTextEditor.createEmptyValue(),
     };
     this.endPoint = 'https://api.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postHotel = this.postHotel.bind(this);
+    this.postRoom = this.postRoom.bind(this);
   }
 
   componentWillMount() {
@@ -52,7 +38,7 @@ export default class RoomForm extends React.Component {
   }
 
   fetchRooms = () => {
-    axios.get(`${this.endPoint}/api/room/fetch/`)
+    axios.get(`${this.endPoint}/api/room/fetchByHotelId/${this.props.params.hotelId}`)
         .then((response) => {
           this.setState({
             rooms: response.data,
@@ -141,7 +127,7 @@ export default class RoomForm extends React.Component {
     this.setState({ gallery: event.target.files });
   }
 
-  postHotel(event) {
+  postRoom(event) {
     event.preventDefault();
     const { match, history } = this.props;
     const { loading, room, gallery } = this.state;
@@ -162,15 +148,15 @@ export default class RoomForm extends React.Component {
         // axios.post('/api/room/save', fd)
         axios.post(`${this.endPoint}/api/room/save`, fd)
           .then((response) => {
-            if (response.data === 'Room Saved!') {
+            if (response.data && response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
               this.fetchRooms();
             } else {
-              history.push('/hotels');
+             this.setState({ loading: false })
+             window.alert('Error: Room not saved!')
             }
-          });
-      // }
+        });
     }
   }
 
@@ -242,7 +228,7 @@ export default class RoomForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postHotel}
+                    onSubmit={this.postRoom}
                   >
                     <div className="form-group row">
                       <label
