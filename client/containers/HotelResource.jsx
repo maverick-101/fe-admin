@@ -20,7 +20,7 @@ export default class HotelResource extends React.Component {
     this.state = {
       loading: false,
       hotelResource: {
-        title: '',
+        hotelResources_title: '',
         image_type: '',
         hotel_id: '',
         description: '',
@@ -71,7 +71,7 @@ export default class HotelResource extends React.Component {
     }
     
     fetchResources = () => {
-      axios.get(`${this.endPoint}/api/fetchByHotelId/hotelImage-fetchByHotelId/${this.props.params.hotelId}`)
+      axios.get(`${this.endPoint}/api/fetchByHotelId/hotelResources-fetchByHotelId/${this.props.params.hotelId}`)
       .then((response) => {
         this.setState({
           resources: response.data,
@@ -142,7 +142,7 @@ export default class HotelResource extends React.Component {
           return img;
         });
 
-        fd.append('hotelImage', JSON.stringify(hotelResource));
+        fd.append('hotelResources', JSON.stringify(hotelResource));
 
         // if(this.props.params.hotelId) {
         // axios.patch(`${this.endPoint}/api/update/hotelImage-update`, fd)
@@ -157,7 +157,7 @@ export default class HotelResource extends React.Component {
         //   });
         // }
         // else {
-          axios.post(`${this.endPoint}/api/save/hotelImage-save`, fd)
+          axios.post(`${this.endPoint}/api/save/hotelResources-save`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);
@@ -252,9 +252,9 @@ export default class HotelResource extends React.Component {
                         <input
                           required
                           type="text"
-                          name="title"
+                          name="hotelResources_title"
                           className="form-control"
-                          value={hotel.title}
+                          value={hotel.hotelResources_title}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -368,7 +368,7 @@ export default class HotelResource extends React.Component {
                 this.state.resources.map((resource, index) => (
                   <tr key={index}>
                   <td>{resource.ID}</td>
-                  <td>{resource.images.length}</td>
+                  {/* <td>{resource.images.length}</td> */}
                   <td>{resource.image_type}</td>
                   <td>{moment(resource.created_At).format('DD-MMM-YYYY HH:mm:ss')}</td>
                       <td>
