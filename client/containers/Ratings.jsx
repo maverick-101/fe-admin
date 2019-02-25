@@ -301,18 +301,12 @@ export default class Ratings extends React.Component {
                     <td>{rating.status}</td>
                     <td>{rating.comment}</td>
                     {status !== 'All' ?
-                    <span> 
                       <td>
                           <button type="button" className="btn btn-info btn-sm ml-2" onClick={() => this.changeStatus(rating.ID, 'PENDING')} style={{marginRight: '5px'}}>Pending</button>
-                      </td>
-                      <td>
                           <button type="button" className="btn btn-success btn-sm" onClick={() => this.changeStatus(rating.ID, 'ACCEPTED')}style={{marginRight: '5px'}}>Accepted</button>
-                      </td>
-                      <td>
                           <button type="button" className="btn btn-danger btn-sm" onClick={() => this.changeStatus(rating.ID, 'REJECTED')}>Rejected</button>
                       </td>
-                    </span>
-                    : ''}
+                    : null}
                     <td>
                         <Link to={`/edit_rating/${rating.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
