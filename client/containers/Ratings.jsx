@@ -12,12 +12,13 @@ export default class Ratings extends React.Component {
 
     this.state = {
       ratings: [],
+      rating: '',
       activePage: 1,
       pages: 1,
       q: '',
       selectedRating: undefined,
       responseMessage: 'Loading Ratings...',
-      status: 'Pending'
+      status: 'All'
     }
     this.endPoint = 'https://api.saaditrips.com';
   }
@@ -30,6 +31,48 @@ export default class Ratings extends React.Component {
     //       responseMessage: 'No Ratings Found...'
     //     })
     //   })
+  }
+
+  changeStatus = (ratingId, ratingStatus) => {
+    if(this.state.selectedRating === 'hotels') {
+    axios.get(`${this.endPoint}/api/fetchById/hotelRating-fetchById/${ratingId}`)
+      .then(response => {
+        this.setState({
+          rating: response.data,
+        }, () => {
+          this.setState(prevState => ({
+            rating: {
+                ...prevState.rating,
+                status: ratingStatus,
+            },
+            }));
+        })
+            let updatedRating = {'hotelRating' : JSON.stringify(this.state.rating)}
+              axios.patch(`${this.endPoint}/api/update/hotelRating-update`,  updatedRating)
+              .then((response) => {
+                window.alert(response.data)
+              })
+      })
+    } else {
+      axios.get(`${this.endPoint}/api/fetchById/packageRating-fetchById/${ratingId}`)
+      .then(response => {
+        this.setState({
+          rating: response.data,
+        }, () => {
+          this.setState(prevState => ({
+            rating: {
+                ...prevState.rating,
+                status: ratingStatus,
+            },
+            }));
+        })
+            let updatedRating = {'packageRating' : JSON.stringify(this.state.rating)}
+              axios.patch(`${this.endPoint}/api/update/packageRating-update`,  updatedRating)
+              .then((response) => {
+                window.alert(response.data)
+              })
+      })
+    }
   }
 
   fetchRatings(ratingName) {
@@ -70,21 +113,28 @@ export default class Ratings extends React.Component {
       ratings: [],
     })
     if(selectedRating === 'hotels') {
-    axios.get(`${this.endPoint}/api/fetchAll${type}/hotelRating-fetchAll${type}`)
-      .then(response => {
-        this.setState({
-          ratings: response.data,
-          pages: Math.ceil(response.data.length/10),
-          responseMessage: 'No Ratings Found...'
+      if(type === 'All'){
+        this.fetchRatings(selectedRating);
+      } else {
+      axios.get(`${this.endPoint}/api/fetchAll${type}/hotelRating-fetchAll${type}`)
+        .then(response => {
+          this.setState({
+            ratings: response.data,
+            pages: Math.ceil(response.data.length/10),
+            responseMessage: 'No Ratings Found...'
+          })
         })
-      })
-      .catch((error) => {
-        this.setState({
-          responseMessage: 'No Ratings Found...'
+        .catch((error) => {
+          this.setState({
+            responseMessage: 'No Ratings Found...'
+          })
         })
-      })
+      }
     }
     else {
+      if(type === 'All') {
+        this.fetchRatings(selectedRating);
+      } else {
       axios.get(`${this.endPoint}/api/fetchAll${type}/packageRating-fetchAll${type}`)
       .then(response => {
         this.setState({
@@ -100,10 +150,11 @@ export default class Ratings extends React.Component {
       })
     }
   }
+}
 
-  deleteRating(cityId, index) {
+  deleteRating(ratingId, index) {
     if(confirm("Are you sure you want to delete this rating?")) {
-      axios.delete(`${this.endPoint}/api/delete/rating-deleteById/${cityId}`)
+      axios.delete(`${this.endPoint}/api/delete/${selectedRating === 'hotels'? '' : ''}rating-deleteById/${ratingId}`)
         .then(response => {
           const ratings = this.state.ratings.slice();
           ratings.splice(index, 1);
@@ -134,6 +185,7 @@ export default class Ratings extends React.Component {
   handleRatingSelection(event) {
     this.setState({
       selectedRating: event.target.value,
+      status: 'All'
     }, () => {
       this.fetchRatings(this.state.selectedRating)
     })
@@ -184,6 +236,16 @@ export default class Ratings extends React.Component {
           <div>         
             <div className="row justify-content-between">
             <div className="float-left col-sm-6 space-1">
+            <button
+                type="button"
+                style={{
+                  marginRight: 5,
+                  borderRadius: 0,
+                }}
+                className={`${status === 'All' ? 'btn-primary' : ''} btn btn-default`}
+                onClick={() => this.switchRatingType('All')}
+              >All
+              </button>
               <button
                 type="button"
                 style={{ borderRadius: 0 }}
@@ -223,6 +285,7 @@ export default class Ratings extends React.Component {
                   <th>{selectedRating === 'hotels' ? 'Hotel ID' : 'Package ID'}</th>
                   <th>User ID</th>
                   <th>Rating</th>
+                  <th>Status</th>
                   <th>Comment</th>
                 </tr>
               </thead>
@@ -235,17 +298,21 @@ export default class Ratings extends React.Component {
                     <td>{selectedRating === 'hotels' ? rating.hotel_id : rating.package_id}</td>
                     <td>{rating.user_id}</td>
                     <td>{rating.rating}</td>
+                    <td>{rating.status}</td>
                     <td>{rating.comment}</td>
-                    <td>
-                      <Link to={`${this.endPoint}/area_resource/${rating.ID}`}>
-                        <button type="button" className="btn btn-success btn-sm">Approve</button>
-                      </Link>
-                    </td>
-                    <td>
-                      <Link to={`${this.endPoint}/area_resource/${rating.ID}`}>
-                        <button type="button" className="btn btn-danger btn-sm">Reject</button>
-                      </Link>
-                    </td>
+                    {status !== 'All' ?
+                    <span> 
+                      <td>
+                          <button type="button" className="btn btn-info btn-sm ml-2" onClick={() => this.changeStatus(rating.ID, 'PENDING')} style={{marginRight: '5px'}}>Pending</button>
+                      </td>
+                      <td>
+                          <button type="button" className="btn btn-success btn-sm" onClick={() => this.changeStatus(rating.ID, 'ACCEPTED')}style={{marginRight: '5px'}}>Accepted</button>
+                      </td>
+                      <td>
+                          <button type="button" className="btn btn-danger btn-sm" onClick={() => this.changeStatus(rating.ID, 'REJECTED')}>Rejected</button>
+                      </td>
+                    </span>
+                    : ''}
                     <td>
                         <Link to={`/edit_rating/${rating.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
