@@ -33,13 +33,16 @@ export default class FeaturedPackages extends React.Component {
         })
     })
   }
-  deleteCity(coverBannerId, index) {
-    if(confirm("Are you sure you want to delete this area?")) {
-      axios.delete(`/api/area/${coverBannerId}`)
+  deletePackage(packageId, index) {
+    if(confirm("Are you sure you want to delete this featured package?")) {
+      axios.delete(`${this.endPoint}/api/delete/featuredPackage-deleteById/${packageId}`)
         .then(response => {
           const featuredPackages = this.state.featuredPackages.slice();
           featuredPackages.splice(index, 1);
           this.setState({ featuredPackages });
+          if(response.status === 200) {
+            window.alert('Deleted Successfully!')
+          }
         });
     }
   }
@@ -141,7 +144,7 @@ export default class FeaturedPackages extends React.Component {
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteCity(featuredPackage.ID, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deletePackage(featuredPackage.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                   </tr>

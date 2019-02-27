@@ -421,6 +421,7 @@ export default class HotelForm extends React.Component {
                         <div className="col-md-6 col-sm-6">
                         {hotel.gallery.map((image,index) => {
                           return (
+                            <span>
                           <img key={index}
                           style={{marginRight: '5px'}}
                           width="100"
@@ -428,6 +429,8 @@ export default class HotelForm extends React.Component {
                           src={`${image.url}`}
                           alt="cover"
                         />
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} />
+                        </span>
                           )
                         })}
                           

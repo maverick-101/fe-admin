@@ -33,13 +33,16 @@ export default class FeaturedHotels extends React.Component {
           })
       })
   }
-  deleteCity(coverBannerId, index) {
-    if(confirm("Are you sure you want to delete this area?")) {
-      axios.delete(`/api/area/${coverBannerId}`)
+  deleteHotel(hotelId, index) {
+    if(confirm("Are you sure you want to delete this featured hotel?")) {
+      axios.delete(`${this.endPoint}/api/delete/featuredHotel-deleteById/${hotelId}`)
         .then(response => {
           const featuredHotels = this.state.featuredHotels.slice();
           featuredHotels.splice(index, 1);
           this.setState({ featuredHotels });
+          if(response.status === 200) {
+            window.alert('Deleted Successfully!')
+          }
         });
     }
   }
@@ -141,7 +144,7 @@ export default class FeaturedHotels extends React.Component {
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteCity(featuredHotel.ID, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteHotel(featuredHotel.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                   </tr>
