@@ -1027,17 +1027,17 @@ export default class PackageForm extends React.Component {
                               }
 
                     <div className="form-group row">
-                        <label className="control-label col-md-3 col-sm-3">Description</label>
-                        <div className="col-md-6 col-sm-6">
-                          <textarea
-                            rows="4"
-                            name="description"
-                            className="form-control"
-                            value={pckg.description}
-                            onChange={this.handleInputChange}
-                          />
-                        </div>
+                      <label className="control-label col-md-3 col-sm-3">Description</label>
+                      <div className="col-md-6 col-sm-6">
+                        <RichTextEditor
+                          value={description}
+                          toolbarConfig={toolbarConfig}
+                          onChange={(e) => {
+                            this.setDescription(e);
+                          }}
+                        />
                       </div>
+                    </div>
                     <div className="ln_solid" />
                     <div className="form-group row">
                       <div className="col-md-12 col-sm-12 text-center offset-md-3">
