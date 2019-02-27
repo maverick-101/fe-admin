@@ -40,39 +40,48 @@ export default class FeaturedForm extends React.Component {
     this.postFeatured = this.postFeatured.bind(this);
   }
 
-  componentDidMount() {
-    console.log('props',this.props);
+  componentWillMount() {
     const { location, params } = this.props;
       if (location.state.selectedForm === 'featuredPackages'){
-        axios.get(`${this.endPoint}/api/fetchById/featuredPackage-fetchById/${params.featuredPackageId}`)
-        .then(response => {
-        this.setState({
-          featured: response.data[0],
-        }, () => {
-          axios.get(`${this.endPoint}/api/fetchById/packagePage-fetchById/${this.state.featured.package_id}`)
-          .then((response) => {
-            this.setState({
-              pckg: response.data,
-            })
-          })
-        })
-      })} else {
-        axios.get(`${this.endPoint}/api/fetchById/featuredHotel-fetchById/${params.featuredHotelId}`)
-        .then(response => {
-        this.setState({
-          featured: response.data[0],
-        }, () => {
-          axios.get(`${this.endPoint}/api/hotel/fetchById/${this.state.featured.hotel_id}`)
-            .then((response) => {
-              console.log('REsponse from api', JSON.stringify(response.data))
-              this.setState({
-                hotel: response.data,
-              })
-            })
-          })
-        })
+        this.fetchPackages();
+      } else {
+        this.fetchHotels();
       }
-    }
+  }
+
+  // componentDidMount() {
+  //   console.log('props',this.props);
+  //   const { location, params } = this.props;
+  //     if (location.state.selectedForm === 'featuredPackages'){
+  //       axios.get(`${this.endPoint}/api/fetchById/featuredPackage-fetchById/${params.featuredPackageId}`)
+  //       .then(response => {
+  //       this.setState({
+  //         featured: response.data[0],
+  //       }, () => {
+  //         axios.get(`${this.endPoint}/api/fetchById/packagePage-fetchById/${this.state.featured.package_id}`)
+  //         .then((response) => {
+  //           this.setState({
+  //             pckg: response.data,
+  //           })
+  //         })
+  //       })
+  //     })} else {
+  //       axios.get(`${this.endPoint}/api/fetchById/featuredHotel-fetchById/${params.featuredHotelId}`)
+  //       .then(response => {
+  //       this.setState({
+  //         featured: response.data[0],
+  //       }, () => {
+  //         axios.get(`${this.endPoint}/api/hotel/fetchById/${this.state.featured.hotel_id}`)
+  //           .then((response) => {
+  //             console.log('REsponse from api', JSON.stringify(response.data))
+  //             this.setState({
+  //               hotel: response.data,
+  //             })
+  //           })
+  //         })
+  //       })
+  //     }
+  //   }
 
     fetchHotels() {
         axios.get(`${this.endPoint}/api/hotel/fetch`)
