@@ -41,7 +41,7 @@ export default class FeaturedForm extends React.Component {
   }
 
   componentWillMount() {
-    const { location, params } = this.props;
+    const { location } = this.props;
       if (location.state.selectedForm === 'featuredPackages'){
         this.fetchPackages();
       } else {
@@ -49,39 +49,39 @@ export default class FeaturedForm extends React.Component {
       }
   }
 
-  // componentDidMount() {
-  //   console.log('props',this.props);
-  //   const { location, params } = this.props;
-  //     if (location.state.selectedForm === 'featuredPackages'){
-  //       axios.get(`${this.endPoint}/api/fetchById/featuredPackage-fetchById/${params.featuredPackageId}`)
-  //       .then(response => {
-  //       this.setState({
-  //         featured: response.data[0],
-  //       }, () => {
-  //         axios.get(`${this.endPoint}/api/fetchById/packagePage-fetchById/${this.state.featured.package_id}`)
-  //         .then((response) => {
-  //           this.setState({
-  //             pckg: response.data,
-  //           })
-  //         })
-  //       })
-  //     })} else {
-  //       axios.get(`${this.endPoint}/api/fetchById/featuredHotel-fetchById/${params.featuredHotelId}`)
-  //       .then(response => {
-  //       this.setState({
-  //         featured: response.data[0],
-  //       }, () => {
-  //         axios.get(`${this.endPoint}/api/hotel/fetchById/${this.state.featured.hotel_id}`)
-  //           .then((response) => {
-  //             console.log('REsponse from api', JSON.stringify(response.data))
-  //             this.setState({
-  //               hotel: response.data,
-  //             })
-  //           })
-  //         })
-  //       })
-  //     }
-  //   }
+  componentDidMount() {
+    console.log('props',this.props);
+    const { location, params } = this.props;
+      if (params.featuredPackageId){
+        axios.get(`${this.endPoint}/api/fetchById/featuredPackage-fetchById/${params.featuredPackageId}`)
+        .then(response => {
+        this.setState({
+          featured: response.data[0],
+        }, () => {
+          axios.get(`${this.endPoint}/api/fetchById/packagePage-fetchById/${this.state.featured.package_id}`)
+          .then((response) => {
+            this.setState({
+              pckg: response.data,
+            })
+          })
+        })
+      })} if(params.featuredHotelId) {
+        window.alert('chala')
+        axios.get(`${this.endPoint}/api/fetchById/featuredHotel-fetchById/${params.featuredHotelId}`)
+        .then(response => {
+        this.setState({
+          featured: response.data[0],
+        }, () => {
+          axios.get(`${this.endPoint}/api/hotel/fetchById/${this.state.featured.hotel_id}`)
+            .then((response) => {
+              this.setState({
+                hotel: response.data,
+              })
+            })
+          })
+        })
+      }
+    }
 
     fetchHotels() {
         axios.get(`${this.endPoint}/api/hotel/fetch`)
@@ -159,9 +159,12 @@ export default class FeaturedForm extends React.Component {
         // });
 
         if(this.props.params.featuredPackageId || this.props.params.featuredHotelId) {
-            axios.patch(`${this.endPoint}/api/update/featured-update`, fd)
+          if(this.props.params.featuredPackageId) {
+            let featuredPackage = _.omit(featured, ['hotel_id']);
+            let requestBody = { 'featuredPackage' : JSON.stringify(featuredPackage)};
+            axios.patch(`${this.endPoint}/api/update/featuredPackage-update`, requestBody)
             .then((response) => {
-                if (response.data === 'Featured Updated!') {
+                if (response.data && response.status === 200) {
                 window.alert(response.data);
                 this.setState({ loading: false });
                 } else {
@@ -169,12 +172,25 @@ export default class FeaturedForm extends React.Component {
                 this.setState({ loading: false });
                 }
             });
+            } else {
+              let featuredHotel = _.omit(featured, ['package_id'])
+              let requestBody = { 'featuredHotel' : JSON.stringify(featuredHotel)};
+              axios.patch(`${this.endPoint}/api/update/featuredHotel-update`, requestBody)
+              .then((response) => {
+                  if (response.data && response.status === 200) {
+                  window.alert(response.data);
+                  this.setState({ loading: false });
+                  } else {
+                  window.alert('ERROR')
+                  this.setState({ loading: false });
+                  }
+              });
             }
+          }
         else {
             if(location.state.selectedForm === 'featuredHotels') {
                 let featuredHotel = _.omit(featured, ['package_id'])
                 let requestBody = { 'featuredHotel' : JSON.stringify(featuredHotel)};
-                // fd.append('featuredHotel', JSON.stringify(featuredHotel));
                     axios.post(`${this.endPoint}/api/save/featuredHotel-save`, requestBody)
                     .then((response) => {
                         if (response.data && response.status === 200) {
@@ -194,7 +210,6 @@ export default class FeaturedForm extends React.Component {
                 } else {
                     let featuredPackage = _.omit(featured, ['hotel_id']);
                     let requestBody = { 'featuredPackage' : JSON.stringify(featuredPackage)};
-                    // fd.append('featuredPackage', JSON.stringify(featuredPackage));
                         axios.post(`${this.endPoint}/api/save/featuredPackage-save`, requestBody)
                         .then((response) => {
                         if (response.data && response.status === 200) {
