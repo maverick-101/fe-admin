@@ -38,6 +38,7 @@ import Agents from './containers/Agents';
 
 import PackageForm from './containers/PackageForm';
 import Packages from './containers/Packages';
+import PackageResource from './containers/PackageResource';
 
 import BookingForm from './containers/BookingForm';
 import Bookings from './containers/Bookings';
@@ -93,6 +94,7 @@ ReactDOM.render(
         <Route path="/packages" component={Packages}/>
         <Route path="/package_form" component={PackageForm}/>
         <Route path="/edit_package/:packageId" component={PackageForm}/>
+        <Route path="/package_resource_form/:packageId" component={PackageResource}/>
 
         <Route path="/bookings" component={Bookings}/>
         <Route path="/booking_form" component={BookingForm}/>
