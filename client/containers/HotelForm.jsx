@@ -165,12 +165,12 @@ export default class HotelForm extends React.Component {
       // axios.delete(`${this.endPoint}/api/delete/Image-deleteByPublicId`, {reqBody})
       axios.delete(`${this.endPoint}/api/deleteGallery/hotel-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
         .then(response => {
-          const hotels = this.state.hotels[hotel_gallery].slice();
-          hotels.splice(index, 1);
-          this.setState({ hotels });
           if(response.status === 200) {
             window.alert('Image deleted Successfully!')
           }
+          const hotels = this.state.hotels[hotel_gallery].slice();
+          hotels.splice(index, 1);
+          this.setState({ hotels });
         });
     }
   }

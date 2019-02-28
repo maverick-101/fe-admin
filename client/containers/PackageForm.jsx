@@ -263,6 +263,23 @@ export default class PackageForm extends React.Component {
     this.setState({ gallery: event.target.files });
   }
 
+  deleteImage = (url, ID) => {
+    const data =  {ID, url}
+    let requestBody = { 'packageGallery' : JSON.stringify(data)};
+    if(confirm("Are you sure you want to delete this image?")) {
+      // axios.delete(`${this.endPoint}/api/delete/Image-deleteByPublicId`, {reqBody})
+      axios.delete(`${this.endPoint}/api//deleteGallery/packagePage-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
+        .then(response => {
+          if(response.status === 200) {
+            window.alert('Image deleted Successfully!')
+          }
+          const pckg = this.state.pckg[gallery].slice();
+          pckg.splice(index, 1);
+          this.setState({ pckg });
+        });
+    }
+  }
+
   postPackage(event) {
     event.preventDefault();
     const { match, history } = this.props;
@@ -1047,6 +1064,7 @@ export default class PackageForm extends React.Component {
                         <div className="col-md-6 col-sm-6">
                         {pckg.gallery.map((image,index) => {
                           return (
+                            <span key={index}>
                           <img key={index}
                           style={{marginRight: '5px'}}
                           width="100"
@@ -1054,6 +1072,8 @@ export default class PackageForm extends React.Component {
                           src={`${image.url}`}
                           alt="cover"
                         />
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, pckg.ID)}/>
+                        </span>
                           )
                         })}
                           
