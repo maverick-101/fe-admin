@@ -27,9 +27,8 @@ export default class PackageForm extends React.Component {
         rating: '',
         description: '',
       },
-      price: {
+      price: [{
           person: '',
-          // package_title: '',
           wifi: true,
           shuttle_service: true,
           breakfast: true,
@@ -38,8 +37,8 @@ export default class PackageForm extends React.Component {
           nights_stay: '',
           price: '',
           description: '',
-        },
-      travelModes: {
+        }],
+      travelModes: [{
           travelmodes_title: '',
           departure: "",
           destination: "",
@@ -47,12 +46,12 @@ export default class PackageForm extends React.Component {
           distance: "",
           travel_type: "",
           description : "",
-        },
-      activities: {
+        }],
+      activities: [{
         activity_type: "",
         description: "",
         status: true,
-        },
+        }],
       // food: {
       //   food_type: '',
       //   description: "",
@@ -167,11 +166,11 @@ export default class PackageForm extends React.Component {
     this.setState({ pckg });
   }
 
-  handleTravelMode = (event) => {
+  handleTravelMode = (event, index) => {
     const { value, name } = event.target;
 
     const { travelModes } = this.state;
-    travelModes[name] = value;
+    travelModes[index][name] = value;
     this.setState(prevState => ({ 
       travelModes,
       pckg: {
@@ -181,11 +180,11 @@ export default class PackageForm extends React.Component {
      }));
   }
 
-  handleActivities = (event) => {
+  handleActivities = (event, index) => {
     const { value, name } = event.target;
 
     const { activities } = this.state;
-    activities[name] = value;
+    activities[index][name] = value;
     this.setState(prevState => ({ 
       activities,
       pckg: {
@@ -195,11 +194,11 @@ export default class PackageForm extends React.Component {
      }));
   }
 
-  handlePrice = (event) => {
+  handlePrice = (event, index) => {
     const { value, name } = event.target;
 
     const { price } = this.state;
-    price[name] = value;
+    price[index][name] = value;
     this.setState(prevState => ({ 
       price,
       pckg: {
@@ -209,19 +208,19 @@ export default class PackageForm extends React.Component {
      }));
   }
 
-  handleFood = (event) => {
-    const { value, name } = event.target;
+  // handleFood = (event) => {
+  //   const { value, name } = event.target;
 
-    const { food } = this.state;
-    food[name] = value;
-    this.setState(prevState => ({ 
-      food,
-      pckg: {
-        ...prevState.pckg,
-        food: [this.state.food],
-      },
-     }));
-  }
+  //   const { food } = this.state;
+  //   food[name] = value;
+  //   this.setState(prevState => ({ 
+  //     food,
+  //     pckg: {
+  //       ...prevState.pckg,
+  //       food: [this.state.food],
+  //     },
+  //    }));
+  // }
   
 
   // handleFile = (event) => {
@@ -497,7 +496,7 @@ export default class PackageForm extends React.Component {
                           name="activity_type"
                           className="form-control"
                           value={activities.activity_type}
-                          onChange={this.handleActivities}
+                          onChange={(event) => this.handleActivities(event, index)}
                         />
                       </div>
                     </div>
@@ -509,7 +508,7 @@ export default class PackageForm extends React.Component {
                           name="status"
                           value={activities.status}
                           className="form-control custom-select"
-                          onChange={this.handleActivities}
+                          onChange={(event) => this.handleActivities(event, index)}
                           required
                         >
                           <option value="">Select</option>
@@ -527,7 +526,7 @@ export default class PackageForm extends React.Component {
                             name="description"
                             className="form-control"
                             value={activities.description}
-                            onChange={this.handleActivities}
+                            onChange={(event) => this.handleActivities(event, index)}
                           />
                         </div>
                       </div>
@@ -535,7 +534,13 @@ export default class PackageForm extends React.Component {
                     })}
 
                     <div style={{float: "right"}}>
-                      <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({activitiesCount: activitiesCount + 1})}} className="btn btn-info btn-sm">Add activities</button>
+                      <button type="button" style={{marginRight: '5px'}}
+                      onClick={() => {
+                        this.setState({
+                          activitiesCount: activitiesCount + 1,
+                          activities: [...activities, {activity_type: "", description: "", status: true}]})}}
+                          className="btn btn-info btn-sm">Add activities
+                          </button>
                       <button type="button" onClick={() => {this.setState({activitiesCount: activitiesCount > 1 ? activitiesCount - 1 : activitiesCount})}} className={`btn btn-danger btn-sm ${activitiesCount === 1 ? 'disabled' : ''}`}>Remove activitiy</button>
                     </div>
 
@@ -661,7 +666,7 @@ export default class PackageForm extends React.Component {
                           name="person"
                           className="form-control"
                           value={price.person}
-                          onChange={this.handlePrice}
+                          onChange={(event) => this.handlePrice(event, index)}
                         />
                       </div>
                     </div>
@@ -678,7 +683,7 @@ export default class PackageForm extends React.Component {
                           name="nights_stay"
                           className="form-control"
                           value={price.nights_stay}
-                          onChange={this.handlePrice}
+                          onChange={(event) => this.handlePrice(event, index)}
                         />
                       </div>
                     </div>
@@ -695,7 +700,7 @@ export default class PackageForm extends React.Component {
                           name="price"
                           className="form-control"
                           value={price.price}
-                          onChange={this.handlePrice}
+                          onChange={(event) => this.handlePrice(event, index)}
                         />
                       </div>
                     </div>
@@ -724,7 +729,7 @@ export default class PackageForm extends React.Component {
                           name="wifi"
                           value={price.wifi}
                           className="form-control custom-select"
-                          onChange={this.handlePrice}
+                          onChange={(event) => this.handlePrice(event, index)}
                           required
                         >
                           <option value="">Select</option>
@@ -741,7 +746,7 @@ export default class PackageForm extends React.Component {
                           name="shuttle_service"
                           value={price.shuttle_service}
                           className="form-control custom-select"
-                          onChange={this.handlePrice}
+                          onChange={(event) => this.handlePrice(event, index)}
                           required
                         >
                           <option value="">Select</option>
@@ -758,7 +763,7 @@ export default class PackageForm extends React.Component {
                           name="breakfast"
                           value={price.breakfast}
                           className="form-control custom-select"
-                          onChange={this.handlePrice}
+                          onChange={(event) => this.handlePrice(event, index)}
                           required
                         >
                           <option value="">Select</option>
@@ -775,7 +780,7 @@ export default class PackageForm extends React.Component {
                           name="buffet"
                           value={price.buffet}
                           className="form-control custom-select"
-                          onChange={this.handlePrice}
+                          onChange={(event) => this.handlePrice(event, index)}
                           required
                         >
                           <option value="">Select Type</option>
@@ -792,7 +797,7 @@ export default class PackageForm extends React.Component {
                           name="dinner"
                           value={price.dinner}
                           className="form-control custom-select"
-                          onChange={this.handlePrice}
+                          onChange={(event) => this.handlePrice(event, index)}
                           required
                         >
                           <option value="">Select</option>
@@ -810,7 +815,7 @@ export default class PackageForm extends React.Component {
                             name="description"
                             className="form-control"
                             value={price.description}
-                            onChange={this.handlePrice}
+                            onChange={(event) => this.handlePrice(event, index)}
                           />
                         </div>
                       </div>
@@ -818,7 +823,23 @@ export default class PackageForm extends React.Component {
                     })}
                     
                     <div style={{float: "right"}}>
-                      <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({priceCount: priceCount + 1})}} className="btn btn-info btn-sm">Add another Price</button>
+                      {/* <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({priceCount: priceCount + 1})}} className="btn btn-info btn-sm">Add another Price</button> */}
+                      <button type="button" style={{marginRight: '5px'}}
+                      onClick={() => {
+                        this.setState({
+                          priceCount: priceCount + 1,
+                          price: [...price,
+                            {person: '',
+                            wifi: true,
+                            shuttle_service: true,
+                            breakfast: true,
+                            buffet: true,
+                            dinner: true,
+                            nights_stay: '',
+                            price: '',
+                            description: ''}]})}}
+                          className="btn btn-info btn-sm">Add activities
+                          </button>
                       <button type="button" onClick={() => {this.setState({priceCount: priceCount > 1 ? priceCount - 1 : priceCount})}} className={`btn btn-danger btn-sm ${priceCount === 1 ? 'disabled' : ''}`}>Remove price</button>
                     </div>
                 </div>
@@ -844,7 +865,7 @@ export default class PackageForm extends React.Component {
                           name="route"
                           className="form-control"
                           value={travelModes.travelmodes_title}
-                          onChange={this.handleTravelMode}
+                          onChange={(event) => this.handleTravelMode(event, index)}
                         />
                       </div>
                     </div>
@@ -861,7 +882,7 @@ export default class PackageForm extends React.Component {
                           name="departure"
                           className="form-control"
                           value={travelModes.departure}
-                          onChange={this.handleTravelMode}
+                          onChange={(event) => this.handleTravelMode(event, index)}
                         />
                       </div>
                     </div>
@@ -878,7 +899,7 @@ export default class PackageForm extends React.Component {
                           name="destination"
                           className="form-control"
                           value={travelModes.destination}
-                          onChange={this.handleTravelMode}
+                          onChange={(event) => this.handleTravelMode(event, index)}
                         />
                       </div>
                     </div>
@@ -895,7 +916,7 @@ export default class PackageForm extends React.Component {
                           name="travel_type"
                           className="form-control"
                           value={travelModes.travel_type}
-                          onChange={this.handleTravelMode}
+                          onChange={(event) => this.handleTravelMode(event, index)}
                         />
                       </div>
                     </div>
@@ -912,7 +933,7 @@ export default class PackageForm extends React.Component {
                           name="travel_time"
                           className="form-control"
                           value={travelModes.travel_time}
-                          onChange={this.handleTravelMode}
+                          onChange={(event) => this.handleTravelMode(event, index)}
                         />
                       </div>
                     </div>
@@ -925,7 +946,7 @@ export default class PackageForm extends React.Component {
                           name="description"
                           className="form-control"
                           value={travelModes.description}
-                          onChange={this.handleTravelMode}
+                          onChange={(event) => this.handleTravelMode(event, index)}
                         />
                       </div>
                     </div>
@@ -934,7 +955,22 @@ export default class PackageForm extends React.Component {
                     })}
                     
                     <div style={{float: "right"}}>
-                      <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({travelModesCount: travelModesCount + 1})}} className="btn btn-info btn-sm">Add Travel Modes item</button>
+                      {/* <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({travelModesCount: travelModesCount + 1})}} className="btn btn-info btn-sm">Add Travel Modes item</button> */}
+                      <button type="button" style={{marginRight: '5px'}}
+                      onClick={() => {
+                        this.setState({
+                          priceCount: priceCount + 1,
+                          travelModes: [...travelModes, {
+                            travelmodes_title: '',
+                            departure: "",
+                            destination: "",
+                            travel_time: "",
+                            distance: "",
+                            travel_type: "",
+                            description : ""
+                        }]})}}
+                          className="btn btn-info btn-sm">Add Travel Modes item
+                          </button>
                       <button type="button" onClick={() => {this.setState({travelModesCount: travelModesCount > 1 ? travelModesCount - 1 : travelModesCount})}} className={`btn btn-danger btn-sm ${travelModesCount === 1 ? 'disabled' : ''}`}>Remove Travel Mode item</button>
                     </div>
                 </div>
