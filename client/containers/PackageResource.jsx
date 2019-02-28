@@ -30,7 +30,7 @@ export default class PackageResource extends React.Component {
       resources: [],
       gallery: '',
       hotel: '',
-      cities: '',
+      cities: [],
       city: '',
       focusedInput: null,
       responseMessage: 'Loading Package Resources...',
@@ -162,11 +162,11 @@ export default class PackageResource extends React.Component {
           imgArray.push(gallery[index]);
         }
           imgArray.forEach((img) => {
-          fd.append('hotel_images', img);
+          fd.append('package_images', img);
           return img;
         });
 
-        fd.append('hotelResources', JSON.stringify(packageResource));
+        fd.append('packageResources', JSON.stringify(packageResource));
 
         // if(this.props.params.packageId) {
         // axios.patch(`${this.endPoint}/api/update/hotelImage-update`, fd)
@@ -181,7 +181,7 @@ export default class PackageResource extends React.Component {
         //   });
         // }
         // else {
-          axios.post(`${this.endPoint}/api/save/hotelResources-save`, fd)
+          axios.post(`${this.endPoint}/api/save/packageResources-save`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);
@@ -395,8 +395,10 @@ export default class PackageResource extends React.Component {
                     </div>
                   </form>
                 </div>
-            {/* <h1>Resources Available at {this.props.location.state.hotelName}</h1> */}
-                {/* <div className="table-responsive">
+            <h1>Resources Available 
+              {/* at  {this.props.location.state.hotelName} */}
+            </h1>
+                <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -431,7 +433,7 @@ export default class PackageResource extends React.Component {
                 }
               </tbody>
             </table>
-          </div> */}
+          </div>
               </div>
             </div>
           </div>
