@@ -158,9 +158,12 @@ export default class HotelForm extends React.Component {
   //   });
   // }
 
-  deleteImage = (public_id) => {
-    if(confirm("Are you sure you want to delete this hotel?")) {
-      axios.delete(`${this.endPoint}/api/delete/Image-deleteByPublicId/${public_id}`)
+  deleteImage = (url, ID) => {
+    const data =  {ID, url}
+    let requestBody = { 'hotelGallery' : JSON.stringify(data)};
+    if(confirm("Are you sure you want to delete this image?")) {
+      // axios.delete(`${this.endPoint}/api/delete/Image-deleteByPublicId`, {reqBody})
+      axios.delete(`${this.endPoint}/api/deleteGallery/hotel-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
         .then(response => {
           const hotels = this.state.hotels[hotel_gallery].slice();
           hotels.splice(index, 1);
@@ -440,7 +443,7 @@ export default class HotelForm extends React.Component {
                           src={`${image.url}`}
                           alt="cover"
                         />
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.public_id)}/>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, hotel.ID)}/>
                         </span>
                           )
                         })}
