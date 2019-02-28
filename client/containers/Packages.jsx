@@ -126,9 +126,9 @@ export default class Packages extends React.Component {
                     <td>{pckg.latitude}</td>
                     <td>{pckg.longitude}</td>
                     <td>
-                      {/* <Link to={`/area_resource/${pckg.ID}`}>
+                      <Link to={`/package_resource_form/${pckg.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
-                      </Link> */}
+                      </Link>
                     </td>
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
