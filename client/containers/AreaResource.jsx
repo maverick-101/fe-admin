@@ -65,7 +65,7 @@ export default class AreaResource extends React.Component {
       },
     }));
       if (this.props.params.areaId) {
-      axios.get(`${this.endPoint}/api/locations/fetchById/${this.props.params.areaId}`)
+      axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.props.params.areaId}`)
         .then((response) => {
           this.setState({
             location: response.data[0],
@@ -112,6 +112,17 @@ export default class AreaResource extends React.Component {
 
   handleImages = (event) => {
     this.setState({ gallery: event.target.files });
+  }
+
+  deleteArea(areaId, index) {
+    if(confirm("Are you sure you want to delete this area?")) {
+      axios.delete(`/api/area/${coverBannerId}`)
+        .then(response => {
+          const location = this.state.location.slice();
+          location.splice(index, 1);
+          this.setState({ location });
+        });
+    }
   }
 
   postAreaResource(event) {
@@ -285,7 +296,7 @@ export default class AreaResource extends React.Component {
                   </form>
                 </div>
                 <h1>Available Resources </h1>
-                <div className="table-responsive">
+                {/* <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -301,24 +312,16 @@ export default class AreaResource extends React.Component {
                   <tr key={index}>
                   <td>{resource.ID}</td>
                   <td>{resource.type}</td>
-                  {/* <td>{<img style={{height: '50px', width: '50px'}} src={resource.profile_picture.URL}/>}</td> */}
                   <td>{resource.status}</td>
                   <td>{resource.URL}</td>
-                    {/* <td>
-                      <Link to={`/area_resource/${area.id}`}>
-                        <button type="button" className="btn btn-info btn-sm">Resource</button>
-                      </Link>
-                    </td> */}
-                    {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
                         <Link to={`/edit_resource/${resource.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteUser(resource.ID, index)}></span>
+                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteArea(resource.ID, index)}></span>
                       </td>
-                    {/* </HasRole> */}
                     </tr>
                 )) :
                 (
@@ -329,7 +332,7 @@ export default class AreaResource extends React.Component {
                 }
               </tbody>
             </table>
-          </div>
+          </div> */}
               </div>
             </div>
           </div>
