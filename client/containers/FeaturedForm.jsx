@@ -65,8 +65,8 @@ export default class FeaturedForm extends React.Component {
             })
           })
         })
-      })} if(params.featuredHotelId) {
-        window.alert('chala')
+      })}
+      if(params.featuredHotelId) {
         axios.get(`${this.endPoint}/api/fetchById/featuredHotel-fetchById/${params.featuredHotelId}`)
         .then(response => {
         this.setState({
