@@ -183,7 +183,7 @@ export default class HotelResource extends React.Component {
     console.log(this.state);
     const toolbarConfig = {
       // Optionally specify the groups to display (displayed in the order listed).
-      display: ['INLINE_STYLE_BUTTONS', 'BLOCK_TYPE_BUTTONS', 'HISTORY_BUTTONS'],
+      display: ['INLINE_STYLE_BUTTONS', 'BLOCK_TYPE_BUTTONS', 'HISTORY_BUTTONS', 'BLOCK_TYPE_DROPDOWN'],
       INLINE_STYLE_BUTTONS: [
         {
           label: 'Bold',
@@ -205,8 +205,16 @@ export default class HotelResource extends React.Component {
           style: 'unstyled',
         },
         {
-          label: 'Heading',
+          label: 'Large Heading',
+          style: 'header-three',
+        },
+        {
+          label: 'Medium Heading',
           style: 'header-four',
+        },
+        {
+          label: 'Small Heading',
+          style: 'header-five',
         },
       ],
       BLOCK_TYPE_BUTTONS: [
