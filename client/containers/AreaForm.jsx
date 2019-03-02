@@ -144,6 +144,23 @@ export default class AreaForm extends React.Component {
       }
     }
 
+    deleteImage = (url, ID) => {
+      const data =  {ID, url}
+      let requestBody = { 'locationGallery' : JSON.stringify(data)};
+      if(confirm("Are you sure you want to delete this image?")) {
+        // axios.delete(`${this.endPoint}/api/delete/Image-deleteByPublicId`, {reqBody})
+        axios.delete(`${this.endPoint}/api/deleteGallery/location-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
+          .then(response => {
+            if(response.status === 200) {
+              window.alert('Image deleted Successfully!')
+            }
+            const location = this.state.location[gallery].slice();
+            hotels.splice(index, 1);
+            this.setState({ location });
+          });
+      }
+    }
+
   render() {
     console.log(this.state)
     const {
@@ -325,6 +342,7 @@ export default class AreaForm extends React.Component {
                         <div className="col-md-6 col-sm-6">
                         {location.gallery.map((image,index) => {
                           return (
+                            <span>
                           <img key={index}
                           style={{marginRight: '5px'}}
                           width="100"
@@ -332,9 +350,10 @@ export default class AreaForm extends React.Component {
                           src={`${image.url}`}
                           alt="cover"
                         />
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, location.ID)}/>
+                        </span>
                           )
                         })}
-                          
                         </div>
                       </div>
                       ) : null
