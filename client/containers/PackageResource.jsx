@@ -75,7 +75,7 @@ export default class PackageResource extends React.Component {
     }
     
     fetchResources = () => {
-      axios.get(`${this.endPoint}/api/fetchById/packageResources-fetchById/${this.props.params.packageId}`)
+      axios.get(`${this.endPoint}/api/fetchByPackageId/packageResources-fetchByPackageId/${this.props.params.packageId}`)
       .then((response) => {
         this.setState({
           resources: response.data,
@@ -110,11 +110,14 @@ export default class PackageResource extends React.Component {
 
     deleteResource(resourceId, index) {
       if(confirm("Are you sure you want to delete this resource?")) {
-        axios.delete(`${this.endPoint}/api/delete/hotelResources-deleteById/${resourceId}`)
+        axios.delete(`${this.endPoint}/api/delete/packageResources-deleteById/${resourceId}`)
           .then(response => {
             const resources = this.state.resources.slice();
             resources.splice(index, 1);
             this.setState({ resources });
+            if(response.status === 200) {
+              window.alert('Resource Deleted Successfully!')
+            }
           });
       }
     }

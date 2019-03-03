@@ -85,15 +85,16 @@ export default class HotelResource extends React.Component {
       })
     }
 
-  // setHotel(selectedHotel) {
-  //   this.setState(prevState => ({
-  //     hotel: selectedHotel,
-  //     hotelResource: {
-  //       ...prevState.hotelResource,
-  //       hotel_id: selectedHotel.ID,
-  //     },
-  //   }));
-  // }
+    deleteResource(resourceId, index) {
+      if(confirm("Are you sure you want to delete this resource?")) {
+        axios.delete(`${this.endPoint}/api/delete/hotelResources-deleteById/${resourceId}`)
+          .then(response => {
+            const resources = this.state.resources.slice();
+            resources.splice(index, 1);
+            this.setState({ resources });
+          });
+      }
+    }
 
   setDescription(description) {
     const { hotelResource } = this.state;
@@ -377,7 +378,7 @@ export default class HotelResource extends React.Component {
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteUser(resource.ID, index)}></span>
+                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteResource(resource.ID, index)}></span>
                       </td>
                     </tr>
                 )) :
