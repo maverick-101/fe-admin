@@ -26,6 +26,7 @@ export default class PackageForm extends React.Component {
         longitude: '',
         rating: '',
         description: '',
+        summary: '',
       },
       price: [{
           person: '',
@@ -71,6 +72,7 @@ export default class PackageForm extends React.Component {
       agents: [],
       locations: [],
       description: RichTextEditor.createEmptyValue(),
+      summary: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
     this.endPoint = 'https://api.saaditrips.com';
@@ -339,6 +341,7 @@ export default class PackageForm extends React.Component {
       locations,
       location,
       description,
+      summary,
       price,
       activities,
       food,
@@ -1103,6 +1106,20 @@ export default class PackageForm extends React.Component {
                         />
                       </div>
                     </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Summary</label>
+                      <div className="col-md-6 col-sm-6">
+                        <RichTextEditor
+                          value={summary}
+                          toolbarConfig={toolbarConfig}
+                          onChange={(e) => {
+                            this.setDescription(e);
+                          }}
+                        />
+                      </div>
+                    </div>
+
                     <div className="ln_solid" />
                     <div className="form-group row">
                       <div className="col-md-12 col-sm-12 text-center offset-md-3">
