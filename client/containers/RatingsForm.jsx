@@ -15,6 +15,7 @@ export default class RatingsForm extends React.Component {
       loading: false,
       rating: {
         user_id: '',
+        user_name: '',
         hotel_id: '',
         package_id: '',
         rating: '',
@@ -112,6 +113,7 @@ export default class RatingsForm extends React.Component {
             rating: {
                 ...prevState.rating,
                 user_id: selectedUser.ID,
+                user_name: `${selectedUser.first_name} ${selectedUser.last_name}`,
             },
             }));
         }
