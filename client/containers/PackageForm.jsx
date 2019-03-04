@@ -177,7 +177,7 @@ export default class PackageForm extends React.Component {
       travelModes,
       pckg: {
         ...prevState.pckg,
-        travel_modes: [this.state.travelModes],
+        travel_modes: this.state.travelModes,
       },
      }));
   }
@@ -191,7 +191,7 @@ export default class PackageForm extends React.Component {
       activities,
       pckg: {
         ...prevState.pckg,
-        activities: [this.state.activities],
+        activities: this.state.activities,
       },
      }));
   }
@@ -205,7 +205,7 @@ export default class PackageForm extends React.Component {
       price,
       pckg: {
         ...prevState.pckg,
-        price: [this.state.price],
+        price: this.state.price,
       },
      }));
   }
