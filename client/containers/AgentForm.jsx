@@ -18,13 +18,13 @@ export default class AgentForm extends React.Component {
         location_id: '',
         addresses: [],
       },
-      address: {
+      address: [{
         address_type: '',
         primary: true,
         location_id: 0,
         city_id: 0,
         street: ''
-      },
+      }],
       gallery: '',
       addressCity: '',
       agentCity: '',
@@ -91,16 +91,16 @@ export default class AgentForm extends React.Component {
     });
   }
 
-  handleAddress = (event) => {
+  handleAddress = (event, index) => {
     const { value, name } = event.target;
 
     const { address } = this.state;
-    address[name] = value;
+    address[index][name] = value;
     this.setState(prevState => ({ 
       address,
       agent: {
         ...prevState.agent,
-        addresses: [this.state.address],
+        addresses: this.state.address,
       },
      }));
   }
@@ -361,7 +361,7 @@ export default class AgentForm extends React.Component {
                           name="address_type"
                           className="form-control"
                           value={address.address_type}
-                          onChange={this.handleAddress}
+                          onChange={(event) => this.handleAddress(event, index)}
                         />
                       </div>
                     </div>
@@ -373,7 +373,7 @@ export default class AgentForm extends React.Component {
                           name="primary"
                           value={address.primary}
                           className="form-control custom-select"
-                          onChange={this.handleAddress}
+                          onChange={(event) => this.handleAddress(event, index)}
                           required
                         >
                           <option value="">Select Type</option>
@@ -428,7 +428,7 @@ export default class AgentForm extends React.Component {
                           type="text"
                           name="street"
                           className="form-control"
-                          value={address.street}
+                          onChange={(event) => this.handleAddress(event, index)}
                           onChange={this.handleAddress}
                         />
                       </div>
@@ -436,7 +436,14 @@ export default class AgentForm extends React.Component {
                   </div>
                     })}
                     <div style={{float: "right"}}>
-                      <button type="button" style={{marginRight: '5px'}} onClick={() => {this.setState({addressCount: addressCount + 1})}} className="btn btn-info btn-sm">Add Address</button>
+                      <button type="button" style={{marginRight: '5px'}}
+                      className="btn btn-info btn-sm"
+                      onClick={() => {
+                        this.setState({
+                          addressCount: addressCount + 1,
+                          address: [...address, {address_type: "", primary: true, location_id: 0, city_id: 0, street: ''}]})
+                        }}> Add Address
+                        </button>
                       <button type="button" onClick={() => {this.setState({addressCount: addressCount > 1 ? addressCount - 1 : addressCount})}} className={`btn btn-danger btn-sm ${addressCount === 1 ? 'disabled' : ''}`}>Remove Address</button>
                     </div>
                 </div>
