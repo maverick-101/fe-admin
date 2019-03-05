@@ -40,7 +40,7 @@ export default class PackageForm extends React.Component {
           description: '',
         }],
       travelModes: [{
-          route: '',
+          travelmodes_title: '',
           departure: "",
           destination: "",
           travel_time: "",
@@ -905,9 +905,9 @@ export default class PackageForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="route"
+                          name="travelmodes_title"
                           className="form-control"
-                          value={travelModes[index].route}
+                          value={travelModes[index].travelmodes_title}
                           onChange={(event) => this.handleTravelMode(event, index)}
                         />
                       </div>
