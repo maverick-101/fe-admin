@@ -577,7 +577,7 @@ export default class PackageForm extends React.Component {
                       <button type="button" 
                       onClick={() => {
                         var { activities } = this.state;
-                        var newActivities = Object.assign({}, activities)
+                        var newActivities = Object.assign([], activities)
                         newActivities.pop()
                         this.setState({
                           activities: newActivities,
@@ -877,7 +877,7 @@ export default class PackageForm extends React.Component {
                       <button type="button" 
                       onClick={() => {
                         var { price } = this.state;
-                        var newPrice = Object.assign({}, price)
+                        var newPrice = Object.assign([], price)
                         newPrice.pop()
                         this.setState({
                           price: newPrice,
@@ -1008,7 +1008,7 @@ export default class PackageForm extends React.Component {
                           </button>
                       <button type="button" onClick={() => {
                         var { travelModes } = this.state;
-                        var newTravelModes = Object.assign({}, travelModes)
+                        var newTravelModes = Object.assign([], travelModes)
                         newTravelModes.pop()
                         this.setState({
                           travelModes: newTravelModes
