@@ -121,6 +121,7 @@ export default class PackageForm extends React.Component {
           this.setState({
             pckg: response.data,
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+            summary: RichTextEditor.createValueFromString(response.data.summary, 'html'),
           }, () => {
             this.setState({
               travelModes: this.state.pckg.travel_modes,
@@ -157,6 +158,15 @@ export default class PackageForm extends React.Component {
     this.setState({
       pckg,
       description,
+    });
+  }
+
+  setSummary = (summary) => {
+    const { pckg } = this.state;
+    pckg.summary = summary.toString('html');
+    this.setState({
+      pckg,
+      summary,
     });
   }
 
@@ -1058,7 +1068,6 @@ export default class PackageForm extends React.Component {
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
-                          required
                           type="text"
                           name="rating"
                           className="form-control"
@@ -1112,6 +1121,7 @@ export default class PackageForm extends React.Component {
                       <div className="col-md-6 col-sm-6">
                         <RichTextEditor
                           value={description}
+                          key='1'
                           toolbarConfig={toolbarConfig}
                           onChange={(e) => {
                             this.setDescription(e);
@@ -1124,10 +1134,11 @@ export default class PackageForm extends React.Component {
                       <label className="control-label col-md-3 col-sm-3">Summary</label>
                       <div className="col-md-6 col-sm-6">
                         <RichTextEditor
+                          key='2'
                           value={summary}
                           toolbarConfig={toolbarConfig}
                           onChange={(e) => {
-                            this.setDescription(e);
+                            this.setSummary(e);
                           }}
                         />
                       </div>
