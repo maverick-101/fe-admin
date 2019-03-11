@@ -53,6 +53,9 @@ import FeaturedPackages from './containers/FeaturedPackages';
 import FeaturedHotels from './containers/FeaturedHotels';
 import FeaturedForm from './containers/FeaturedForm';
 
+import Experiences from './containers/Experiences';
+import ExperienceForm from './containers/ExperienceForm';
+
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -114,6 +117,10 @@ ReactDOM.render(
         <Route path="/featured_packages" component={FeaturedPackages}/>
         <Route path="/featured_packages_form" component={FeaturedForm}/>
         <Route path="/edit_featured_packages/:featuredPackageId" component={FeaturedForm}/>
+
+        <Route path="/experiences" component={Experiences}/>
+        <Route path="/experiences_form" component={ExperienceForm}/>
+        <Route path="/edit_experiences_form/:experienceId" component={ExperienceForm}/>
         
       </Route>
     </Router>
