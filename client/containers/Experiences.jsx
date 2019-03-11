@@ -30,6 +30,11 @@ export default class Experiences extends React.Component {
           responseMessage: 'No Experiences Found...'
         })
       })
+      .catch((error) => {
+        this.setState({
+          responseMessage: 'No Experiences Found...'
+        })
+      })
   }
 
   deleteCity(cityId, index) {
