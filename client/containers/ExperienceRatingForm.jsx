@@ -7,20 +7,17 @@ import { Button } from 'reactstrap';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
-export default class ExperienceForm extends React.Component {
+export default class ExperienceRatingForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
-      experience: {
+      experienceRating: {
         experience_title: '',
-        user_id: '',
         user_name: '',
-        estimated_time: '',
-        menu: '',
         spoken_languages: [],
         created_At: '',
-        recommended: false,
+        recommended: '',
         latitude: '',
         longitude: '',
         todo: [],
@@ -41,7 +38,7 @@ export default class ExperienceForm extends React.Component {
     // this.rteState = RichTextEditor.createEmptyValue();
     this.endPoint = 'https://api.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postExperience = this.postExperience.bind(this);
+    this.postCity = this.postCity.bind(this);
   }
 
   componentWillMount() {
@@ -54,14 +51,22 @@ export default class ExperienceForm extends React.Component {
   }
 
   componentDidMount() {
-    console.log('PROPS',this.props);
-  }
+    // console.log('props',this.props);
+    //   if (window.location.href.split('/')[3] === 'edit_city')
+    //   axios.get(`${this.endPoint}/api/fetchById/experienceRating-fetchById/${this.props.params.cityId}`)
+    //     .then((response) => {
+    //       this.setState({
+    //         experienceRating: response.data[0],
+    //         description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+    //       });
+    //     });
+    }
 
   setDescription(description) {
-    const { experience } = this.state;
-    experience.description = description.toString('html');
+    const { experienceRating } = this.state;
+    experienceRating.description = description.toString('html');
     this.setState({
-      experience,
+      experienceRating,
       description,
     });
   }
@@ -69,9 +74,9 @@ export default class ExperienceForm extends React.Component {
   handleInputChange(event) {
     const { value, name } = event.target;
 
-    const { experience } = this.state;
-    experience[name] = value;
-    this.setState({ experience });
+    const { experienceRating } = this.state;
+    experienceRating[name] = value;
+    this.setState({ experienceRating });
   }
 
   handleImages = (event) => {
@@ -81,10 +86,9 @@ export default class ExperienceForm extends React.Component {
   setUser(selectedUser) {
     this.setState(prevState => ({
       user: selectedUser,
-      experience: {
-        ...prevState.experience,
+      experienceRating: {
+        ...prevState.experienceRating,
         user_name: selectedUser.first_name,
-        user_id: selectedUser.ID,
       },
     }));
   }
@@ -97,17 +101,17 @@ export default class ExperienceForm extends React.Component {
     toDo[index][name] = value;
     this.setState(prevState => ({ 
       toDo,
-      experience: {
-        ...prevState.experience,
+      experienceRating: {
+        ...prevState.experienceRating,
         todo: toDo,
       },
      }));
   }
 
-  postExperience(event) {
+  postCity(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, experience, gallery } = this.state;
+    const { loading, experienceRating, gallery } = this.state;
         this.setState({ loading: true });
 
         let imgArray = [];
@@ -120,10 +124,11 @@ export default class ExperienceForm extends React.Component {
           return img;
         });
 
-        fd.append('experience', JSON.stringify(experience));
+        fd.append('experienceRating', JSON.stringify(experienceRating));
 
-        if(this.props.params.experienceId) {
-        axios.patch(`${this.endPoint}/api/update/experience-update`, fd)
+        if(this.props.params.cityId) {
+        // axios.patch('/api/experienceRating/update', fd)
+        axios.patch(`${this.endPoint}/api/update/experienceRating-update`, fd)
           .then((response) => {
             if (response.data === 'Experience Updated!') {
               window.alert(response.data);
@@ -135,8 +140,8 @@ export default class ExperienceForm extends React.Component {
           });
         }
         else {
-          // axios.post('/api/experience/save', fd)
-          axios.post(`${this.endPoint}/api/save/experience-save`, fd)
+          // axios.post('/api/experienceRating/save', fd)
+          axios.post(`${this.endPoint}/api/save/experienceRating-save`, fd)
           .then((response) => {
             if (response.data === 'Experience Saved!') {
               window.alert(response.data);
@@ -152,7 +157,7 @@ export default class ExperienceForm extends React.Component {
   render() {
     const {
       loading,
-      experience,
+      experienceRating,
       description,
       users,
       user,
@@ -225,7 +230,7 @@ export default class ExperienceForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postExperience}
+                    onSubmit={this.postCity}
                   >
                     <div className="form-group row">
                       <label
@@ -238,41 +243,7 @@ export default class ExperienceForm extends React.Component {
                           type="text"
                           name="experience_title"
                           className="form-control"
-                          value={experience.experience_title}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Estimated Time
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="estimated_time"
-                          className="form-control"
-                          value={experience.estimated_time}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Menu
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="menu"
-                          className="form-control"
-                          value={experience.menu}
+                          value={experienceRating.experience_title}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -301,22 +272,56 @@ export default class ExperienceForm extends React.Component {
                       <input
                         type="checkbox"
                         name='recommended'
-                        checked={experience.recommended}
+                        checked={experienceRating.recommended}
                         onClick={() => {
-                          experience.recommended = !experience.recommended;
-                          this.setState({ experience })
+                          experienceRating.recommended = !experienceRating.recommended;
+                          this.setState({ experienceRating })
                         }}
                       />
                       </div>
                     </div>
 
-                      <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Latitude
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="latitude"
+                          className="form-control"
+                          value={experienceRating.latitude}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Longitude
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="longitude"
+                          className="form-control"
+                          value={experienceRating.longitude}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
                         <div className="control-label col-md-3 col-sm-3"></div>
                           <div className="col-md-8 col-sm-8">
-                            <h3>ToDo Details</h3>
+                            <h3>Activities Details</h3>
                         </div>
-                      
-                      {toDo.map((event, index) => {
+
+                    {toDo.map((event, index) => {
                         return <div key={index}>
                     <div className="form-group row">
                     {index >=1 ? <hr style={{borderTop: '1px solid gray'}}/> : null}
@@ -348,17 +353,16 @@ export default class ExperienceForm extends React.Component {
                           />
                         </div>
                       </div>
-                  </div>
-                    })}
+
                       <div style={{float: "right"}}>
                       <button type="button" style={{marginRight: '5px'}}
                       onClick={() => {
                         this.setState({
                           toDo: [...toDo, {}],
                           })
-                        }}
-                      className="btn btn-info btn-sm">Add toDo
-                      </button>
+                        } }
+                          className="btn btn-info btn-sm">Add toDo
+                          </button>
                       <button type="button" 
                       onClick={() => {
                         var { toDo } = this.state;
@@ -371,41 +375,8 @@ export default class ExperienceForm extends React.Component {
                       }
                       className={`btn btn-danger btn-sm ${toDo.length === 1 ? 'disabled' : ''}`}>Remove ToDo</button>
                     </div>
-                </div>
-
-                    <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Latitude
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="latitude"
-                          className="form-control"
-                          value={experience.latitude}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-group row">
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >Longitude
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="longitude"
-                          className="form-control"
-                          value={experience.longitude}
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div>
+                  </div>
+                    })}
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Experience Gallery</label>
@@ -416,17 +387,17 @@ export default class ExperienceForm extends React.Component {
                           className="form-control"
                           onChange={this.handleImages}
                           multiple
-                          required={experience.gallery ? 0 : 1}
+                          required={experienceRating.gallery ? 0 : 1}
                         />
                       </div>
                     </div>
 
-                    {experience.gallery
+                    {experienceRating.gallery
                       ? (
                         <div className="form-group row">
                         <label className="control-label col-md-3 col-sm-3"></label>
                         <div className="col-md-6 col-sm-6">
-                        {experience.gallery.map((image,index) => {
+                        {experienceRating.gallery.map((image,index) => {
                           return (
                           <img key={index}
                           style={{marginRight: '5px'}}
@@ -467,14 +438,14 @@ export default class ExperienceForm extends React.Component {
                         </Button>
                       </div>
                     </div>
-                    {/* </div> */}
+                    </div>
                   </form>
                 </div>
                 </div>
               </div>
             </div>
           </div>
-        // </div>
+        </div>
       // </div>
     );
   }

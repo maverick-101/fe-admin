@@ -106,9 +106,10 @@ export default class Experiences extends React.Component {
               <thead>
                 <tr>
                   <th>Image</th>
-                  <th>Name</th>
-                  <th>Province</th>
-                  <th>Views</th>
+                  <th>Title</th>
+                  <th>User</th>
+                  <th>Latitude</th>
+                  <th>Longitude</th>
                 </tr>
               </thead>
               <tbody>
@@ -116,9 +117,26 @@ export default class Experiences extends React.Component {
                   this.state.experiences.map((experience, index) => (
                   <tr key={index}>
                     <td>{<img style={{height: '50px', width: '50px'}} src={experience.gallery.length ? experience.gallery[0].url : Broken} />}</td>
-                    <td>{experience.name}</td>
-                    <td>{experience.province}</td>
-                    <td>{experience.views}</td>
+                    <td>{experience.experience_title}</td>
+                    <td>{experience.user_name}</td>
+                    <td>{experience.latitude}</td>
+                    <td>{experience.longitude}</td>
+                    <td>
+                      <Link to={{
+                          pathname: `/experiences_resource_form/${experience.ID}`,
+                          state: { experienceId: experience.ID}
+                        }}>
+                        <button type="button" className="btn btn-info btn-sm">Resources</button>
+                      </Link>
+                    </td>
+                    <td>
+                      <Link to={{
+                          pathname: `/experiences_rating_form/${experience.ID}`,
+                          state: { experienceId: experience.ID}
+                        }}>
+                        <button type="button" className="btn btn-info btn-sm">Ratings</button>
+                      </Link>
+                    </td>
                       <td>
                         <Link to={`${this.endPoint}/edit_city/${experience.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>

@@ -55,6 +55,8 @@ import FeaturedForm from './containers/FeaturedForm';
 
 import Experiences from './containers/Experiences';
 import ExperienceForm from './containers/ExperienceForm';
+import ExperienceResourceForm from './containers/ExperienceResourceForm';
+import ExperienceRatingForm from './containers/ExperienceRatingForm';
 
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
@@ -121,6 +123,8 @@ ReactDOM.render(
         <Route path="/experiences" component={Experiences}/>
         <Route path="/experiences_form" component={ExperienceForm}/>
         <Route path="/edit_experiences_form/:experienceId" component={ExperienceForm}/>
+        <Route path="/experiences_resource_form/:experienceId" component={ExperienceResourceForm}/>
+        <Route path="/experiences_rating_form/:experienceId" component={ExperienceRatingForm}/>
         
       </Route>
     </Router>
