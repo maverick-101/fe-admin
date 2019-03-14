@@ -144,7 +144,7 @@ export default class Ratings extends React.Component {
         })
       }
     }
-    else {
+    else if (selectedRating === 'packages') {
       if(type === 'All') {
         this.fetchRatings(selectedRating);
       } else {
@@ -162,12 +162,31 @@ export default class Ratings extends React.Component {
         })
       })
     }
+  } else if (selectedRating === 'experiences') {
+    if(type === 'All') {
+      this.fetchRatings(selectedRating);
+    } else {
+    axios.get(`${this.endPoint}/api/fetchAll${type}/experienceRating-fetchAll${type}`)
+    .then(response => {
+      this.setState({
+        ratings: response.data,
+        pages: Math.ceil(response.data.length/10),
+        responseMessage: 'No Ratings Found...'
+      })
+    })
+    .catch((error) => {
+      this.setState({
+        responseMessage: 'No Ratings Found...'
+      })
+    })
   }
+}
+
 }
 
   deleteRating(ratingId, index) {
     if(confirm("Are you sure you want to delete this rating?")) {
-      axios.delete(`${this.endPoint}/api/delete/${this.state.selectedRating === 'hotels'? 'hotel' : 'package'}Rating-deleteById/${ratingId}`)
+      axios.delete(`${this.endPoint}/api/delete/${this.state.selectedRating === 'hotels'? 'hotel' : this.state.selectedRating === 'packages' ? 'package' : 'experience'}Rating-deleteById/${ratingId}`)
         .then(response => {
           const ratings = this.state.ratings.slice();
           ratings.splice(index, 1);
@@ -299,7 +318,7 @@ export default class Ratings extends React.Component {
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>{selectedRating === 'hotels' ? 'Hotel ID' : 'Package ID'}</th>
+                  <th>{selectedRating === 'hotels' ? 'Hotel ID' : selectedRating === 'packages' ? 'Package ID' : 'Experience ID'}</th>
                   <th>User ID</th>
                   <th>Rating</th>
                   <th>Status</th>

@@ -129,7 +129,7 @@ export default class ExperienceRatingForm extends React.Component {
         // });
 
         // fd.append('experienceRating', JSON.stringify(experienceRating));
-        let requestBody = { 'experienceRating' : JSON.stringify(this.state,experienceRating)};
+        let requestBody = { 'experienceRating' : JSON.stringify(this.state.experienceRating)};
 
         if(this.props.params.cityId) {
         // axios.patch('/api/experienceRating/update', fd)
