@@ -103,6 +103,19 @@ export default class Ratings extends React.Component {
           responseMessage: 'No Ratings for Packages Found...'
         })
       })
+    } else if(ratingName === 'experiences') {
+      axios.get(`${this.endPoint}/api/fetch/experienceRating-fetch`)
+      .then(response => {
+        this.setState({
+          ratings: response.data,
+          pages: Math.ceil(response.data.length/10),
+        })
+      })
+      .catch(err => {
+        this.setState({
+          responseMessage: 'No Ratings for Experiences Found...'
+        })
+      })
     }
   }
 
@@ -231,6 +244,7 @@ export default class Ratings extends React.Component {
                           <option value="">Select Rating Type</option>
                           <option value="packages">Packages</option>
                           <option value="hotels">Hotels</option>
+                          <option value="experiences">Experiences</option>
                         </select>
                       </div>
                     </div>

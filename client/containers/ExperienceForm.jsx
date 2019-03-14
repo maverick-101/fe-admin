@@ -20,6 +20,7 @@ export default class ExperienceForm extends React.Component {
         menu: '',
         spoken_languages: [],
         created_At: '',
+        star_rating: '',
         recommended: false,
         latitude: '',
         longitude: '',
@@ -307,6 +308,23 @@ export default class ExperienceForm extends React.Component {
                           this.setState({ experience })
                         }}
                       />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Rating
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="star_rating"
+                          className="form-control"
+                          value={experience.star_rating}
+                          onChange={this.handleInputChange}
+                        />
                       </div>
                     </div>
 

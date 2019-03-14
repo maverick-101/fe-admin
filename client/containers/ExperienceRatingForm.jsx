@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
+import moment from 'moment';
+import { Link } from 'react-router';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -13,24 +15,16 @@ export default class ExperienceRatingForm extends React.Component {
     this.state = {
       loading: false,
       experienceRating: {
-        experience_title: '',
+        experience_id: '',
         user_name: '',
-        spoken_languages: [],
+        user_id: '',
+        rating: '',
         created_At: '',
-        recommended: '',
-        latitude: '',
-        longitude: '',
-        todo: [],
-        gallery: [],
-        description: '',
+        status: '',
+        comment: '',
       },
-      toDo: [
-        {
-          todo_title: '',
-          description: ''
-        }
-      ],
       gallery: '',
+      ratings: [],
       users: [],
       user: '',
       description: RichTextEditor.createEmptyValue(),
@@ -51,16 +45,29 @@ export default class ExperienceRatingForm extends React.Component {
   }
 
   componentDidMount() {
-    // console.log('props',this.props);
-    //   if (window.location.href.split('/')[3] === 'edit_city')
-    //   axios.get(`${this.endPoint}/api/fetchById/experienceRating-fetchById/${this.props.params.cityId}`)
-    //     .then((response) => {
-    //       this.setState({
-    //         experienceRating: response.data[0],
-    //         description: RichTextEditor.createValueFromString(response.data.description, 'html'),
-    //       });
-    //     });
-    }
+    this.setState(prevState => ({
+      experienceRating: {
+        ...prevState.experienceRating,
+        experience_id: this.props.params.experienceId,
+      },
+    }));
+    this.fetchRatings();
+  }
+
+  fetchRatings = () => {
+    axios.get(`${this.endPoint}/api/fetchByExperienceId/experienceRating-fetchByExperienceId/${this.props.params.experienceId}`)
+    .then((response) => {
+      this.setState({
+        ratings: response.data,
+        responseMessage: 'No Resources Found',
+      })
+    })
+    .catch(() => {
+      this.setState({
+        responseMessage: 'No Resources Found',
+      })
+    })
+  }
 
   setDescription(description) {
     const { experienceRating } = this.state;
@@ -89,23 +96,9 @@ export default class ExperienceRatingForm extends React.Component {
       experienceRating: {
         ...prevState.experienceRating,
         user_name: selectedUser.first_name,
+        user_id: selectedUser.ID,
       },
     }));
-  }
-
-  handleToDo = (event, index) => {
-    const { value, name } = event.target;
-
-    const { toDo } = this.state;
-
-    toDo[index][name] = value;
-    this.setState(prevState => ({ 
-      toDo,
-      experienceRating: {
-        ...prevState.experienceRating,
-        todo: toDo,
-      },
-     }));
   }
 
   postCity(event) {
@@ -114,23 +107,24 @@ export default class ExperienceRatingForm extends React.Component {
     const { loading, experienceRating, gallery } = this.state;
         this.setState({ loading: true });
 
-        let imgArray = [];
-        const fd = new FormData();
-        for (let index = 0; index < gallery.length; index += 1) {
-          imgArray.push(gallery[index]);
-        }
-          imgArray.forEach((img) => {
-          fd.append('gallery_images', img);
-          return img;
-        });
+        // let imgArray = [];
+        // const fd = new FormData();
+        // for (let index = 0; index < gallery.length; index += 1) {
+        //   imgArray.push(gallery[index]);
+        // }
+        //   imgArray.forEach((img) => {
+        //   fd.append('gallery_images', img);
+        //   return img;
+        // });
 
-        fd.append('experienceRating', JSON.stringify(experienceRating));
+        // fd.append('experienceRating', JSON.stringify(experienceRating));
+        let requestBody = { 'experienceRating' : JSON.stringify(this.state,experienceRating)};
 
         if(this.props.params.cityId) {
         // axios.patch('/api/experienceRating/update', fd)
         axios.patch(`${this.endPoint}/api/update/experienceRating-update`, fd)
           .then((response) => {
-            if (response.data === 'Experience Updated!') {
+            if (response.data && reponse.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -140,10 +134,9 @@ export default class ExperienceRatingForm extends React.Component {
           });
         }
         else {
-          // axios.post('/api/experienceRating/save', fd)
-          axios.post(`${this.endPoint}/api/save/experienceRating-save`, fd)
+          axios.post(`${this.endPoint}/api/save/experienceRating-save`, requestBody)
           .then((response) => {
-            if (response.data === 'Experience Saved!') {
+            if (response.data && response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -158,10 +151,9 @@ export default class ExperienceRatingForm extends React.Component {
     const {
       loading,
       experienceRating,
-      description,
       users,
       user,
-      toDo,
+      responseMessage
     } = this.state;
     const toolbarConfig = {
       // Optionally specify the groups to display (displayed in the order listed).
@@ -235,17 +227,35 @@ export default class ExperienceRatingForm extends React.Component {
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Experience Title
+                      >Rating
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
                           required
-                          type="text"
-                          name="experience_title"
+                          type="number"
+                          name="rating"
                           className="form-control"
-                          value={experienceRating.experience_title}
+                          value={experienceRating.rating}
                           onChange={this.handleInputChange}
                         />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Status</label>
+                      <div className="col-md-6 col-sm-6">
+                        <select
+                          name="status"
+                          value={experienceRating.status}
+                          className="form-control custom-select"
+                          onChange={this.handleInputChange}
+                          required
+                        >
+                          <option value="">Select Value</option>
+                          <option value="PENDING">Pending</option>
+                          <option value="ACCEPTED">Accepted</option>
+                          <option value="REJECTED">Rejected</option>
+                        </select>
                       </div>
                     </div>
 
@@ -266,7 +276,7 @@ export default class ExperienceRatingForm extends React.Component {
                           </div>
                         </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Recommended</label>
                       <div className="col-md-6 col-sm-6">
                       <input
@@ -279,9 +289,9 @@ export default class ExperienceRatingForm extends React.Component {
                         }}
                       />
                       </div>
-                    </div>
+                    </div> */}
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Latitude
@@ -296,98 +306,21 @@ export default class ExperienceRatingForm extends React.Component {
                           onChange={this.handleInputChange}
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Longitude
+                      >Comment
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
                           required
                           type="text"
-                          name="longitude"
+                          name="comment"
                           className="form-control"
-                          value={experienceRating.longitude}
+                          value={experienceRating.comment}
                           onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
-                        <div className="control-label col-md-3 col-sm-3"></div>
-                          <div className="col-md-8 col-sm-8">
-                            <h3>Activities Details</h3>
-                        </div>
-
-                    {toDo.map((event, index) => {
-                        return <div key={index}>
-                    <div className="form-group row">
-                    {index >=1 ? <hr style={{borderTop: '1px solid gray'}}/> : null}
-                      <label
-                        className="control-label col-md-3 col-sm-3"
-                      >ToDo Title
-                      </label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          required
-                          type="text"
-                          name="todo_title"
-                          className="form-control"
-                          value={toDo[index].todo_title}
-                          onChange={(event) => this.handleToDo(event, index)}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-group row">
-                        <label className="control-label col-md-3 col-sm-3">Description</label>
-                        <div className="col-md-6 col-sm-6">
-                          <textarea
-                            rows="4"
-                            name="description"
-                            className="form-control"
-                            value={toDo[index].description}
-                            onChange={(event) => this.handleToDo(event, index)}
-                          />
-                        </div>
-                      </div>
-
-                      <div style={{float: "right"}}>
-                      <button type="button" style={{marginRight: '5px'}}
-                      onClick={() => {
-                        this.setState({
-                          toDo: [...toDo, {}],
-                          })
-                        } }
-                          className="btn btn-info btn-sm">Add toDo
-                          </button>
-                      <button type="button" 
-                      onClick={() => {
-                        var { toDo } = this.state;
-                        var newToDo = Object.assign([], toDo)
-                        newToDo.pop()
-                        this.setState({
-                          toDo: newToDo,
-                        })
-                        }
-                      }
-                      className={`btn btn-danger btn-sm ${toDo.length === 1 ? 'disabled' : ''}`}>Remove ToDo</button>
-                    </div>
-                  </div>
-                    })}
-
-                    <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Experience Gallery</label>
-                      <div className="col-md-6 col-sm-6">
-                        <input
-                          type="file"
-                          name="gallery"
-                          className="form-control"
-                          onChange={this.handleImages}
-                          multiple
-                          required={experienceRating.gallery ? 0 : 1}
                         />
                       </div>
                     </div>
@@ -414,7 +347,7 @@ export default class ExperienceRatingForm extends React.Component {
                       ) : null
                               }
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Description</label>
                       <div className="col-md-6 col-sm-6">
                         <RichTextEditor
@@ -425,7 +358,7 @@ export default class ExperienceRatingForm extends React.Component {
                           }}
                         />
                       </div>
-                    </div>
+                    </div> */}
                     <div className="ln_solid" />
                     <div className="form-group row">
                       <div className="col-md-12 col-sm-12 text-center offset-md-3">
@@ -438,9 +371,48 @@ export default class ExperienceRatingForm extends React.Component {
                         </Button>
                       </div>
                     </div>
-                    </div>
                   </form>
                 </div>
+                <h1>Resources Available</h1>
+                <div className="table-responsive">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>Sr #</th>
+                  <th>ID</th>
+                  <th>No. of Resources</th>
+                  <th>Image Type</th>
+                  <th>Created At</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.ratings && this.state.ratings.length >= 1 ?
+                this.state.ratings.map((rating, index) => (
+                  <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{rating.ID}</td>
+                  {/* <td>{rating.Resources.length}</td> */}
+                  <td>{rating.image_type}</td>
+                  <td>{moment(rating.created_At).format('DD-MMM-YYYY HH:mm:ss')}</td>
+                      <td>
+                        <Link to={`/edit_room/${rating.ID}`}>
+                          <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </Link>
+                      </td>
+                      <td>
+                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteResource(rating._id, index)}></span>
+                      </td>
+                    </tr>
+                )) :
+                (
+                  <tr>
+                    <td colSpan="15" className="text-center">{responseMessage}</td>
+                  </tr>
+                )
+                }
+              </tbody>
+            </table>
+          </div>
                 </div>
               </div>
             </div>
