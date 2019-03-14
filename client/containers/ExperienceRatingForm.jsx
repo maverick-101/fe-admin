@@ -32,7 +32,7 @@ export default class ExperienceRatingForm extends React.Component {
     // this.rteState = RichTextEditor.createEmptyValue();
     this.endPoint = 'https://api.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postCity = this.postCity.bind(this);
+    this.postExperienceRating = this.postExperienceRating.bind(this);
   }
 
   componentWillMount() {
@@ -59,12 +59,12 @@ export default class ExperienceRatingForm extends React.Component {
     .then((response) => {
       this.setState({
         ratings: response.data,
-        responseMessage: 'No Resources Found',
+        responseMessage: 'No Ratings Found',
       })
     })
     .catch(() => {
       this.setState({
-        responseMessage: 'No Resources Found',
+        responseMessage: 'No Ratings Found',
       })
     })
   }
@@ -101,7 +101,18 @@ export default class ExperienceRatingForm extends React.Component {
     }));
   }
 
-  postCity(event) {
+  deleteRating(ratingId, index) {
+    if(confirm("Are you sure you want to delete this rating?")) {
+      axios.delete(`${this.endPoint}/api/delete/experienceRating-deleteById/${ratingId}`)
+        .then(response => {
+          const ratings = this.state.ratings.slice();
+          ratings.splice(index, 1);
+          this.setState({ ratings });
+        });
+    }
+  }
+
+  postExperienceRating(event) {
     event.preventDefault();
     const { match, history } = this.props;
     const { loading, experienceRating, gallery } = this.state;
@@ -139,6 +150,7 @@ export default class ExperienceRatingForm extends React.Component {
             if (response.data && response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
+              this.fetchRatings();
             } else {
               window.alert('ERROR')
               this.setState({ loading: false });
@@ -222,7 +234,7 @@ export default class ExperienceRatingForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postCity}
+                    onSubmit={this.postExperienceRating}
                   >
                     <div className="form-group row">
                       <label
@@ -373,14 +385,14 @@ export default class ExperienceRatingForm extends React.Component {
                     </div>
                   </form>
                 </div>
-                <h1>Resources Available</h1>
+                <h1>Ratings</h1>
                 <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
                   <th>Sr #</th>
                   <th>ID</th>
-                  <th>No. of Resources</th>
+                  <th>No. of Ratings</th>
                   <th>Image Type</th>
                   <th>Created At</th>
                 </tr>
@@ -400,7 +412,7 @@ export default class ExperienceRatingForm extends React.Component {
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteResource(rating._id, index)}></span>
+                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteRating(rating.ID, index)}></span>
                       </td>
                     </tr>
                 )) :

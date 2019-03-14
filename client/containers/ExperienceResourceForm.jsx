@@ -31,7 +31,7 @@ export default class ExperienceResourceForm extends React.Component {
     // this.rteState = RichTextEditor.createEmptyValue();
     this.endPoint = 'https://api.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postCity = this.postCity.bind(this);
+    this.postExperienceResource = this.postExperienceResource.bind(this);
   }
 
   componentWillMount() {
@@ -109,7 +109,7 @@ export default class ExperienceResourceForm extends React.Component {
     }
   }
 
-  postCity(event) {
+  postExperienceResource(event) {
     event.preventDefault();
     const { match, history } = this.props;
     const { loading, experienceResources, gallery } = this.state;
@@ -146,6 +146,7 @@ export default class ExperienceResourceForm extends React.Component {
             if (response.data && response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
+              this.fetchResources();
             } else {
               window.alert('ERROR')
               this.setState({ loading: false });
@@ -228,7 +229,7 @@ export default class ExperienceResourceForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postCity}
+                    onSubmit={this.postExperienceResource}
                   >
                     <div className="form-group row">
                       <label
@@ -371,7 +372,7 @@ export default class ExperienceResourceForm extends React.Component {
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteResource(resource._id, index)}></span>
+                        <span className="glyphicon glyphicon-trash" style={{cursor: 'pointer'}} aria-hidden="true" onClick={() => this.deleteResource(resource.Resources[0].ID, index)}></span>
                       </td>
                     </tr>
                 )) :
