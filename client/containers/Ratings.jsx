@@ -331,7 +331,7 @@ export default class Ratings extends React.Component {
                   <tr key={index}>
                     {/* <td>{<img style={{height: '50px', width: '50px'}} src={rating.gallery ? rating.gallery[0].url : Broken} />}</td> */}
                     <td>{rating.ID}</td>
-                    <td>{selectedRating === 'hotels' ? rating.hotel_id : rating.package_id}</td>
+                    <td>{selectedRating === 'hotels' ? rating.hotel_id : selectedRating === 'packages' ? rating.package_id : rating.experience_id}</td>
                     <td>{rating.user_id}</td>
                     <td>{rating.rating}</td>
                     <td>{rating.status}</td>
