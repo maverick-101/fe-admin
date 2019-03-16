@@ -37,9 +37,9 @@ export default class Experiences extends React.Component {
       })
   }
 
-  deleteCity(cityId, index) {
+  deleteExperience(experienceId, index) {
     if(confirm("Are you sure you want to delete this experience?")) {
-      axios.delete(`${this.endPoint}/api/delete/experience-deleteById/${cityId}`)
+      axios.delete(`${this.endPoint}/api/delete/experience-deleteById/${experienceId}`)
         .then(response => {
           if(response.status === 200) {
             Swal.fire({
@@ -138,12 +138,16 @@ export default class Experiences extends React.Component {
                       </Link>
                     </td>
                       <td>
-                        <Link to={`${this.endPoint}/edit_city/${experience.ID}`}>
+                        <Link to={`/edit_experiences/${experience.ID}`}>
+                        {/* <Link to={{
+                          pathname: `/edit_experiences/${experience.ID}`,
+                          state: { experienceId: experience.ID}
+                        }}> */}
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteCity(experience.ID, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteExperience(experience.ID, index)}></span>
                       </td>
                   </tr>
                 )):

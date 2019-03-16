@@ -122,7 +122,7 @@ ReactDOM.render(
 
         <Route path="/experiences" component={Experiences}/>
         <Route path="/experiences_form" component={ExperienceForm}/>
-        <Route path="/edit_experiences_form/:experienceId" component={ExperienceForm}/>
+        <Route path="/edit_experiences/:experienceId" component={ExperienceForm}/>
         <Route path="/experiences_resource_form/:experienceId" component={ExperienceResourceForm}/>
         <Route path="/experiences_rating_form/:experienceId" component={ExperienceRatingForm}/>
         

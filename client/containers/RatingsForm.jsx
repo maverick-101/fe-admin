@@ -18,6 +18,7 @@ export default class RatingsForm extends React.Component {
         user_name: '',
         hotel_id: '',
         package_id: '',
+        expereience_id: '',
         rating: '',
         status: '',
         comment: '',
@@ -28,6 +29,8 @@ export default class RatingsForm extends React.Component {
       hotel: '',
       users: [],
       user: '',
+      experiences: [],
+      experience: '',
       gallery: '',
       description: RichTextEditor.createEmptyValue(),
     };
@@ -42,9 +45,10 @@ export default class RatingsForm extends React.Component {
     this.fetchUsers();
     if (location.state.selectedRating === 'packages'){
       this.fetchPackages();
-    }
-    else {
+    } else if(location.state.selectedRating === 'hotels') {
       this.fetchHotels();
+    } else {
+      this.fetchExperiences();
     }
   }
 
@@ -87,6 +91,15 @@ export default class RatingsForm extends React.Component {
       })
     }
 
+    fetchExperiences() {
+      axios.get(`${this.endPoint}/api/fetch/experience-fetch`)
+      .then(response => {
+      this.setState({
+        experiences: response.data,
+      })
+    })
+  }
+
     setHotel = (selectedHotel) => {
         this.setState(prevState => ({
             hotel: selectedHotel,
@@ -117,6 +130,16 @@ export default class RatingsForm extends React.Component {
             },
             }));
         }
+
+    setExperience = (selectedExperience) => {
+      this.setState(prevState => ({
+          experience: selectedExperience,
+          rating: {
+              ...prevState.rating,
+              expereience_id: selectedExperience.ID,
+          },
+          }));
+      }
 
   setDescription(description) {
     const { rating } = this.state;
@@ -179,10 +202,10 @@ export default class RatingsForm extends React.Component {
                             loading: false,
                         })
                     });
-                } else {
+                } else if (location.state.selectedRating === 'packages') {
                     let packageRating = _.omit(rating, ['hotel_id'])
                     let requestBody = { 'packageRating' : JSON.stringify(packageRating)};
-                    fd.append('packageRating', JSON.stringify(rating));
+                    // fd.append('packageRating', JSON.stringify(rating));
                         axios.post(`${this.endPoint}/api/save/packageRating-save`, requestBody)
                         .then((response) => {
                         if (response.data && response.status === 200) {
@@ -198,7 +221,26 @@ export default class RatingsForm extends React.Component {
                             loading: false,
                         })
                     });
-                }
+                } else if (location.state.selectedRating === 'experiences') {
+                  let experienceRating = _.omit(rating, ['hotel_id', 'package_id'])
+                  let requestBody = { 'experienceRating' : JSON.stringify(experienceRating)};
+                  // fd.append('packageRating', JSON.stringify(rating));
+                      axios.post(`${this.endPoint}/api/save/experienceRating-save`, requestBody)
+                      .then((response) => {
+                      if (response.data && response.status === 200) {
+                      window.alert(response.data);
+                      this.setState({ loading: false });
+                      } else {
+                      window.alert('ERROR')
+                      this.setState({ loading: false });
+                      }
+                  })
+                  .catch((error) => {
+                      this.setState({
+                          loading: false,
+                      })
+                  });
+              }
             }
         }
 
@@ -213,6 +255,8 @@ export default class RatingsForm extends React.Component {
       hotel,
       users,
       user,
+      experiences,
+      experience,
     } = this.state;
     const { location } = this.props;
     const selectedFormName = _.startCase(location.state.selectedRating);
@@ -334,6 +378,27 @@ export default class RatingsForm extends React.Component {
                             options={hotels}
                             valueKey="id"
                             labelKey="name"
+                            clearable={false}
+                            backspaceRemoves={false}
+                            required
+                            />
+                        </div>
+                    </div>
+                      :
+                    null
+                }
+
+                {location.state.selectedRating === 'experiences' ?
+                  <div className="form-group row">
+                    <label className="control-label col-md-3 col-sm-3">Experience</label>
+                    <div className="col-md-6 col-sm-6">
+                        <Select
+                            name="experience_id"
+                            value={experience}
+                            onChange={value => this.setExperience(value)}
+                            options={experiences}
+                            valueKey="id"
+                            labelKey="experience_title"
                             clearable={false}
                             backspaceRemoves={false}
                             required
