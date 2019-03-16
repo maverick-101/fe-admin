@@ -26,6 +26,7 @@ export default class ExperienceForm extends React.Component {
         longitude: '',
         todo: [],
         gallery: [],
+        todo: [],
         description: '',
       },
       toDo: [
@@ -56,7 +57,27 @@ export default class ExperienceForm extends React.Component {
 
   componentDidMount() {
     console.log('PROPS',this.props);
-  }
+    if (this.props.params.experienceId) {
+      axios.get(`${this.endPoint}/api/fetchById/experience-fetchById/${this.props.params.experienceId}`)
+        .then((response) => {
+          this.setState({
+            experience: response.data[0],
+            description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+          }, () => {
+            this.setState({
+              toDo: this.state.experience.todo,
+              description: RichTextEditor.createValueFromString(this.state.experience.description, 'html')
+            })
+            axios.get(`${this.endPoint}/api/user/fetchById/${this.state.experience.user_id}`)
+            .then((response) => {
+              this.setState({
+                user: response.data[0],
+              });
+            });
+          });
+        });
+      }
+    }
 
   setDescription(description) {
     const { experience } = this.state;
