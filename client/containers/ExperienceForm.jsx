@@ -14,6 +14,7 @@ export default class ExperienceForm extends React.Component {
       loading: false,
       experience: {
         experience_title: '',
+        location_id: '',
         user_id: '',
         user_name: '',
         estimated_time: '',
@@ -28,6 +29,7 @@ export default class ExperienceForm extends React.Component {
         gallery: [],
         todo: [],
         description: '',
+        important_information: '',
       },
       toDo: [
         {
@@ -38,7 +40,10 @@ export default class ExperienceForm extends React.Component {
       gallery: '',
       users: [],
       user: '',
+      locations: [],
+      location: '',
       description: RichTextEditor.createEmptyValue(),
+      information: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
     this.endPoint = 'https://api.saaditrips.com';
@@ -51,6 +56,12 @@ export default class ExperienceForm extends React.Component {
     .then((response) => {
       this.setState({
         users: response.data,
+      });
+    });
+    axios.get(`${this.endPoint}/api/fetch/locations-fetch`)
+    .then((response) => {
+      this.setState({
+        locations: response.data,
       });
     });
   }
@@ -86,6 +97,25 @@ export default class ExperienceForm extends React.Component {
       experience,
       description,
     });
+  }
+
+  setInformation(information) {
+    const { experience } = this.state;
+    experience.important_information = information.toString('html');
+    this.setState({
+      experience,
+      information,
+    });
+  }
+
+  setLocation(selectedLocation) {
+    this.setState(prevState => ({
+      location: selectedLocation,
+      experience: {
+        ...prevState.experience,
+        location_id: selectedLocation.ID,
+      },
+    }));
   }
 
   handleInputChange(event) {
@@ -176,9 +206,12 @@ export default class ExperienceForm extends React.Component {
       loading,
       experience,
       description,
+      information,
       users,
       user,
       toDo,
+      locations,
+      location,
     } = this.state;
     const toolbarConfig = {
       // Optionally specify the groups to display (displayed in the order listed).
@@ -265,6 +298,23 @@ export default class ExperienceForm extends React.Component {
                         />
                       </div>
                     </div>
+
+                    <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">Location</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="location_id"
+                              value={location}
+                              onChange={value => this.setLocation(value)}
+                              options={locations}
+                              valueKey="ID"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>  
 
                     <div className="form-group row">
                       <label
@@ -494,6 +544,20 @@ export default class ExperienceForm extends React.Component {
                         />
                       </div>
                     </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Important Information</label>
+                      <div className="col-md-6 col-sm-6">
+                        <RichTextEditor
+                          value={information}
+                          toolbarConfig={toolbarConfig}
+                          onChange={(e) => {
+                            this.setInformation(e);
+                          }}
+                        />
+                      </div>
+                    </div>
+
                     <div className="ln_solid" />
                     <div className="form-group row">
                       <div className="col-md-12 col-sm-12 text-center offset-md-3">
