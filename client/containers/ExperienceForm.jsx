@@ -167,7 +167,7 @@ export default class ExperienceForm extends React.Component {
   postExperience(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, experience, gallery } = this.state;
+    const { loading, experience, gallery, guestPhotos } = this.state;
         this.setState({ loading: true });
 
         let imgArray = [];
