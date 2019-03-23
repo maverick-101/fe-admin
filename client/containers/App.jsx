@@ -19,28 +19,63 @@ class App extends React.Component {
     }
   }
 
-  componentWillMount(){
-    let token = Cookie.get('saadi_admin_access_token');
-    if(token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  // componentWillMount(){
+  //   let token = Cookie.get('saadi_admin_access_token');
+  //   if(token) {
+  //     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+  //     axios.get('/api/user/me')
+  //     .then(response => {
+  //       //console.log("#### success", response.data);
+  //       this.props.dispatch({
+  //         type: types.SET_USER_FROM_TOKEN,
+  //         payload: response.data
+  //       });
+  //       this.setState({ user: response.data, loading: false});
+  //     })
+  //     .catch(error => {
+  //       //console.log("#### error", error);
+  //       this.setState({ loading: false});
+  //       this.props.router.push("/login");
+  //     });
+  //   } else {
+  //     this.setState({ loading: false});
+  //     this.props.router.push("/login");
+  //   }
+  // }
+
+  componentWillMount() {
+    console.log(this.props)
+    // window.alert('HAHHAHA');
+    // console.log(this.props)
+    const { dispatch, history } = this.props;
+    const token = Cookie.get('saadi_admin_access_token');
+    if (token) {
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
       axios.get('/api/user/me')
-      .then(response => {
-        //console.log("#### success", response.data);
-        this.props.dispatch({
-          type: types.SET_USER_FROM_TOKEN,
-          payload: response.data
+        .then((response) => {
+          // console.log("#### success", response.data);
+          dispatch({
+            type: types.SET_USER_FROM_TOKEN,
+            payload: response.data,
+          });
+          this.setState({
+            user: response.data,
+            loading: false,
+          });
+        })
+        .catch((/* error */) => {
+          // console.log("app componentWillMount error :: ", error);
+          this.setState({ loading: false });
+          Cookie.remove('saadi_admin_access_token');
+          // history.push('/login');
+          // window.location.replace('/login')
         });
-        this.setState({ user: response.data, loading: false});
-      })
-      .catch(error => {
-        //console.log("#### error", error);
-        this.setState({ loading: false});
-        // this.props.router.push("/login");
-      });
     } else {
-      this.setState({ loading: false});
-      // this.props.router.push("/login");
+      this.setState({ loading: false });
+      // history.push('/login');
+      // window.location.replace('/login')
     }
   }
 
