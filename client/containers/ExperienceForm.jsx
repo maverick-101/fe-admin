@@ -18,6 +18,8 @@ export default class ExperienceForm extends React.Component {
         user_id: '',
         user_name: '',
         estimated_time: '',
+        time: '',
+        phone_number: '',
         menu: '',
         spoken_languages: [],
         created_At: '',
@@ -27,6 +29,7 @@ export default class ExperienceForm extends React.Component {
         longitude: '',
         todo: [],
         gallery: [],
+        guest_photos: [],
         todo: [],
         description: '',
         important_information: '',
@@ -38,6 +41,7 @@ export default class ExperienceForm extends React.Component {
         }
       ],
       gallery: '',
+      guestPhotos: '',
       users: [],
       user: '',
       locations: [],
@@ -130,6 +134,10 @@ export default class ExperienceForm extends React.Component {
     this.setState({ gallery: event.target.files });
   }
 
+  handleGuestPhotos = (event) => {
+    this.setState({ guestPhotos: event.target.files });
+  }
+
   setUser(selectedUser) {
     this.setState(prevState => ({
       user: selectedUser,
@@ -163,12 +171,22 @@ export default class ExperienceForm extends React.Component {
         this.setState({ loading: true });
 
         let imgArray = [];
+        let guestPhotosArray = [];
+
         const fd = new FormData();
         for (let index = 0; index < gallery.length; index += 1) {
           imgArray.push(gallery[index]);
         }
           imgArray.forEach((img) => {
           fd.append('gallery_images', img);
+          return img;
+        });
+
+        for (let index = 0; index < guestPhotos.length; index += 1) {
+          guestPhotosArray.push(guestPhotos[index]);
+        }
+        guestPhotosArray.forEach((img) => {
+          fd.append('guest_photos', img);
           return img;
         });
 
@@ -328,6 +346,38 @@ export default class ExperienceForm extends React.Component {
                           name="estimated_time"
                           className="form-control"
                           value={experience.estimated_time}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Time
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          type="text"
+                          name="time"
+                          className="form-control"
+                          value={experience.time}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Phone Number
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          type="text"
+                          name="phone_number"
+                          className="form-control"
+                          value={experience.phone_number}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -511,6 +561,42 @@ export default class ExperienceForm extends React.Component {
                     </div>
 
                     {experience.gallery
+                      ? (
+                        <div className="form-group row">
+                        <label className="control-label col-md-3 col-sm-3"></label>
+                        <div className="col-md-6 col-sm-6">
+                        {experience.gallery.map((image,index) => {
+                          return (
+                          <img key={index}
+                          style={{marginRight: '5px'}}
+                          width="100"
+                          className="img-fluid"
+                          src={`${image.url}`}
+                          alt="cover"
+                        />
+                          )
+                        })}
+                          
+                        </div>
+                      </div>
+                      ) : null
+                              }
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Guest Photos</label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          type="file"
+                          name="gallery"
+                          className="form-control"
+                          onChange={this.handleGuestPhotos}
+                          multiple
+                          required={experience.guest_photos ? 0 : 1}
+                        />
+                      </div>
+                    </div>
+
+                    {experience.guest_photos
                       ? (
                         <div className="form-group row">
                         <label className="control-label col-md-3 col-sm-3"></label>
