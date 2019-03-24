@@ -1,15 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import createHistory from 'history/createBrowserHistory';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Router } from 'react-router-dom';
 
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import configureStore from './store';
 
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-dates/lib/css/_datepicker.css';
-// import 'font-awesome/css/font-awesome.css';
+import 'font-awesome/css/font-awesome.css';
+import './dashboard.css'
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-dates/lib/css/_datepicker.css';
+import 'font-awesome/css/font-awesome.css';
 
 // Styles
 // Import Flag Icons Set
@@ -24,11 +29,12 @@ import 'react-dates/lib/css/_datepicker.css';
 // import '../scss/core/_dropdown-menu-right.scss';
 
 // Main Container
-import App from './index';
+import App from './containers/App';
 
 // Pages
 import Login from '../pages/Login';
 import Logout from '../pages/Logout';
+import SignUp from '../pages/SignUp';
 
 const history = createHistory({ basename: '/' });
 const store = configureStore(history);
@@ -36,13 +42,19 @@ const store = configureStore(history);
 
 ReactDOM.render((
   <Provider store={store}>
-    <ConnectedRouter history={history}>
+    <Router history={history}>
       <Switch>
         <Route
           exact
           path="/login"
           name="Login"
           component={Login}
+        />
+        <Route
+          exact
+          path="/signup"
+          name="Signup"
+          component={SignUp}
         />
         <Route
           exact
@@ -56,6 +68,6 @@ ReactDOM.render((
           component={App}
         />
       </Switch>
-    </ConnectedRouter>
+    </Router>
   </Provider>
-), document.getElementById('root'));
+), document.getElementById('app'));
