@@ -591,7 +591,6 @@ export default class ExperienceForm extends React.Component {
                           className="form-control"
                           onChange={this.handleGuestPhotos}
                           multiple
-                          required={experience.guest_photos ? 0 : 1}
                         />
                       </div>
                     </div>
