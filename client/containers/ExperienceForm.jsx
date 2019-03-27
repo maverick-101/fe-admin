@@ -89,8 +89,30 @@ export default class ExperienceForm extends React.Component {
                 user: response.data[0],
               });
             });
+            axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.state.experience.location_id}`)
+            .then((response) => {
+              this.setState({
+                location: response.data[0],
+              });
+            });
           });
         });
+      }
+    }
+
+    deleteImage = (url, ID) => {
+      const data =  {ID, url}
+      let requestBody = { 'experienceGallery' : JSON.stringify(data)};
+      if(confirm("Are you sure you want to delete this image?")) {
+        axios.delete(`${this.endPoint}/api/deleteGallery/experience-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
+          .then(response => {
+            if(response.status === 200) {
+              window.alert('Image deleted Successfully!')
+            }
+            const hotels = this.state.hotels[hotel_gallery].slice();
+            hotels.splice(index, 1);
+            this.setState({ hotels });
+          });
       }
     }
 
@@ -567,13 +589,16 @@ export default class ExperienceForm extends React.Component {
                         <div className="col-md-6 col-sm-6">
                         {experience.gallery.map((image,index) => {
                           return (
-                          <img key={index}
-                          style={{marginRight: '5px'}}
-                          width="100"
-                          className="img-fluid"
-                          src={`${image.url}`}
-                          alt="cover"
-                        />
+                          <span>
+                            <img key={index}
+                            style={{marginRight: '5px'}}
+                            width="100"
+                            className="img-fluid"
+                            src={`${image.url}`}
+                            alt="cover"
+                          />
+                          <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, experience.ID)}/>
+                        </span>
                           )
                         })}
                           
@@ -594,6 +619,31 @@ export default class ExperienceForm extends React.Component {
                         />
                       </div>
                     </div>
+
+                    {experience.guest_gallery
+                      ? (
+                        <div className="form-group row">
+                        <label className="control-label col-md-3 col-sm-3"></label>
+                        <div className="col-md-6 col-sm-6">
+                        {experience.guest_gallery.map((image,index) => {
+                          return (
+                          <span>
+                          <img key={index}
+                          style={{marginRight: '5px'}}
+                          width="100"
+                          className="img-fluid"
+                          src={`${image.url}`}
+                          alt="cover"
+                        />
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, experience.ID)}/>
+                        </span>
+                          )
+                        })}
+                          
+                        </div>
+                      </div>
+                      ) : null
+                              }
 
                     {experience.guest_photos
                       ? (
