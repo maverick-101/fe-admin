@@ -78,6 +78,7 @@ export default class ExperienceForm extends React.Component {
           this.setState({
             experience: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+            information: RichTextEditor.createValueFromString(response.data.important_information, 'html'),
           }, () => {
             this.setState({
               toDo: this.state.experience.todo,
