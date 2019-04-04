@@ -146,7 +146,7 @@ class App extends React.Component {
                 {/* <Switch> */}
                 {/* <Route path="/" component={}> */}
 
-                  <Route path='/' component={Stats}/>     
+                  <Route exact={true} path='/' component={Stats}/>     
                   <Route path="/area" component={Area}/>
                   <Route path="/area_form" component={AreaForm}/>
                   <Route path="/edit_area/:areaId" component={AreaForm}/>

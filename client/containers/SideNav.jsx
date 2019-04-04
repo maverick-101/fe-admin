@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import HasRole from '../hoc/HasRole';
 import axios from 'axios';
 import Cookie from 'js-cookie';
