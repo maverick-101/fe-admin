@@ -44,8 +44,8 @@ export default class PackageResource extends React.Component {
 
   // componentDidMount() {
   //   console.log('props', this.props)
-  //   if (this.props.params.coverBannerId) {
-  //     axios.get(`${this.endPoint}/api/coverbanner/fetchById/${this.props.params.coverBannerId}`)
+  //   if (match.params.coverBannerId) {
+  //     axios.get(`${this.endPoint}/api/coverbanner/fetchById/${match.params.coverBannerId}`)
   //       .then((response) => {
   //         this.setState({
   //           packageResource: response.data[0]
@@ -64,18 +64,20 @@ export default class PackageResource extends React.Component {
   // }
 
   componentWillMount() {
+    const { match } = this.props;
     this.getCities();
       this.setState(prevState => ({
         packageResource: {
           ...prevState.packageResource,
-          package_id: this.props.params.packageId,
+          package_id: match.params.packageId,
         },
       }));
       this.fetchResources();
     }
     
     fetchResources = () => {
-      axios.get(`${this.endPoint}/api/fetchByPackageId/packageResources-fetchByPackageId/${this.props.params.packageId}`)
+      const { match } = this.props;
+      axios.get(`${this.endPoint}/api/fetchByPackageId/packageResources-fetchByPackageId/${match.params.packageId}`)
       .then((response) => {
         this.setState({
           resources: response.data,
@@ -171,7 +173,7 @@ export default class PackageResource extends React.Component {
 
         fd.append('packageResources', JSON.stringify(packageResource));
 
-        // if(this.props.params.packageId) {
+        // if(match.params.packageId) {
         // axios.patch(`${this.endPoint}/api/update/hotelImage-update`, fd)
         //   .then((response) => {
         //     if (response.data && response.status === 200) {

@@ -40,8 +40,9 @@ export default class CityForm extends React.Component {
 
   componentDidMount() {
     console.log('props',this.props);
+    const { match } = this.props;
       if (window.location.href.split('/')[3] === 'edit_city')
-      axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.props.params.cityId}`)
+      axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${match.params.cityId}`)
         .then((response) => {
           this.setState({
             city: response.data[0],
@@ -89,7 +90,7 @@ export default class CityForm extends React.Component {
 
         fd.append('city', JSON.stringify(city));
 
-        if(this.props.params.cityId) {
+        if(match.params.cityId) {
         // axios.patch('/api/city/update', fd)
         axios.patch(`${this.endPoint}/api/update/city-update`, fd)
           .then((response) => {

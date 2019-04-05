@@ -43,8 +43,9 @@ export default class AreaForm extends React.Component {
 
   componentDidMount() {
     console.log('props',this.props);
-      if (this.props.params.areaId)
-      axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.props.params.areaId}`)
+    const { match } = this.props;
+      if (match.params.areaId)
+      axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${match.params.areaId}`)
         .then((response) => {
           this.setState({
             location: response.data[0],
@@ -116,7 +117,7 @@ export default class AreaForm extends React.Component {
         });
         fd.append('location', JSON.stringify(location));
 
-        if(this.props.params.areaId) {
+        if(match.params.areaId) {
           // axios.patch('/api/locations/update', fd)
           axios.patch(`${this.endPoint}/api/update/location-update`, fd)
           .then((response) => {
@@ -350,14 +351,14 @@ export default class AreaForm extends React.Component {
                         <div className="col-md-6 col-sm-6">
                         {location.gallery.map((image,index) => {
                           return (
-                            <span>
-                          <img key={index}
-                          style={{marginRight: '5px'}}
-                          width="100"
-                          className="img-fluid"
-                          src={`${image.url}`}
-                          alt="cover"
-                        />
+                          <span key={index}>
+                            <img
+                            style={{marginRight: '5px'}}
+                            width="100"
+                            className="img-fluid"
+                            src={`${image.url}`}
+                            alt="cover"
+                          />
                         <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, location.ID)}/>
                         </span>
                           )

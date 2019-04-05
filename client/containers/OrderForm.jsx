@@ -41,7 +41,7 @@ export default class CityForm extends React.Component {
   componentDidMount() {
     console.log('props',this.props);
       if (window.location.href.split('/')[3] === 'edit_city')
-      axios.get(`${this.endPoint}/api/fetchById/order-fetchById/${this.props.params.cityId}`)
+      axios.get(`${this.endPoint}/api/fetchById/order-fetchById/${match.params.cityId}`)
         .then((response) => {
           this.setState({
             order: response.data[0],
@@ -89,7 +89,7 @@ export default class CityForm extends React.Component {
 
         fd.append('order', JSON.stringify(order));
 
-        if(this.props.params.cityId) {
+        if(match.params.cityId) {
         // axios.patch('/api/order/update', fd)
         axios.patch(`${this.endPoint}/api/update/order-update`, fd)
           .then((response) => {

@@ -115,8 +115,9 @@ export default class PackageForm extends React.Component {
 
   componentDidMount() {
     console.log('props',this.props);
-      if (this.props.params.packageId)
-      axios.get(`${this.endPoint}/api/fetchById/packagePage-fetchById/${this.props.params.packageId}`)
+    const { match } = this.props;
+      if (match.params.packageId)
+      axios.get(`${this.endPoint}/api/fetchById/packagePage-fetchById/${match.params.packageId}`)
         .then((response) => {
           this.setState({
             pckg: response.data,
@@ -313,7 +314,7 @@ export default class PackageForm extends React.Component {
         });
         fd.append('packagePage', JSON.stringify(pckg));
 
-        if(this.props.params.packageId) {
+        if(match.params.packageId) {
           // axios.patch('/api/locations/update', fd)
           axios.patch(`${this.endPoint}/api/update/packagePage-update`, fd)
           .then((response) => {

@@ -86,8 +86,9 @@ export default class HotelForm extends React.Component {
 
   componentDidMount() {
     console.log('props',this.props);
-      if (this.props.params.hotelId)
-      axios.get(`${this.endPoint}/api/hotel/fetchById/${this.props.params.hotelId}`)
+    const { match } = this.props;
+      if (match.params.hotelId)
+      axios.get(`${this.endPoint}/api/hotel/fetchById/${match.params.hotelId}`)
         .then((response) => {
           this.setState({
             hotel: response.data,
@@ -228,7 +229,7 @@ export default class HotelForm extends React.Component {
         fd.append('hotel', JSON.stringify(hotel));
         this.setState({ loading: true });
 
-        if(this.props.params.hotelId) {
+        if(match.params.hotelId) {
           axios.patch(`${this.endPoint}/api/hotel/update`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {

@@ -55,7 +55,7 @@ export default class RatingsForm extends React.Component {
   componentDidMount() {
     console.log('props',this.props);
     //   if (window.location.href.split('/')[3] === 'edit_city')
-    //   axios.get(`${this.endPoint}/api/fetchById/rating-fetchById/${this.props.params.cityId}`)
+    //   axios.get(`${this.endPoint}/api/fetchById/rating-fetchById/${match.params.cityId}`)
     //     .then((response) => {
     //       this.setState({
     //         rating: response.data[0],
@@ -170,7 +170,7 @@ export default class RatingsForm extends React.Component {
 
         const fd = new FormData();
 
-        if(this.props.params.featuredPackageId || this.props.params.featuredHotelId) {
+        if(match.params.featuredPackageId || match.params.featuredHotelId) {
             axios.patch(`${this.endPoint}/api/update/rating-update`, fd)
             .then((response) => {
                 if (response.data === 'Featured Updated!') {

@@ -51,9 +51,9 @@ export default class FeaturedForm extends React.Component {
 
   componentDidMount() {
     console.log('props',this.props);
-    const { location, params } = this.props;
-      if (params.featuredPackageId){
-        axios.get(`${this.endPoint}/api/fetchById/featuredPackage-fetchById/${params.featuredPackageId}`)
+    const { location, match } = this.props;
+      if (match.params.featuredPackageId){
+        axios.get(`${this.endPoint}/api/fetchById/featuredPackage-fetchById/${match.params.featuredPackageId}`)
         .then(response => {
         this.setState({
           featured: response.data[0],
@@ -66,8 +66,8 @@ export default class FeaturedForm extends React.Component {
           })
         })
       })}
-      if(params.featuredHotelId) {
-        axios.get(`${this.endPoint}/api/fetchById/featuredHotel-fetchById/${params.featuredHotelId}`)
+      if(match.params.featuredHotelId) {
+        axios.get(`${this.endPoint}/api/fetchById/featuredHotel-fetchById/${match.params.featuredHotelId}`)
         .then(response => {
         this.setState({
           featured: response.data[0],
@@ -158,8 +158,8 @@ export default class FeaturedForm extends React.Component {
         //   return img;
         // });
 
-        if(this.props.params.featuredPackageId || this.props.params.featuredHotelId) {
-          if(this.props.params.featuredPackageId) {
+        if(match.params.featuredPackageId || match.params.featuredHotelId) {
+          if(match.params.featuredPackageId) {
             let featuredPackage = _.omit(featured, ['hotel_id']);
             let requestBody = { 'featuredPackage' : JSON.stringify(featuredPackage)};
             axios.patch(`${this.endPoint}/api/update/featuredPackage-update`, requestBody)

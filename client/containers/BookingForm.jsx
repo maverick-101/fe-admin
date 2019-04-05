@@ -40,8 +40,9 @@ export default class BookingForm extends React.Component {
 
   componentDidMount() {
     console.log('props',this.props);
+    const { match } = this.props;
       if (window.location.href.split('/')[3] === 'edit_city')
-      axios.get(`${this.endPoint}/api/fetchById/booking-fetchById/${this.props.params.cityId}`)
+      axios.get(`${this.endPoint}/api/fetchById/booking-fetchById/${match.params.cityId}`)
         .then((response) => {
           this.setState({
             booking: response.data[0],
@@ -89,7 +90,7 @@ export default class BookingForm extends React.Component {
 
         fd.append('booking', JSON.stringify(booking));
 
-        if(this.props.params.cityId) {
+        if(match.params.cityId) {
         // axios.patch('/api/booking/update', fd)
         axios.patch(`${this.endPoint}/api/update/booking-update`, fd)
           .then((response) => {

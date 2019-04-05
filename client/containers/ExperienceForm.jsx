@@ -57,8 +57,9 @@ export default class ExperienceForm extends React.Component {
 
   componentDidMount() {
     console.log('PROPS',this.props);
-    if (this.props.params.experienceId) {
-      axios.get(`${this.endPoint}/api/fetchById/experience-fetchById/${this.props.params.experienceId}`)
+    const { match } = this.props;
+    if (match.params.experienceId) {
+      axios.get(`${this.endPoint}/api/fetchById/experience-fetchById/${match.params.experienceId}`)
         .then((response) => {
           this.setState({
             experience: response.data[0],
@@ -144,7 +145,7 @@ export default class ExperienceForm extends React.Component {
 
         fd.append('experience', JSON.stringify(experience));
 
-        if(this.props.params.experienceId) {
+        if(match.params.experienceId) {
         axios.patch(`${this.endPoint}/api/update/experience-update`, fd)
           .then((response) => {
             if (response.data === 'Experience Updated!') {
