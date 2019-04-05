@@ -143,7 +143,10 @@ class Login extends Component {
             </Button>
           </div>
         </div>
-        <h3 style={{color: 'white'}} onClick={this.signUp}>Dont have an account? Sign Up here!</h3>
+        <Link to={`/signup`}>
+        <h3 style={{color: 'white'}}>Dont have an account? Sign Up here!</h3>
+        </Link>
+        {/* <h3 style={{color: 'white'}} onClick={this.signUp}>Dont have an account? Sign Up here!</h3> */}
         </Formsy>
       </div>
 
