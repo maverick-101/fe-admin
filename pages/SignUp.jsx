@@ -37,14 +37,13 @@ class Login extends Component {
 
     this.state = {
         user: {
-            first_name: '',
-            last_name: '',
-            city_id: '',
-            email: '',
-            phone: '',
-            password: '',
-            address: '',
-
+          first_name: '',
+          last_name: '',
+          city_id: '',
+          email: '',
+          phone: '',
+          password: '',
+          address: '',
         },
       username: '',
       password: '',
@@ -81,7 +80,7 @@ class Login extends Component {
         fd.append('user', JSON.stringify(user));
 
         this.setState({ loading: true });
-          axios.post(`/api/user/save`, fd)
+          axios.post(`${this.endPoint}/api/user/save`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);
