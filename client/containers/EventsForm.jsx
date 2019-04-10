@@ -22,17 +22,22 @@ export default class EventsForm extends React.Component {
         start_date: undefined,
         end_date: undefined,
         location_id: '',
-        address: '',
+        city_id: '',
+        Address: '',
         gathering_type: '',
         free_entry: '',
         ticket_price: '',
         description: '',
         gallery: '',
-        video_links: '',
+        event_videos: '',
+        recommended: false,
+        contact_number: ''
       },
       gallery: '',
       locations: [],
       location: '',
+      cities: [],
+      city: '',
       focusedInput: null,
       startDate: null,
       endDate: null,
@@ -41,7 +46,7 @@ export default class EventsForm extends React.Component {
     // this.rteState = RichTextEditor.createEmptyValue();
     this.endPoint = 'https://api.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.postCity = this.postCity.bind(this);
+    this.postEvent = this.postEvent.bind(this);
   }
 
   // componentDidMount() {
@@ -59,19 +64,54 @@ export default class EventsForm extends React.Component {
 
   componentWillMount() {
     this.getLocations();
+    this.getCities();
   }
 
   componentDidMount() {
     console.log('props',this.props);
     const { match } = this.props;
-      if (window.location.href.split('/')[3] === 'edit_city')
-      axios.get(`${this.endPoint}/api/fetchById/event-fetchById/${match.params.cityId}`)
+      if (match.params.eventId) {
+      axios.get(`${this.endPoint}/api/fetchById/event-fetchById/${match.params.eventId}`)
         .then((response) => {
           this.setState({
-            event: response.data[0],
+            event: response.data,
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+          }, () => {
+            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.event.city_id}`)
+            .then((response) => {
+              this.setState({
+                city: response.data[0],
+              }, () => {
+                axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.state.event.location_id}`)
+                .then((response) => {
+                  this.setState({
+                    location: response.data[0]
+                  })
+              });
+            });
           });
         });
+    })
+  }
+}
+
+    getCities = () => {
+      axios.get(`${this.endPoint}/api/fetch/city-fetch`)
+        .then((response) => {
+          this.setState({
+            cities: response.data,
+          });
+        });
+    }
+
+    setCity(selectedCity) {
+      this.setState(prevState => ({
+        city: selectedCity,
+        event: {
+          ...prevState.event,
+          city_id: selectedCity.ID,
+        },
+      }))
     }
 
     getLocations = () => {
@@ -83,6 +123,16 @@ export default class EventsForm extends React.Component {
         });
     }
 
+    setLocation(selectedLocation) {
+      this.setState(prevState => ({
+        location: selectedLocation,
+        event: {
+          ...prevState.event,
+          location_id: selectedLocation.ID,
+        },
+      }));
+    }
+
   setDescription(description) {
     const { event } = this.state;
     event.description = description.toString('html');
@@ -90,16 +140,6 @@ export default class EventsForm extends React.Component {
       event,
       description,
     });
-  }
-
-  setLocation(selectedLocation) {
-    this.setState(prevState => ({
-      location: selectedLocation,
-      event: {
-        ...prevState.event,
-        location_id: selectedLocation.ID,
-      },
-    }));
   }
 
   handleInputChange(inputEvent) {
@@ -114,7 +154,7 @@ export default class EventsForm extends React.Component {
     this.setState({ gallery: event.target.files });
   }
 
-  postCity(formEvent) {
+  postEvent(formEvent) {
     formEvent.preventDefault();
     const { match, history } = this.props;
     const { loading, event, gallery } = this.state;
@@ -132,11 +172,10 @@ export default class EventsForm extends React.Component {
 
         fd.append('event', JSON.stringify(event));
 
-        if(match.params.cityId) {
-        // axios.patch('/api/event/update', fd)
+        if(match.params.eventId) {
         axios.patch(`${this.endPoint}/api/update/event-update`, fd)
           .then((response) => {
-            if (response.data === 'Event Updated!') {
+            if (response.data && response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
@@ -149,13 +188,18 @@ export default class EventsForm extends React.Component {
           // axios.post('/api/event/save', fd)
           axios.post(`${this.endPoint}/api/save/event-save`, fd)
           .then((response) => {
-            if (response.data === 'Event Saved!') {
+            if (response.data && response.status === 200) {
               window.alert(response.data);
               this.setState({ loading: false });
             } else {
               window.alert('ERROR')
               this.setState({ loading: false });
             }
+          })
+          .catch((error) => {
+            this.setState({
+              loading: false,
+            })
           });
         }
         }
@@ -168,6 +212,8 @@ export default class EventsForm extends React.Component {
       endDate,
       locations,
       location,
+      cities,
+      city,
       focusedInput,
       description,
     } = this.state;
@@ -239,7 +285,7 @@ export default class EventsForm extends React.Component {
                     id="demo-form2"
                     data-parsley-validate
                     className="form-horizontal form-label-left"
-                    onSubmit={this.postCity}
+                    onSubmit={this.postEvent}
                   >
                     <div className="form-group row">
                       <label
@@ -270,6 +316,40 @@ export default class EventsForm extends React.Component {
                           name="company"
                           className="form-control"
                           value={event.company}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Ticket Price
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="ticket_price"
+                          className="form-control"
+                          value={event.ticket_price}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Address
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="Address"
+                          className="form-control"
+                          value={event.Address}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -315,6 +395,40 @@ export default class EventsForm extends React.Component {
                             />
                           </div>
                         </div>
+
+                        <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">City</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="city_id"
+                              value={city}
+                              onChange={value => this.setCity(value)}
+                              options={cities}
+                              valueKey="id"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Contact Number
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="contact_number"
+                          className="form-control"
+                          value={event.contact_number}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Gathering Type</label>
@@ -382,11 +496,26 @@ export default class EventsForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="video_links"
+                          name="event_videos"
                           className="form-control"
-                          value={event.video_links}
+                          value={event.event_videos}
                           onChange={this.handleInputChange}
                         />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Recommended</label>
+                      <div className="col-md-6 col-sm-6">
+                      <input
+                        type="checkbox"
+                        name='recommended'
+                        checked={event.recommended}
+                        onClick={() => {
+                          event.recommended = !event.recommended;
+                          this.setState({ event })
+                        }}
+                      />
                       </div>
                     </div>
 

@@ -4,6 +4,7 @@ import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
 import Swal from 'sweetalert2';
+import moment from 'moment'
 
 import HasRole from '../hoc/HasRole';
 
@@ -26,11 +27,17 @@ export default class Events extends React.Component {
         this.setState({
           events: response.data,
           pages: Math.ceil(response.data.length/10),
-          responseMessage: 'No Events Found...'
+          responseMessage: 'No Events Found.'
+        })
+      })
+      .catch((error) => {
+        this.setState({
+          // loading: false,
+          responseMessage: 'No Events Found.'
         })
       })
   }
-  deleteCity(eventId, index) {
+  deleteEvent(eventId, index) {
     if(confirm("Are you sure you want to delete this event?")) {
       axios.delete(`${this.endPoint}/api/delete/event-deleteById/${eventId}`)
         .then(response => {
@@ -104,12 +111,14 @@ export default class Events extends React.Component {
                 <tr>
                   <th>Image</th>
                   <th>Title</th>
-                  <th>Date/Time</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>City</th>
                   <th>Location</th>
-                  <th>Address</th>
+                  {/* <th>Address</th> */}
                   <th>Gathering</th>
-                  <th>Free Entry</th>
-                  <th>Description</th>
+                  {/* <th>Free Entry</th> */}
+                  {/* <th>Description</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -118,9 +127,12 @@ export default class Events extends React.Component {
                   <tr key={index}>
                   {/* {console.log(event.gallery[index])} */}
                     <td>{<img style={{height: '50px', width: '50px'}} src={event.gallery.length ? event.gallery[0].url : Broken} />}</td>
-                    <td>{event.name}</td>
-                    <td>{event.province}</td>
-                    <td>{event.views}</td>
+                    <td>{event.title}</td>
+                    <td>{moment(event.start_date).format('DD-MMM-YYYY')}</td>
+                    <td>{moment(event.end_date).format('DD-MMM-YYYY')}</td>
+                    <td>{event.city ? event.city.name : ''}</td>
+                    <td>{event.location ? event.location.name : ''}</td>
+                    <td>{event.gathering_type}</td>
                     {/* <td>{area.marla_size}</td>
                     <td>{area.population}</td>
                     <td>{area.lat}</td>
@@ -132,12 +144,12 @@ export default class Events extends React.Component {
                     </td> */}
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`/edit_city/${event.ID}`}>
+                        <Link to={`/edit_event/${event.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteCity(event.ID, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteEvent(event.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                   </tr>

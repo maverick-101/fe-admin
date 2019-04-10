@@ -213,7 +213,9 @@ class App extends React.Component {
                   <Route path="/experiences_rating_form/:experienceId" component={ExperienceRatingForm}/>  
 
                   <Route path="/events" component={Events}/>
-                  <Route path="/events_form" component={EventsForm}/>       
+                  <Route path="/events_form" component={EventsForm}/>
+                  <Route path="/edit_event/:eventId" component={EventsForm}/>
+
                 {/* </Route> */}
                 {/* </Switch> */}
               </Container>
