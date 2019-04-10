@@ -447,8 +447,8 @@ export default class HotelForm extends React.Component {
                         <div className="col-md-6 col-sm-6">
                         {hotel.gallery.map((image,index) => {
                           return (
-                            <span>
-                          <img key={index}
+                          <span key={index}>
+                          <img
                           style={{marginRight: '5px'}}
                           width="100"
                           className="img-fluid"

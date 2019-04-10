@@ -142,6 +142,23 @@ export default class EventsForm extends React.Component {
     });
   }
 
+  deleteImage = (url, ID) => {
+    const data =  {ID, url}
+    let requestBody = { 'eventGallery' : JSON.stringify(data)};
+    if(confirm("Are you sure you want to delete this image?")) {
+      // axios.delete(`${this.endPoint}/api/delete/Image-deleteByPublicId`, {reqBody})
+      axios.delete(`${this.endPoint}/api/deleteGallery/event-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
+        .then(response => {
+          if(response.status === 200) {
+            window.alert('Image deleted Successfully!')
+          }
+          const hotels = this.state.hotels[hotel_gallery].slice();
+          hotels.splice(index, 1);
+          this.setState({ hotels });
+        });
+    }
+  }
+
   handleInputChange(inputEvent) {
     const { value, name } = inputEvent.target;
 
@@ -472,13 +489,16 @@ export default class EventsForm extends React.Component {
                         <div className="col-md-6 col-sm-6">
                         {event.gallery.map((image,index) => {
                           return (
-                          <img key={index}
-                          style={{marginRight: '5px'}}
-                          width="100"
-                          className="img-fluid"
-                          src={`${image.url}`}
-                          alt="cover"
-                        />
+                            <span key={index}>
+                              <img
+                              style={{marginRight: '5px'}}
+                              width="100"
+                              className="img-fluid"
+                              src={`${image.url}`}
+                              alt="cover"
+                            />
+                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, event.ID)}/>
+                          </span>
                           )
                         })}
                           
