@@ -56,6 +56,9 @@ import ExperienceForm from '../containers/ExperienceForm';
 import ExperienceResourceForm from '../containers/ExperienceResourceForm';
 import ExperienceRatingForm from '../containers/ExperienceRatingForm';
 
+import Events from '../containers/Events';
+import EventsForm from '../containers/EventsForm';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -207,7 +210,10 @@ class App extends React.Component {
                   <Route path="/experiences_form" component={ExperienceForm}/>
                   <Route path="/edit_experiences/:experienceId" component={ExperienceForm}/>
                   <Route path="/experiences_resource_form/:experienceId" component={ExperienceResourceForm}/>
-                  <Route path="/experiences_rating_form/:experienceId" component={ExperienceRatingForm}/>         
+                  <Route path="/experiences_rating_form/:experienceId" component={ExperienceRatingForm}/>  
+
+                  <Route path="/events" component={Events}/>
+                  <Route path="/events_form" component={EventsForm}/>       
                 {/* </Route> */}
                 {/* </Switch> */}
               </Container>
