@@ -20,6 +20,7 @@ export default class AreaForm extends React.Component {
         image_type: '',
         description: '',
         recommended: false,
+        video_link: '',
       },
       gallery: '',
       city: '',
@@ -326,6 +327,23 @@ export default class AreaForm extends React.Component {
                           value={location.province}
                           onChange={this.handleInputChange}
                           disabled={location.city_id ? 1 : 0}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Video Link
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="video_link"
+                          className="form-control"
+                          value={location.video_link}
+                          onChange={this.handleInputChange}
                         />
                       </div>
                     </div>

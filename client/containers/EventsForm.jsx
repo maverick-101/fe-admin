@@ -32,7 +32,8 @@ export default class EventsForm extends React.Component {
         gallery: '',
         event_videos: '',
         recommended: false,
-        contact_number: ''
+        contact_number: '',
+        // video_link: ''
       },
       gallery: '',
       locations: [],

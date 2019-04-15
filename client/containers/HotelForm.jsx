@@ -44,6 +44,7 @@ export default class HotelForm extends React.Component {
         longitude: '',
         description: '',
         hotel_amenities: [],
+        video_link: '',
       },
       hotel_gallery: '',
       cities: [],
@@ -424,7 +425,24 @@ export default class HotelForm extends React.Component {
                               required
                             />
                           </div>
-                        </div>    
+                        </div>   
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Video Link
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="video_link"
+                          className="form-control"
+                          value={hotel.video_link}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div> 
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Hotel Gallery</label>

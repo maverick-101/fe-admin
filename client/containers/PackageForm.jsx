@@ -27,6 +27,7 @@ export default class PackageForm extends React.Component {
         rating: '',
         description: '',
         summary: '',
+        video_link: '',
       },
       price: [{
           person: '',
@@ -1073,6 +1074,23 @@ export default class PackageForm extends React.Component {
                           name="rating"
                           className="form-control"
                           value={pckg.rating}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Video Link
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="video_link"
+                          className="form-control"
+                          value={pckg.video_link}
                           onChange={this.handleInputChange}
                         />
                       </div>
