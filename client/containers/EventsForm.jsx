@@ -82,7 +82,9 @@ export default class EventsForm extends React.Component {
           this.setState({
             event: response.data,
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+            whyVisit: RichTextEditor.createValueFromString(response.data.why_list, 'html'),
           }, () => {
+            this.setState({ eventVideos: this.state.event.event_videos})
             axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.event.city_id}`)
             .then((response) => {
               this.setState({
