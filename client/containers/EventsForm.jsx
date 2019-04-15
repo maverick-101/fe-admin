@@ -28,6 +28,7 @@ export default class EventsForm extends React.Component {
         free_entry: '',
         ticket_price: '',
         description: '',
+        why_visit: '',
         gallery: '',
         event_videos: '',
         recommended: false,
@@ -42,6 +43,7 @@ export default class EventsForm extends React.Component {
       startDate: null,
       endDate: null,
       description: RichTextEditor.createEmptyValue(),
+      whyVisit: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
     this.endPoint = 'https://api.saaditrips.com';
@@ -142,6 +144,15 @@ export default class EventsForm extends React.Component {
     });
   }
 
+  setWhyVisit(whyVisit) {
+    const { event } = this.state;
+    event.why_visit = whyVisit.toString('html');
+    this.setState({
+      event,
+      whyVisit,
+    });
+  }
+
   deleteImage = (url, ID) => {
     const data =  {ID, url}
     let requestBody = { 'eventGallery' : JSON.stringify(data)};
@@ -233,6 +244,7 @@ export default class EventsForm extends React.Component {
       city,
       focusedInput,
       description,
+      whyVisit,
     } = this.state;
     console.log('STATE', this.state)
     const toolbarConfig = {
@@ -547,6 +559,19 @@ export default class EventsForm extends React.Component {
                           toolbarConfig={toolbarConfig}
                           onChange={(e) => {
                             this.setDescription(e);
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Description</label>
+                      <div className="col-md-6 col-sm-6">
+                        <RichTextEditor
+                          value={whyVisit}
+                          toolbarConfig={toolbarConfig}
+                          onChange={(e) => {
+                            this.setWhyVisit(e);
                           }}
                         />
                       </div>
