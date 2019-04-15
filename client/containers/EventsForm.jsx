@@ -182,10 +182,14 @@ export default class EventsForm extends React.Component {
     this.setState({ gallery: event.target.files });
   }
 
+  handleCover = (event) => {
+    this.setState({ cover: event.target.files[0] });
+  }
+
   postEvent(formEvent) {
     formEvent.preventDefault();
     const { match, history } = this.props;
-    const { loading, event, gallery } = this.state;
+    const { loading, event, gallery, cover } = this.state;
         this.setState({ loading: true });
 
         let imgArray = [];
@@ -197,6 +201,8 @@ export default class EventsForm extends React.Component {
           fd.append('gallery_images', img);
           return img;
         });
+
+        fd.append('cover_photo', cover)
 
         fd.append('event', JSON.stringify(event));
 
@@ -342,7 +348,7 @@ export default class EventsForm extends React.Component {
                         <input
                           required
                           type="text"
-                          name="company"
+                          name="organizer"
                           className="form-control"
                           value={event.company}
                           onChange={this.handleInputChange}
@@ -513,6 +519,41 @@ export default class EventsForm extends React.Component {
                           </span>
                           )
                         })}
+                          
+                        </div>
+                      </div>
+                      ) : null
+                              }
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Event Cover Photo</label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          type="file"
+                          name="cover_photo"
+                          className="form-control"
+                          onChange={this.handleCover}
+                          multiple
+                          required={event.cover_photo ? 0 : 1}
+                        />
+                      </div>
+                    </div>
+
+                    {event.cover_photo
+                      ? (
+                        <div className="form-group row">
+                        <label className="control-label col-md-3 col-sm-3"></label>
+                        <div className="col-md-6 col-sm-6">
+                            <span>
+                              <img
+                              style={{marginRight: '5px'}}
+                              width="100"
+                              className="img-fluid"
+                              src={`${event.cover_photo.url}`}
+                              alt="cover"
+                            />
+                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, event.ID)}/>
+                          </span>
                           
                         </div>
                       </div>
