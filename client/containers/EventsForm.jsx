@@ -18,7 +18,7 @@ export default class EventsForm extends React.Component {
       loading: false,
       event: {
         title: '',
-        company: '',
+        organizer: '',
         start_date: undefined,
         end_date: undefined,
         location_id: '',
@@ -371,7 +371,7 @@ export default class EventsForm extends React.Component {
                           type="text"
                           name="organizer"
                           className="form-control"
-                          value={event.company}
+                          value={event.organizer}
                           onChange={this.handleInputChange}
                         />
                       </div>
