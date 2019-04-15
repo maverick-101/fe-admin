@@ -28,7 +28,7 @@ export default class EventsForm extends React.Component {
         free_entry: '',
         ticket_price: '',
         description: '',
-        why_visit: '',
+        why_list: '',
         gallery: '',
         event_videos: '',
         recommended: false,
@@ -47,7 +47,7 @@ export default class EventsForm extends React.Component {
         url: ''
       }],
       description: RichTextEditor.createEmptyValue(),
-      whyVisit: RichTextEditor.createEmptyValue(),
+      whyList: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
     this.endPoint = 'https://api.saaditrips.com';
@@ -82,7 +82,7 @@ export default class EventsForm extends React.Component {
           this.setState({
             event: response.data,
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
-            whyVisit: RichTextEditor.createValueFromString(response.data.why_list, 'html'),
+            whyList: RichTextEditor.createValueFromString(response.data.why_list, 'html'),
           }, () => {
             this.setState({ eventVideos: this.state.event.event_videos})
             axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.event.city_id}`)
@@ -150,12 +150,12 @@ export default class EventsForm extends React.Component {
     });
   }
 
-  setWhyVisit(whyVisit) {
+  setWhyVisit(whyList) {
     const { event } = this.state;
-    event.why_visit = whyVisit.toString('html');
+    event.why_list = whyList.toString('html');
     this.setState({
       event,
-      whyVisit,
+      whyList,
     });
   }
 
@@ -271,7 +271,7 @@ export default class EventsForm extends React.Component {
       city,
       focusedInput,
       description,
-      whyVisit,
+      whyList,
       videoCount,
       eventVideos,
     } = this.state;
@@ -666,7 +666,7 @@ export default class EventsForm extends React.Component {
                       <label className="control-label col-md-3 col-sm-3">Why Visit</label>
                       <div className="col-md-6 col-sm-6">
                         <RichTextEditor
-                          value={whyVisit}
+                          value={whyList}
                           toolbarConfig={toolbarConfig}
                           onChange={(e) => {
                             this.setWhyVisit(e);
