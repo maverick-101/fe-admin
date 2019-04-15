@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import LineChart from '../components/LineChart'
@@ -19,13 +19,13 @@ export default class Area extends React.Component {
     }
   }
   componentWillMount() {
-    axios.get('/api/area')
-      .then(response => {
-        this.setState({
-          areas: response.data.items,
-          pages: Math.ceil(response.data.total/10)
-        })
-      })
+    // axios.get('/api/area')
+    //   .then(response => {
+    //     this.setState({
+    //       areas: response.data.items,
+    //       pages: Math.ceil(response.data.total/10)
+    //     })
+    //   })
   }
   deleteArea(areaId, index) {
     if(confirm("Are you sure you want to delete this area?")) {

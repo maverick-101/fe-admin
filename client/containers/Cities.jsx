@@ -3,39 +3,48 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
+import Swal from 'sweetalert2';
 
 import HasRole from '../hoc/HasRole';
 
-export default class Area extends React.Component {
+export default class Cities extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      areas: [],
+      cities: [],
       activePage: 1,
       pages: 1,
       q: '',
-      responseMessage: 'Loading Areas...'
+      responseMessage: 'Loading Cities...'
     }
     this.endPoint = 'https://api.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/locations-fetch`)
+    axios.get(`${this.endPoint}/api/fetch/city-fetch`)
       .then(response => {
         this.setState({
-          areas: response.data,
+          cities: response.data,
           pages: Math.ceil(response.data.length/10),
-          responseMessage: 'No Areas Found...'
+          responseMessage: 'No Cities Found...'
         })
       })
   }
-  deleteArea(areaId, index) {
-    if(confirm("Are you sure you want to delete this area?")) {
-      axios.delete(`/api/area/${areaId}`)
+  deleteCity(cityId, index) {
+    if(confirm("Are you sure you want to delete this city?")) {
+      axios.delete(`${this.endPoint}/api/delete/city-deleteById/${cityId}`)
         .then(response => {
-          const areas = this.state.areas.slice();
-          areas.splice(index, 1);
-          this.setState({ areas });
+          if(response.status === 200) {
+            Swal.fire({
+              type: 'success',
+              title: 'Deleted...',
+              text: 'City has been deleted successfully!',
+            })
+          }
+          
+          const cities = this.state.cities.slice();
+          cities.splice(index, 1);
+          this.setState({ cities });
         });
     }
   }
@@ -64,9 +73,9 @@ export default class Area extends React.Component {
         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <div className="row space-1">
             <div className="col-sm-4">
-              <h3>List of Areas</h3>
+              <h3>List of Cities</h3>
             </div>
-            <div style={{'marginTop':'20px'}} className="col-sm-4">
+            <div style={{marginTop: '20px'}} className="col-sm-4">
               <div className='input-group'>
                 <input  className='form-control' type="text" name="search" placeholder="Enter keyword" value={this.state.q} onChange={(event) => this.setState({q: event.target.value})}/>
                 <span className="input-group-btn" >
@@ -83,8 +92,8 @@ export default class Area extends React.Component {
             </div> */}
 
             <div className="col-sm-2 pull-right">
-                <Link to="/area_form">
-                  <button type="button" className="btn btn-success marginTop">Add new Area</button>
+                <Link to="/city_form">
+                  <button type="button" className="btn btn-success marginTop">Add new City</button>
                 </Link>
             </div>
 
@@ -95,6 +104,7 @@ export default class Area extends React.Component {
                 <tr>
                   <th>Image</th>
                   <th>Name</th>
+                  <th>Province</th>
                   <th>Views</th>
                   {/* <th>Marla-Size(Sqft)</th>
                   <th>Population</th>
@@ -103,30 +113,31 @@ export default class Area extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.areas && this.state.areas.length >= 1 ?
-                  this.state.areas.map((area, index) => (
+                {this.state.cities && this.state.cities.length >= 1 ?
+                  this.state.cities.map((city, index) => (
                   <tr key={index}>
-                    <td>{<img style={{height: '50px', width: '50px'}} src={area.gallery.length ? area.gallery[0].url : Broken} />}</td>
-                    <td>{area.name}</td>
-                    {/* <td>{area.size}</td> */}
-                    <td>{area.views}</td>
+                  {/* {console.log(city.gallery[index])} */}
+                    <td>{<img style={{height: '50px', width: '50px'}} src={city.gallery.length ? city.gallery[0].url : Broken} />}</td>
+                    <td>{city.name}</td>
+                    <td>{city.province}</td>
+                    <td>{city.views}</td>
                     {/* <td>{area.marla_size}</td>
                     <td>{area.population}</td>
                     <td>{area.lat}</td>
                     <td>{area.lon}</td> */}
-                    <td>
-                      <Link to={`/area_resource/${area.ID}`}>
+                    {/* <td>
+                      <Link to={`${this.endPoint}/area_resource/${city.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
-                    </td>
+                    </td> */}
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`/edit_area/${area.ID}`}>
+                        <Link to={`/edit_city/${city.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteArea(area.ID, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteCity(city.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                   </tr>

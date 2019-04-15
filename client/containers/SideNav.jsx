@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import HasRole from '../hoc/HasRole';
 import axios from 'axios';
 import Cookie from 'js-cookie';
@@ -39,22 +39,46 @@ export default class SideNav extends React.Component {
             <Link onClick={() => {this.setState({active:'areas'})}} to="/area">
               <li className={`side_nav ${this.state.active == 'areas' ? 'active' : ''}`}>Areas</li>
             </Link>
-            <Link onClick={() => {this.setState({active:'creditRequests'})}} to="/credit-requests">
-              <li className={`side_nav ${this.state.active == 'creditRequests' ? 'active' : ''}`}>Credit Requests</li>
+            <Link onClick={() => {this.setState({active:'cities'})}} to="/cities">
+              <li className={`side_nav ${this.state.active == 'cities' ? 'active' : ''}`}>Cities</li>
             </Link>
-            <Link onClick={() => {this.setState({active:'projects'})}} to="/project">
-              <li className={`side_nav ${this.state.active == 'projects' ? 'active' : ''}`}>Projects</li>
+            <Link onClick={() => {this.setState({active:'hotels'})}} to="/hotels">
+              <li className={`side_nav ${this.state.active == 'hotels' ? 'active' : ''}`}>Hotels</li>
             </Link>
-            <Link onClick={() => {this.setState({active:'agencies'})}} to="/agency">
-              <li className={`side_nav ${this.state.active == 'agencies' ? 'active' : ''}`}>Agencies</li>
+            <Link onClick={() => {this.setState({active:'featured_hotels'})}} to="/featured_hotels">
+              <li className={`side_nav ${this.state.active == 'featured_hotels' ? 'active' : ''}`}>Featured Hotels</li>
             </Link>
-            <Link onClick={() => {this.setState({active:'developers'})}} to="/developer">
-              <li className={`side_nav ${this.state.active == 'developers' ? 'active' : ''}`}>Developers</li>
+            <Link onClick={() => {this.setState({active:'users'})}} to="/users">
+              <li className={`side_nav ${this.state.active == 'users' ? 'active' : ''}`}>Users</li>
             </Link>
-            <Link onClick={() => {this.setState({active:'properties'})}} to="/property">
-              <li className={`side_nav ${this.state.active == 'properties' ? 'active' : ''}`}>Properties</li>
+            <Link onClick={() => {this.setState({active:'cover_banner'})}} to="/cover_banner">
+              <li className={`side_nav ${this.state.active == 'cover_banner' ? 'active' : ''}`}>Cover Banner</li>
             </Link>
-            <Link onClick={() => {this.setState({active:'premiumPlusRequests'})}} to="/premium-plus-requests">
+            <Link onClick={() => {this.setState({active:'agents'})}} to="/agents">
+              <li className={`side_nav ${this.state.active == 'agents' ? 'active' : ''}`}>Agents</li>
+            </Link>
+            <Link onClick={() => {this.setState({active:'packages'})}} to="/packages">
+              <li className={`side_nav ${this.state.active == 'packages' ? 'active' : ''}`}>Packages</li>
+            </Link>
+            <Link onClick={() => {this.setState({active:'featured_packages'})}} to="/featured_packages">
+              <li className={`side_nav ${this.state.active == 'featured_packages' ? 'active' : ''}`}>Featured Packages</li>
+            </Link>
+            {/* <Link onClick={() => {this.setState({active:'bookings'})}} to="/bookings">
+              <li className={`side_nav ${this.state.active == 'bookings' ? 'active' : ''}`}>Bookings</li>
+            </Link> */}
+            <Link onClick={() => {this.setState({active:'orders'})}} to="/orders">
+              <li className={`side_nav ${this.state.active == 'orders' ? 'active' : ''}`}>Orders</li>
+            </Link>
+            <Link onClick={() => {this.setState({active:'ratings'})}} to="/ratings">
+              <li className={`side_nav ${this.state.active == 'ratings' ? 'active' : ''}`}>Ratings</li>
+            </Link>
+            <Link onClick={() => {this.setState({active:'experiences'})}} to="/experiences">
+              <li className={`side_nav ${this.state.active == 'experiences' ? 'active' : ''}`}>Experiences</li>
+            </Link>
+            <Link onClick={() => {this.setState({active:'events'})}} to="/events">
+              <li className={`side_nav ${this.state.active == 'events' ? 'active' : ''}`}>Events</li>
+            </Link>
+            {/* <Link onClick={() => {this.setState({active:'premiumPlusRequests'})}} to="/premium-plus-requests">
               <li className={`side_nav ${this.state.active == 'premiumPlusRequests' ? 'active' : ''}`}>Premium Plus Requests</li>
             </Link>
             <Link onClick={() => {this.setState({active:'premiumRequests'})}} to="/premium-requests">
@@ -107,7 +131,7 @@ export default class SideNav extends React.Component {
             </Link>
           <Link onClick={() => {this.setState({active:'inquiries'})}} to="/inquiries">
               <li className={`side_nav ${this.state.active == 'inquiries' ? 'active' : ''}`}>Inquiries</li>
-          </Link>
+          </Link> */}
         </ul>
         <div className='text-center' style={{'position':'absolute',}}>
           <span style={{'paddingTop':'3px'}} className="pull-left glyphicon glyphicon-off" aria-hidden="true" onClick={() => this.deleteDeveloper(developer.id, index)}></span>

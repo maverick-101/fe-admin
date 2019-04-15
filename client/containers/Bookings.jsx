@@ -6,36 +6,36 @@ import Broken from '../static/broken.png';
 
 import HasRole from '../hoc/HasRole';
 
-export default class Area extends React.Component {
+export default class Bookings extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      areas: [],
+      bookings: [],
       activePage: 1,
       pages: 1,
       q: '',
-      responseMessage: 'Loading Areas...'
+      responseMessage: 'Loading Bookings...'
     }
     this.endPoint = 'https://api.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/locations-fetch`)
+    axios.get(`${this.endPoint}/api/fetch/booking-fetch`)
       .then(response => {
         this.setState({
-          areas: response.data,
+          bookings: response.data,
           pages: Math.ceil(response.data.length/10),
-          responseMessage: 'No Areas Found...'
+          responseMessage: 'No Bookings Found...'
         })
       })
   }
-  deleteArea(areaId, index) {
-    if(confirm("Are you sure you want to delete this area?")) {
-      axios.delete(`/api/area/${areaId}`)
+  deleteCity(cityId, index) {
+    if(confirm("Are you sure you want to delete this booking?")) {
+      axios.delete(`${this.endPoint}/api/delete/booking-deleteById/${cityId}`)
         .then(response => {
-          const areas = this.state.areas.slice();
-          areas.splice(index, 1);
-          this.setState({ areas });
+          const bookings = this.state.bookings.slice();
+          bookings.splice(index, 1);
+          this.setState({ bookings });
         });
     }
   }
@@ -64,9 +64,9 @@ export default class Area extends React.Component {
         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <div className="row space-1">
             <div className="col-sm-4">
-              <h3>List of Areas</h3>
+              <h3>List of Bookings</h3>
             </div>
-            <div style={{'marginTop':'20px'}} className="col-sm-4">
+            <div style={{marginTop: '20px'}} className="col-sm-4">
               <div className='input-group'>
                 <input  className='form-control' type="text" name="search" placeholder="Enter keyword" value={this.state.q} onChange={(event) => this.setState({q: event.target.value})}/>
                 <span className="input-group-btn" >
@@ -83,8 +83,8 @@ export default class Area extends React.Component {
             </div> */}
 
             <div className="col-sm-2 pull-right">
-                <Link to="/area_form">
-                  <button type="button" className="btn btn-success marginTop">Add new Area</button>
+                <Link to="/booking_form">
+                  <button type="button" className="btn btn-success marginTop">Add New Booking</button>
                 </Link>
             </div>
 
@@ -95,6 +95,7 @@ export default class Area extends React.Component {
                 <tr>
                   <th>Image</th>
                   <th>Name</th>
+                  <th>Province</th>
                   <th>Views</th>
                   {/* <th>Marla-Size(Sqft)</th>
                   <th>Population</th>
@@ -103,30 +104,31 @@ export default class Area extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.areas && this.state.areas.length >= 1 ?
-                  this.state.areas.map((area, index) => (
+                {this.state.bookings && this.state.bookings.length >= 1 ?
+                  this.state.bookings.map((booking, index) => (
                   <tr key={index}>
-                    <td>{<img style={{height: '50px', width: '50px'}} src={area.gallery.length ? area.gallery[0].url : Broken} />}</td>
-                    <td>{area.name}</td>
-                    {/* <td>{area.size}</td> */}
-                    <td>{area.views}</td>
+                  {/* {console.log(booking.gallery[index])} */}
+                    <td>{<img style={{height: '50px', width: '50px'}} src={booking.gallery ? booking.gallery[0].url : Broken} />}</td>
+                    <td>{booking.name}</td>
+                    <td>{booking.province}</td>
+                    <td>{booking.views}</td>
                     {/* <td>{area.marla_size}</td>
                     <td>{area.population}</td>
                     <td>{area.lat}</td>
                     <td>{area.lon}</td> */}
-                    <td>
-                      <Link to={`/area_resource/${area.ID}`}>
+                    {/* <td>
+                      <Link to={`${this.endPoint}/area_resource/${booking.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
-                    </td>
+                    </td> */}
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`/edit_area/${area.ID}`}>
+                        <Link to={`${this.endPoint}/edit_booking/${booking.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>
                       <td>
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteArea(area.ID, index)}></span>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteCity(booking.ID, index)}></span>
                       </td>
                     {/* </HasRole> */}
                   </tr>
