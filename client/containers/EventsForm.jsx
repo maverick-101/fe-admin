@@ -42,6 +42,10 @@ export default class EventsForm extends React.Component {
       focusedInput: null,
       startDate: null,
       endDate: null,
+      videoCount: 1,
+      eventVideos: [{
+        url: ''
+      }],
       description: RichTextEditor.createEmptyValue(),
       whyVisit: RichTextEditor.createEmptyValue(),
     };
@@ -186,6 +190,21 @@ export default class EventsForm extends React.Component {
     this.setState({ cover: event.target.files[0] });
   }
 
+  handleEventVideos = (event, index) => {
+    const { value, name } = event.target;
+
+    const { eventVideos } = this.state;
+
+    eventVideos[index].url = value;
+    this.setState(prevState => ({ 
+      eventVideos,
+      event: {
+        ...prevState.event,
+        event_videos: eventVideos,
+      },
+     }));
+  }
+
   postEvent(formEvent) {
     formEvent.preventDefault();
     const { match, history } = this.props;
@@ -251,6 +270,8 @@ export default class EventsForm extends React.Component {
       focusedInput,
       description,
       whyVisit,
+      videoCount,
+      eventVideos,
     } = this.state;
     console.log('STATE', this.state)
     const toolbarConfig = {
@@ -560,10 +581,19 @@ export default class EventsForm extends React.Component {
                       ) : null
                               }
 
+                    <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
+                        <div className="control-label col-md-3 col-sm-3"></div>
+                          <div className="col-md-8 col-sm-8">
+                            <h3>Video Links</h3>
+                        </div>
+                      
+                    {eventVideos.map((count, index) => {
+                        return <div key={index}>
+
                     <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
-                      >Video Links
+                      >Link
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
@@ -571,11 +601,36 @@ export default class EventsForm extends React.Component {
                           type="text"
                           name="event_videos"
                           className="form-control"
-                          value={event.event_videos}
-                          onChange={this.handleInputChange}
+                          value={eventVideos[index].url}
+                          onChange={(event) => this.handleEventVideos(event, index)}
                         />
                       </div>
                     </div>
+                  </div>
+                    })}
+                    
+                    <div style={{float: "right"}}>
+                      <button type="button" style={{marginRight: '5px'}}
+                      onClick={() => {
+                        this.setState({
+                          eventVideos: [...eventVideos, {}],
+                          })
+                        }}
+                      className="btn btn-info btn-sm">Add Video
+                      </button>
+                      <button type="button" 
+                      onClick={() => {
+                        var { eventVideos } = this.state;
+                        var newLink = Object.assign([], eventVideos)
+                        newLink.pop()
+                        this.setState({
+                          eventVideos: newLink,
+                        })
+                        }
+                      }
+                      className={`btn btn-danger btn-sm ${eventVideos.length === 1 ? 'disabled' : ''}`}>Remove Video</button>
+                    </div>
+                </div>
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Recommended</label>
@@ -606,7 +661,7 @@ export default class EventsForm extends React.Component {
                     </div>
 
                     <div className="form-group row">
-                      <label className="control-label col-md-3 col-sm-3">Description</label>
+                      <label className="control-label col-md-3 col-sm-3">Why Visit</label>
                       <div className="col-md-6 col-sm-6">
                         <RichTextEditor
                           value={whyVisit}
