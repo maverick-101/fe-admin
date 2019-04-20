@@ -49,7 +49,7 @@ class Login extends Component {
       password: '',
       loading: false,
     };
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
   }
 
   componentDidMount() {
