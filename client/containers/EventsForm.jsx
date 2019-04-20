@@ -51,7 +51,7 @@ export default class EventsForm extends React.Component {
       whyList: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postEvent = this.postEvent.bind(this);
   }

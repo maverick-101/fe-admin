@@ -17,7 +17,7 @@ export default class Area extends React.Component {
       q: '',
       responseMessage: 'Loading Areas...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
     axios.get(`${this.endPoint}/api/fetch/locations-fetch`)

@@ -18,7 +18,7 @@ export default class Users extends React.Component {
       loading: false,
       responseMessage: 'Loading Users...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
     this.setState({ loading: true })

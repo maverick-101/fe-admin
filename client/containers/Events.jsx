@@ -19,7 +19,7 @@ export default class Events extends React.Component {
       q: '',
       responseMessage: 'Loading Events...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
     axios.get(`${this.endPoint}/api/fetch/event-fetch`)

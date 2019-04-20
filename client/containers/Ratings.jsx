@@ -20,7 +20,7 @@ export default class Ratings extends React.Component {
       responseMessage: 'Loading Ratings...',
       status: 'All'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
     // axios.get(`${this.endPoint}/api/fetch/rating-fetch`)

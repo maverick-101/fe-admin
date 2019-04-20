@@ -17,7 +17,7 @@ export default class Agents extends React.Component {
       q: '',
       responseMessage: 'Loading Agents...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
     axios.get(`${this.endPoint}/api/fetch/agentPage-fetch`)

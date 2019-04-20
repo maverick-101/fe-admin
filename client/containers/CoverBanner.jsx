@@ -17,7 +17,7 @@ export default class CoverBanner extends React.Component {
       q: '',
       responseMessage: 'Loading Cover Banners...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
     axios.get(`${this.endPoint}/api/coverbanner/fetch`)

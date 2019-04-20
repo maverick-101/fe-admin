@@ -28,7 +28,7 @@ export default class RoomForm extends React.Component {
       rooms: [],
       description: RichTextEditor.createEmptyValue(),
     };
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postRoom = this.postRoom.bind(this);
   }

@@ -18,7 +18,7 @@ export default class Orders extends React.Component {
       selectedOrder: undefined,
       responseMessage: 'Loading Orders...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
     // axios.get(`${this.endPoint}/api/fetch/order-fetch`)

@@ -17,7 +17,7 @@ export default class Packages extends React.Component {
       q: '',
       responseMessage: 'Loading Packages...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
     axios.get(`${this.endPoint}/api/fetch/packagePage-fetch`)

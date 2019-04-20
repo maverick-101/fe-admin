@@ -18,7 +18,7 @@ export default class Experiences extends React.Component {
       q: '',
       responseMessage: 'Loading Experiences...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
   }
 
   componentWillMount() {

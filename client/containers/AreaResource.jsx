@@ -31,7 +31,7 @@ export default class AreaResource extends React.Component {
       description: RichTextEditor.createEmptyValue(),
       responseMessage: 'Loading Resources...'
     };
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postAreaResource = this.postAreaResource.bind(this);
   }

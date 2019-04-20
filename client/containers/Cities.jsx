@@ -18,7 +18,7 @@ export default class Cities extends React.Component {
       q: '',
       responseMessage: 'Loading Cities...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
     axios.get(`${this.endPoint}/api/fetch/city-fetch`)

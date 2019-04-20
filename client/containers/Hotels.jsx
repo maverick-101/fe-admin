@@ -18,7 +18,7 @@ export default class Hotels extends React.Component {
       loading: false,
       responseMessage: 'Loading Hotels...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
     axios.get(`${this.endPoint}/api/hotel/fetch`)

@@ -17,7 +17,7 @@ export default class FeaturedPackages extends React.Component {
       q: '',
       responseMessage: 'Loading Featured Packages...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
     axios.get(`${this.endPoint}/api/fetch/featuredPackage-fetch`)
