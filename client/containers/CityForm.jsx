@@ -220,13 +220,13 @@ export default class CityForm extends React.Component {
                           onChange={this.handleInputChange}
                           required
                         >
-                          <option value="">Select Type</option>
-                          <option value="punjab">Punjab</option>
-                          <option value="sindh">Sindh</option>
-                          <option value="balochistan">Balochistan</option>
-                          <option value="khyberPakhtunKhawa">Khyber PakhtunKhawa</option>
-                          <option value="gilgitBaltistan">Gilgit Baltistan</option>
-                          <option value="azadKashmir">Azad Kashmir</option>
+                          <option value="">Select Province</option>
+                          <option value="Punjab">Punjab</option>
+                          <option value="Sindh">Sindh</option>
+                          <option value="Balochistan">Balochistan</option>
+                          <option value="Khyber Pakhtunkhwa">Khyber PakhtunKhawa</option>
+                          <option value="Gilgit Baltistan">Gilgit Baltistan</option>
+                          <option value="Azad Kashmir">Azad Kashmir</option>
                         </select>
                       </div>
                     </div>
