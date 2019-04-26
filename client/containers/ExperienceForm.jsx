@@ -14,9 +14,12 @@ export default class ExperienceForm extends React.Component {
       loading: false,
       experience: {
         experience_title: '',
+        location_id: '',
         user_id: '',
         user_name: '',
         estimated_time: '',
+        time: '',
+        phone_number: '',
         menu: '',
         spoken_languages: [],
         created_At: '',
@@ -26,8 +29,10 @@ export default class ExperienceForm extends React.Component {
         longitude: '',
         todo: [],
         gallery: [],
+        guest_photos: [],
         todo: [],
         description: '',
+        important_information: '',
         video_link: '',
       },
       toDo: [
@@ -37,9 +42,13 @@ export default class ExperienceForm extends React.Component {
         }
       ],
       gallery: '',
+      guestPhotos: '',
       users: [],
       user: '',
+      locations: [],
+      location: '',
       description: RichTextEditor.createEmptyValue(),
+      information: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
     this.endPoint = 'https://admin.saaditrips.com';
@@ -54,6 +63,12 @@ export default class ExperienceForm extends React.Component {
         users: response.data,
       });
     });
+    axios.get(`${this.endPoint}/api/fetch/locations-fetch`)
+    .then((response) => {
+      this.setState({
+        locations: response.data,
+      });
+    });
   }
 
   componentDidMount() {
@@ -65,6 +80,7 @@ export default class ExperienceForm extends React.Component {
           this.setState({
             experience: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+            information: RichTextEditor.createValueFromString(response.data.important_information, 'html'),
           }, () => {
             this.setState({
               toDo: this.state.experience.todo,
@@ -76,8 +92,30 @@ export default class ExperienceForm extends React.Component {
                 user: response.data[0],
               });
             });
+            axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.state.experience.location_id}`)
+            .then((response) => {
+              this.setState({
+                location: response.data[0],
+              });
+            });
           });
         });
+      }
+    }
+
+    deleteImage = (url, ID) => {
+      const data =  {ID, url}
+      let requestBody = { 'experienceGallery' : JSON.stringify(data)};
+      if(confirm("Are you sure you want to delete this image?")) {
+        axios.delete(`${this.endPoint}/api/deleteGallery/experience-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
+          .then(response => {
+            if(response.status === 200) {
+              window.alert('Image deleted Successfully!')
+            }
+            const hotels = this.state.hotels[hotel_gallery].slice();
+            hotels.splice(index, 1);
+            this.setState({ hotels });
+          });
       }
     }
 
@@ -90,6 +128,25 @@ export default class ExperienceForm extends React.Component {
     });
   }
 
+  setInformation(information) {
+    const { experience } = this.state;
+    experience.important_information = information.toString('html');
+    this.setState({
+      experience,
+      information,
+    });
+  }
+
+  setLocation(selectedLocation) {
+    this.setState(prevState => ({
+      location: selectedLocation,
+      experience: {
+        ...prevState.experience,
+        location_id: selectedLocation.ID,
+      },
+    }));
+  }
+
   handleInputChange(event) {
     const { value, name } = event.target;
 
@@ -100,6 +157,10 @@ export default class ExperienceForm extends React.Component {
 
   handleImages = (event) => {
     this.setState({ gallery: event.target.files });
+  }
+
+  handleGuestPhotos = (event) => {
+    this.setState({ guestPhotos: event.target.files });
   }
 
   setUser(selectedUser) {
@@ -131,16 +192,26 @@ export default class ExperienceForm extends React.Component {
   postExperience(event) {
     event.preventDefault();
     const { match, history } = this.props;
-    const { loading, experience, gallery } = this.state;
+    const { loading, experience, gallery, guestPhotos } = this.state;
         this.setState({ loading: true });
 
         let imgArray = [];
+        let guestPhotosArray = [];
+
         const fd = new FormData();
         for (let index = 0; index < gallery.length; index += 1) {
           imgArray.push(gallery[index]);
         }
           imgArray.forEach((img) => {
           fd.append('gallery_images', img);
+          return img;
+        });
+
+        for (let index = 0; index < guestPhotos.length; index += 1) {
+          guestPhotosArray.push(guestPhotos[index]);
+        }
+        guestPhotosArray.forEach((img) => {
+          fd.append('guest_photos', img);
           return img;
         });
 
@@ -178,9 +249,12 @@ export default class ExperienceForm extends React.Component {
       loading,
       experience,
       description,
+      information,
       users,
       user,
       toDo,
+      locations,
+      location,
     } = this.state;
     const toolbarConfig = {
       // Optionally specify the groups to display (displayed in the order listed).
@@ -269,6 +343,23 @@ export default class ExperienceForm extends React.Component {
                     </div>
 
                     <div className="form-group row">
+                          <label className="control-label col-md-3 col-sm-3">Location</label>
+                          <div className="col-md-6 col-sm-6">
+                            <Select
+                              name="location_id"
+                              value={location}
+                              onChange={value => this.setLocation(value)}
+                              options={locations}
+                              valueKey="ID"
+                              labelKey="name"
+                              clearable={false}
+                              backspaceRemoves={false}
+                              required
+                            />
+                          </div>
+                        </div>  
+
+                    <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Estimated Time
@@ -280,6 +371,38 @@ export default class ExperienceForm extends React.Component {
                           name="estimated_time"
                           className="form-control"
                           value={experience.estimated_time}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Time
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          type="text"
+                          name="time"
+                          className="form-control"
+                          value={experience.time}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Phone Number
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          type="text"
+                          name="phone_number"
+                          className="form-control"
+                          value={experience.phone_number}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -486,6 +609,69 @@ export default class ExperienceForm extends React.Component {
                         <div className="col-md-6 col-sm-6">
                         {experience.gallery.map((image,index) => {
                           return (
+                          <span>
+                            <img key={index}
+                            style={{marginRight: '5px'}}
+                            width="100"
+                            className="img-fluid"
+                            src={`${image.url}`}
+                            alt="cover"
+                          />
+                          <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, experience.ID)}/>
+                        </span>
+                          )
+                        })}
+                          
+                        </div>
+                      </div>
+                      ) : null
+                              }
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Guest Photos</label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          type="file"
+                          name="gallery"
+                          className="form-control"
+                          onChange={this.handleGuestPhotos}
+                          multiple
+                        />
+                      </div>
+                    </div>
+
+                    {experience.guest_gallery
+                      ? (
+                        <div className="form-group row">
+                        <label className="control-label col-md-3 col-sm-3"></label>
+                        <div className="col-md-6 col-sm-6">
+                        {experience.guest_gallery.map((image,index) => {
+                          return (
+                          <span>
+                          <img key={index}
+                          style={{marginRight: '5px'}}
+                          width="100"
+                          className="img-fluid"
+                          src={`${image.url}`}
+                          alt="cover"
+                        />
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, experience.ID)}/>
+                        </span>
+                          )
+                        })}
+                          
+                        </div>
+                      </div>
+                      ) : null
+                              }
+
+                    {experience.guest_photos
+                      ? (
+                        <div className="form-group row">
+                        <label className="control-label col-md-3 col-sm-3"></label>
+                        <div className="col-md-6 col-sm-6">
+                        {experience.gallery.map((image,index) => {
+                          return (
                           <img key={index}
                           style={{marginRight: '5px'}}
                           width="100"
@@ -513,6 +699,20 @@ export default class ExperienceForm extends React.Component {
                         />
                       </div>
                     </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Important Information</label>
+                      <div className="col-md-6 col-sm-6">
+                        <RichTextEditor
+                          value={information}
+                          toolbarConfig={toolbarConfig}
+                          onChange={(e) => {
+                            this.setInformation(e);
+                          }}
+                        />
+                      </div>
+                    </div>
+
                     <div className="ln_solid" />
                     <div className="form-group row">
                       <div className="col-md-12 col-sm-12 text-center offset-md-3">
