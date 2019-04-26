@@ -50,7 +50,7 @@ export default class AreaForm extends React.Component {
         .then((response) => {
           this.setState({
             location: response.data[0],
-            description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+            description: RichTextEditor.createValueFromString(response.data[0].description, 'html'),
           }, () => {
             axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.location.city_id}`)
             .then((response) => {
