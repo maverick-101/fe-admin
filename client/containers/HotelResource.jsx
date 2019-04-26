@@ -73,6 +73,7 @@ export default class HotelResource extends React.Component {
     }
     
     fetchResources = () => {
+      const { match } = this.props;
       axios.get(`${this.endPoint}/api/fetchByHotelId/hotelResources-fetchByHotelId/${match.params.hotelId}`)
       .then((response) => {
         this.setState({
