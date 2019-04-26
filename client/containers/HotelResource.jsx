@@ -34,7 +34,7 @@ export default class HotelResource extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postHotelResource = this.postHotelResource.bind(this);
   }
@@ -73,6 +73,7 @@ export default class HotelResource extends React.Component {
     }
     
     fetchResources = () => {
+      const { match } = this.props;
       axios.get(`${this.endPoint}/api/fetchByHotelId/hotelResources-fetchByHotelId/${match.params.hotelId}`)
       .then((response) => {
         this.setState({
