@@ -188,6 +188,7 @@ export default class HotelForm extends React.Component {
   }
 
   setLocation(selectedLocation) {
+    window.alert(selectedLocation.ID);
     this.setState(prevState => ({
       location: selectedLocation,
       hotel: {
@@ -434,7 +435,7 @@ export default class HotelForm extends React.Component {
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
-                          required
+                          // required
                           type="text"
                           name="video_link"
                           className="form-control"
