@@ -14,6 +14,7 @@ export default class ExperienceForm extends React.Component {
       loading: false,
       experience: {
         experience_title: '',
+        location_id: '',
         user_id: '',
         user_name: '',
         estimated_time: '',
@@ -39,6 +40,8 @@ export default class ExperienceForm extends React.Component {
       gallery: '',
       users: [],
       user: '',
+      locations: [],
+      location: '',
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
@@ -48,12 +51,36 @@ export default class ExperienceForm extends React.Component {
   }
 
   componentWillMount() {
+    this.getLocations();
+    this.getUsers();
+  }
+
+  getUsers = () => {
     axios.get(`${this.endPoint}/api/user/fetch`)
     .then((response) => {
       this.setState({
         users: response.data,
       });
     });
+  }
+
+  getLocations = () => {
+    axios.get(`${this.endPoint}/api/fetch/locations-fetch`)
+    .then((response) => {
+      this.setState({
+        locations: response.data,
+      });
+    });
+  }
+
+  setLocation(selectedLocation) {
+    this.setState(prevState => ({
+      location: selectedLocation,
+      experience: {
+        ...prevState.experience,
+        location_id: selectedLocation.ID,
+      },
+    }));
   }
 
   componentDidMount() {
@@ -180,6 +207,8 @@ export default class ExperienceForm extends React.Component {
       description,
       users,
       user,
+      locations,
+      location,
       toDo,
     } = this.state;
     const toolbarConfig = {
@@ -264,6 +293,23 @@ export default class ExperienceForm extends React.Component {
                           className="form-control"
                           value={experience.experience_title}
                           onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">Location</label>
+                      <div className="col-md-6 col-sm-6">
+                        <Select
+                          name="location_id"
+                          value={location}
+                          onChange={value => this.setLocation(value)}
+                          options={locations}
+                          valueKey="id"
+                          labelKey="name"
+                          clearable={false}
+                          backspaceRemoves={false}
+                          required
                         />
                       </div>
                     </div>
