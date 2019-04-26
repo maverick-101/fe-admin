@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -48,7 +48,8 @@ export default class AreaResource extends React.Component {
   }
 
   fetchResources = () => {
-    axios.get(`${this.endPoint}/api/lcoationResources/fetchByLocationId/${this.props.params.areaId}`)
+    const { match } = this.props;
+    axios.get(`${this.endPoint}/api/lcoationResources/fetchByLocationId/${match.params.areaId}`)
     .then((response) => {
         this.setState({
         resources: response.data,
@@ -58,14 +59,15 @@ export default class AreaResource extends React.Component {
   }
 
   componentDidMount() {
+    const { match } = this.props;
     this.setState(prevState => ({
       location: {
         ...prevState.location,
-        location_id: this.props.params.areaId,
+        location_id: match.params.areaId,
       },
     }));
-      if (this.props.params.areaId) {
-      axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.props.params.areaId}`)
+      if (match.params.areaId) {
+      axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${match.params.areaId}`)
         .then((response) => {
           this.setState({
             location: response.data[0],
@@ -135,7 +137,7 @@ export default class AreaResource extends React.Component {
         const fd = new FormData();
         fd.append('locationResources', JSON.stringify(location));
 
-        if(this.props.params.resourceId) {
+        if(match.params.resourceId) {
           axios.patch(`${this.endPoint}/api/lcoationResources/update`, fd)
           .then((response) => {
             if (response.data === 'locationResources Updated!') {

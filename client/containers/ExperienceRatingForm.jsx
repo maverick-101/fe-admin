@@ -4,7 +4,7 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 import moment from 'moment';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -45,17 +45,19 @@ export default class ExperienceRatingForm extends React.Component {
   }
 
   componentDidMount() {
+    const { match } = this.props;
     this.setState(prevState => ({
       experienceRating: {
         ...prevState.experienceRating,
-        experience_id: this.props.params.experienceId,
+        experience_id: match.params.experienceId,
       },
     }));
     this.fetchRatings();
   }
 
   fetchRatings = () => {
-    axios.get(`${this.endPoint}/api/fetchByExperienceId/experienceRating-fetchByExperienceId/${this.props.params.experienceId}`)
+    const { match } = this.props;
+    axios.get(`${this.endPoint}/api/fetchByExperienceId/experienceRating-fetchByExperienceId/${match.params.experienceId}`)
     .then((response) => {
       this.setState({
         ratings: response.data,
@@ -131,7 +133,7 @@ export default class ExperienceRatingForm extends React.Component {
         // fd.append('experienceRating', JSON.stringify(experienceRating));
         let requestBody = { 'experienceRating' : JSON.stringify(this.state.experienceRating)};
 
-        if(this.props.params.cityId) {
+        if(match.params.cityId) {
         // axios.patch('/api/experienceRating/update', fd)
         axios.patch(`${this.endPoint}/api/update/experienceRating-update`, fd)
           .then((response) => {

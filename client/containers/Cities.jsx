@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
@@ -132,7 +132,7 @@ export default class Cities extends React.Component {
                     </td> */}
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`${this.endPoint}/edit_city/${city.ID}`}>
+                        <Link to={`/edit_city/${city.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>

@@ -40,8 +40,9 @@ export default class CityForm extends React.Component {
 
   componentDidMount() {
     console.log('props',this.props);
+    const { match } = this.props;
       if (window.location.href.split('/')[3] === 'edit_city')
-      axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.props.params.cityId}`)
+      axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${match.params.cityId}`)
         .then((response) => {
           this.setState({
             city: response.data[0],
@@ -89,7 +90,7 @@ export default class CityForm extends React.Component {
 
         fd.append('city', JSON.stringify(city));
 
-        if(this.props.params.cityId) {
+        if(match.params.cityId) {
         // axios.patch('/api/city/update', fd)
         axios.patch(`${this.endPoint}/api/update/city-update`, fd)
           .then((response) => {
@@ -219,13 +220,13 @@ export default class CityForm extends React.Component {
                           onChange={this.handleInputChange}
                           required
                         >
-                          <option value="">Select Type</option>
-                          <option value="punjab">Punjab</option>
-                          <option value="sindh">Sindh</option>
-                          <option value="balochistan">Balochistan</option>
-                          <option value="khyberPakhtunKhawa">Khyber PakhtunKhawa</option>
-                          <option value="gilgitBaltistan">Gilgit Baltistan</option>
-                          <option value="azadKashmir">Azad Kashmir</option>
+                          <option value="">Select Province</option>
+                          <option value="Punjab">Punjab</option>
+                          <option value="Sindh">Sindh</option>
+                          <option value="Balochistan">Balochistan</option>
+                          <option value="Khyber Pakhtunkhwa">Khyber PakhtunKhawa</option>
+                          <option value="Gilgit Baltistan">Gilgit Baltistan</option>
+                          <option value="Azad Kashmir">Azad Kashmir</option>
                         </select>
                       </div>
                     </div>

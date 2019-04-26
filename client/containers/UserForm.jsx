@@ -45,8 +45,9 @@ export default class UserForm extends React.Component {
 
   componentDidMount() {
     console.log('props',this.props);
-      if (this.props.params.userId)
-      axios.get(`${this.endPoint}/api/user/fetchById/${this.props.params.userId}`)
+    const { match } = this.props;
+      if (match.params.userId)
+      axios.get(`${this.endPoint}/api/user/fetchById/${match.params.userId}`)
         .then((response) => {
           this.setState({
             user: response.data[0],
@@ -101,7 +102,7 @@ export default class UserForm extends React.Component {
         fd.append('user', JSON.stringify(user));
 
         this.setState({ loading: true });
-        if(this.props.params.userId) {
+        if(match.params.userId) {
           // axios.patch('/api/user/update', fd)
           axios.patch(`${this.endPoint}/api/user/update`, fd)
           .then((response) => {

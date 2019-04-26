@@ -58,8 +58,9 @@ export default class AgentForm extends React.Component {
 
   componentDidMount() {
     console.log('props',this.props);
-      if (this.props.params.agentId)
-      axios.get(`${this.endPoint}/api/fetchById/agentPage-fetchById/${this.props.params.agentId}`)
+    const { match } = this.props;
+      if (match.params.agentId)
+      axios.get(`${this.endPoint}/api/fetchById/agentPage-fetchById/${match.params.agentId}`)
         .then((response) => {
           this.setState({
             agent: response.data[0],
@@ -179,7 +180,7 @@ export default class AgentForm extends React.Component {
  
         fd.append('agentPage', JSON.stringify(agent));
 
-        if(this.props.params.agentId) {
+        if(match.params.agentId) {
           axios.patch(`${this.endPoint}/api/update/agentPage-update`, fd)
           .then((response) => {
             if (response.status === 200) {

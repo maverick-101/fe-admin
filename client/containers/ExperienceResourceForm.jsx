@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import moment from 'moment';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 
@@ -47,14 +47,14 @@ export default class ExperienceResourceForm extends React.Component {
     this.setState(prevState => ({
       experienceResources: {
         ...prevState.experienceResources,
-        experience_id: this.props.params.experienceId,
+        experience_id: match.params.experienceId,
       },
     }));
     this.fetchResources();
   }
 
   fetchResources = () => {
-    axios.get(`${this.endPoint}/api/fetchByExperienceId/experienceResources-fetchByExperienceId/${this.props.params.experienceId}`)
+    axios.get(`${this.endPoint}/api/fetchByExperienceId/experienceResources-fetchByExperienceId/${match.params.experienceId}`)
     .then((response) => {
       this.setState({
         resources: response.data,
@@ -127,7 +127,7 @@ export default class ExperienceResourceForm extends React.Component {
 
         fd.append('experienceResources', JSON.stringify(experienceResources));
 
-        if(this.props.params.cityId) {
+        if(match.params.cityId) {
         // axios.patch('/api/experienceResources/update', fd)
         axios.patch(`${this.endPoint}/api/update/experienceResources-update`, fd)
           .then((response) => {

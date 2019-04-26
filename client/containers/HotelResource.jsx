@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
@@ -34,15 +34,16 @@ export default class HotelResource extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://api.saaditrips.com';
+    this.endPoint = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postHotelResource = this.postHotelResource.bind(this);
   }
 
   componentDidMount() {
     console.log('props', this.props)
-    if (this.props.params.coverBannerId) {
-      axios.get(`${this.endPoint}/api/coverbanner/fetchById/${this.props.params.coverBannerId}`)
+    const { match } = this.props;
+    if (match.params.coverBannerId) {
+      axios.get(`${this.endPoint}/api/coverbanner/fetchById/${match.params.coverBannerId}`)
         .then((response) => {
           this.setState({
             hotelResource: response.data[0]
@@ -61,17 +62,19 @@ export default class HotelResource extends React.Component {
   }
 
   componentWillMount() {
+    const { match } = this.props;
       this.setState(prevState => ({
         hotelResource: {
           ...prevState.hotelResource,
-          hotel_id: this.props.params.hotelId,
+          hotel_id: match.params.hotelId,
         },
       }));
       this.fetchResources();
     }
     
     fetchResources = () => {
-      axios.get(`${this.endPoint}/api/fetchByHotelId/hotelResources-fetchByHotelId/${this.props.params.hotelId}`)
+      const { match } = this.props;
+      axios.get(`${this.endPoint}/api/fetchByHotelId/hotelResources-fetchByHotelId/${match.params.hotelId}`)
       .then((response) => {
         this.setState({
           resources: response.data,
@@ -145,7 +148,7 @@ export default class HotelResource extends React.Component {
 
         fd.append('hotelResources', JSON.stringify(hotelResource));
 
-        // if(this.props.params.hotelId) {
+        // if(match.params.hotelId) {
         // axios.patch(`${this.endPoint}/api/update/hotelImage-update`, fd)
         //   .then((response) => {
         //     if (response.data && response.status === 200) {

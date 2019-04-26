@@ -40,8 +40,9 @@ export default class CoverForm extends React.Component {
 
   componentDidMount() {
     console.log('props', this.props)
-    if (this.props.params.coverBannerId) {
-      axios.get(`${this.endPoint}/api/coverbanner/fetchById/${this.props.params.coverBannerId}`)
+    const { match } = this.props;
+    if (match.params.coverBannerId) {
+      axios.get(`${this.endPoint}/api/coverbanner/fetchById/${match.params.coverBannerId}`)
         .then((response) => {
           this.setState({
             cover: response.data[0]
@@ -111,7 +112,7 @@ export default class CoverForm extends React.Component {
 
         fd.append('coverBanner', JSON.stringify(cover));
 
-        if(this.props.params.coverBannerId) {
+        if(match.params.coverBannerId) {
         axios.patch(`${this.endPoint}/api/coverbanner/update`, fd)
           .then((response) => {
             if (response.data === 'CoverBanner Updated!') {

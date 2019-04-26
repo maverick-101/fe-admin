@@ -27,6 +27,7 @@ export default class PackageForm extends React.Component {
         rating: '',
         description: '',
         summary: '',
+        video_link: '',
       },
       price: [{
           person: '',
@@ -115,8 +116,9 @@ export default class PackageForm extends React.Component {
 
   componentDidMount() {
     console.log('props',this.props);
-      if (this.props.params.packageId)
-      axios.get(`${this.endPoint}/api/fetchById/packagePage-fetchById/${this.props.params.packageId}`)
+    const { match } = this.props;
+      if (match.params.packageId)
+      axios.get(`${this.endPoint}/api/fetchById/packagePage-fetchById/${match.params.packageId}`)
         .then((response) => {
           this.setState({
             pckg: response.data,
@@ -313,7 +315,7 @@ export default class PackageForm extends React.Component {
         });
         fd.append('packagePage', JSON.stringify(pckg));
 
-        if(this.props.params.packageId) {
+        if(match.params.packageId) {
           // axios.patch('/api/locations/update', fd)
           axios.patch(`${this.endPoint}/api/update/packagePage-update`, fd)
           .then((response) => {
@@ -1072,6 +1074,23 @@ export default class PackageForm extends React.Component {
                           name="rating"
                           className="form-control"
                           value={pckg.rating}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Video Link
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="video_link"
+                          className="form-control"
+                          value={pckg.video_link}
                           onChange={this.handleInputChange}
                         />
                       </div>

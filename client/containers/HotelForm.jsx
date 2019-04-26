@@ -44,6 +44,7 @@ export default class HotelForm extends React.Component {
         longitude: '',
         description: '',
         hotel_amenities: [],
+        video_link: '',
       },
       hotel_gallery: '',
       cities: [],
@@ -86,8 +87,9 @@ export default class HotelForm extends React.Component {
 
   componentDidMount() {
     console.log('props',this.props);
-      if (this.props.params.hotelId)
-      axios.get(`${this.endPoint}/api/hotel/fetchById/${this.props.params.hotelId}`)
+    const { match } = this.props;
+      if (match.params.hotelId)
+      axios.get(`${this.endPoint}/api/hotel/fetchById/${match.params.hotelId}`)
         .then((response) => {
           this.setState({
             hotel: response.data,
@@ -228,7 +230,7 @@ export default class HotelForm extends React.Component {
         fd.append('hotel', JSON.stringify(hotel));
         this.setState({ loading: true });
 
-        if(this.props.params.hotelId) {
+        if(match.params.hotelId) {
           axios.patch(`${this.endPoint}/api/hotel/update`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
@@ -423,7 +425,24 @@ export default class HotelForm extends React.Component {
                               required
                             />
                           </div>
-                        </div>    
+                        </div>   
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Video Link
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="video_link"
+                          className="form-control"
+                          value={hotel.video_link}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div> 
 
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Hotel Gallery</label>
@@ -446,8 +465,8 @@ export default class HotelForm extends React.Component {
                         <div className="col-md-6 col-sm-6">
                         {hotel.gallery.map((image,index) => {
                           return (
-                            <span>
-                          <img key={index}
+                          <span key={index}>
+                          <img
                           style={{marginRight: '5px'}}
                           width="100"
                           className="img-fluid"

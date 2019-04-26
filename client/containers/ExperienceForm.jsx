@@ -33,6 +33,7 @@ export default class ExperienceForm extends React.Component {
         todo: [],
         description: '',
         important_information: '',
+        video_link: '',
       },
       toDo: [
         {
@@ -72,8 +73,9 @@ export default class ExperienceForm extends React.Component {
 
   componentDidMount() {
     console.log('PROPS',this.props);
-    if (this.props.params.experienceId) {
-      axios.get(`${this.endPoint}/api/fetchById/experience-fetchById/${this.props.params.experienceId}`)
+    const { match } = this.props;
+    if (match.params.experienceId) {
+      axios.get(`${this.endPoint}/api/fetchById/experience-fetchById/${match.params.experienceId}`)
         .then((response) => {
           this.setState({
             experience: response.data[0],
@@ -215,7 +217,7 @@ export default class ExperienceForm extends React.Component {
 
         fd.append('experience', JSON.stringify(experience));
 
-        if(this.props.params.experienceId) {
+        if(match.params.experienceId) {
         axios.patch(`${this.endPoint}/api/update/experience-update`, fd)
           .then((response) => {
             if (response.data === 'Experience Updated!') {
@@ -564,6 +566,23 @@ export default class ExperienceForm extends React.Component {
                           name="longitude"
                           className="form-control"
                           value={experience.longitude}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Video Link
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="video_link"
+                          className="form-control"
+                          value={experience.video_link}
                           onChange={this.handleInputChange}
                         />
                       </div>

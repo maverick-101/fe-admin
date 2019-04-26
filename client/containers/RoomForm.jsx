@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -38,7 +38,8 @@ export default class RoomForm extends React.Component {
   }
 
   fetchRooms = () => {
-    axios.get(`${this.endPoint}/api/room/fetchByHotelId/${this.props.params.hotelId}`)
+    const { match } = this.props;
+    axios.get(`${this.endPoint}/api/room/fetchByHotelId/${match.params.hotelId}`)
         .then((response) => {
           this.setState({
             rooms: response.data,
@@ -51,9 +52,9 @@ export default class RoomForm extends React.Component {
     const { room } = this.state;
     console.log('props',this.props)
     this.setState({
-      room: {...room, hotel_id: this.props.params.hotelId}
+      room: {...room, hotel_id: match.params.hotelId}
     })
-    axios.get(`${this.endPoint}/api/hotel/fetchById/${this.props.params.hotelId}`)
+    axios.get(`${this.endPoint}/api/hotel/fetchById/${match.params.hotelId}`)
         .then((response) => {
           this.setState({
             hotel: response.data,
