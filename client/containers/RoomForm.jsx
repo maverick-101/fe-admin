@@ -20,6 +20,7 @@ export default class RoomForm extends React.Component {
         title: '',
         persons: '',
         beds: '',
+        price: '',
         bed_type: '',
         pets_allowed: '',
         smoking_allowed: '',
@@ -291,6 +292,23 @@ export default class RoomForm extends React.Component {
                           name="title"
                           className="form-control"
                           value={room.title}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Price
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="price"
+                          className="form-control"
+                          value={room.price}
                           onChange={this.handleInputChange}
                         />
                       </div>
