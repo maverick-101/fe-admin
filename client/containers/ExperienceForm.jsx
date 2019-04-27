@@ -69,7 +69,7 @@ export default class ExperienceForm extends React.Component {
         users: response.data,
       });
     });
-    axios.get(`${this.endPoint}/api/fetch/locations-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
     .then((response) => {
       this.setState({
         locations: response.data,
