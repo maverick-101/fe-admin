@@ -42,12 +42,12 @@ export default class CityForm extends React.Component {
   componentDidMount() {
     console.log('props',this.props);
     const { match } = this.props;
-      if (window.city.href.split('/')[3] === 'edit_city')
+      if (match.params.cityId)
       axios.get(`${API_END_POINT}/api/fetchById/city-fetchById/${match.params.cityId}`)
         .then((response) => {
           this.setState({
             city: response.data[0],
-            description: RichTextEditor.createValueFromString(response.data.description, 'html'),
+            description: RichTextEditor.createValueFromString(response.data[0].description, 'html'),
           });
         });
     }

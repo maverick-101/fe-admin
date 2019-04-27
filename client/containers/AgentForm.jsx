@@ -43,7 +43,6 @@ export default class AgentForm extends React.Component {
   }
 
   componentWillMount() {
-    window.alert(API_END_POINT);
     axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
@@ -326,7 +325,7 @@ export default class AgentForm extends React.Component {
                           </div>
                         </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                           <label className="control-label col-md-3 col-sm-3">Location</label>
                           <div className="col-md-6 col-sm-6">
                             <Select
@@ -341,7 +340,7 @@ export default class AgentForm extends React.Component {
                               required
                             />
                           </div>
-                        </div>
+                        </div> */}
 
                       <div className="row" style={{backgroundColor: '#E8E8E8', margin: '10px'}}>
                         <div className="control-label col-md-3 col-sm-3"></div>
@@ -359,7 +358,7 @@ export default class AgentForm extends React.Component {
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
-                          required
+                          // required
                           type="text"
                           name="address_type"
                           className="form-control"
@@ -377,7 +376,7 @@ export default class AgentForm extends React.Component {
                           value={address.primary}
                           className="form-control custom-select"
                           onChange={(event) => this.handleAddress(event, index)}
-                          required
+                          // required
                         >
                           <option value="">Select Type</option>
                           <option value="true">Yes</option>
@@ -398,7 +397,7 @@ export default class AgentForm extends React.Component {
                               labelKey="name"
                               clearable={false}
                               backspaceRemoves={false}
-                              required
+                              // required
                             />
                           </div>
                         </div>
@@ -415,7 +414,7 @@ export default class AgentForm extends React.Component {
                               labelKey="name"
                               clearable={false}
                               backspaceRemoves={false}
-                              required
+                              // required
                             />
                           </div>
                         </div>
@@ -427,7 +426,7 @@ export default class AgentForm extends React.Component {
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
-                          required
+                          // required
                           type="text"
                           name="street"
                           className="form-control"
