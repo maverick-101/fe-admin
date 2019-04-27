@@ -4,6 +4,7 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { API_END_POINT } from '../../config';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -28,7 +29,7 @@ export default class RoomForm extends React.Component {
       rooms: [],
       description: RichTextEditor.createEmptyValue(),
     };
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postRoom = this.postRoom.bind(this);
   }
@@ -39,7 +40,7 @@ export default class RoomForm extends React.Component {
 
   fetchRooms = () => {
     const { match } = this.props;
-    axios.get(`${this.endPoint}/api/room/fetchByHotelId/${match.params.hotelId}`)
+    axios.get(`${API_END_POINT}/api/room/fetchByHotelId/${match.params.hotelId}`)
         .then((response) => {
           this.setState({
             rooms: response.data,
@@ -54,7 +55,7 @@ export default class RoomForm extends React.Component {
     this.setState({
       room: {...room, hotel_id: match.params.hotelId}
     })
-    axios.get(`${this.endPoint}/api/hotel/fetchById/${match.params.hotelId}`)
+    axios.get(`${API_END_POINT}/api/hotel/fetchById/${match.params.hotelId}`)
         .then((response) => {
           this.setState({
             hotel: response.data,
@@ -147,7 +148,7 @@ export default class RoomForm extends React.Component {
         fd.append('room', JSON.stringify(room));
         this.setState({ loading: true });
         // axios.post('/api/room/save', fd)
-        axios.post(`${this.endPoint}/api/room/save`, fd)
+        axios.post(`${API_END_POINT}/api/room/save`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);

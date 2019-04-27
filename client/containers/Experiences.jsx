@@ -4,6 +4,7 @@ import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
 import Swal from 'sweetalert2';
+import { API_END_POINT } from '../../config';
 
 import HasRole from '../hoc/HasRole';
 
@@ -18,11 +19,11 @@ export default class Experiences extends React.Component {
       q: '',
       responseMessage: 'Loading Experiences...'
     }
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
   }
 
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/experience-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/experience-fetch`)
       .then(response => {
         this.setState({
           experiences: response.data,
@@ -39,7 +40,7 @@ export default class Experiences extends React.Component {
 
   deleteExperience(experienceId, index) {
     if(confirm("Are you sure you want to delete this experience?")) {
-      axios.delete(`${this.endPoint}/api/delete/experience-deleteById/${experienceId}`)
+      axios.delete(`${API_END_POINT}/api/delete/experience-deleteById/${experienceId}`)
         .then(response => {
           if(response.status === 200) {
             Swal.fire({

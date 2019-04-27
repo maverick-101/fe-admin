@@ -4,6 +4,7 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 import _ from 'lodash';
+import { API_END_POINT } from '../../config';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -35,7 +36,7 @@ export default class RatingsForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postRating = this.postRating.bind(this);
   }
@@ -55,7 +56,7 @@ export default class RatingsForm extends React.Component {
   componentDidMount() {
     console.log('props',this.props);
     //   if (window.location.href.split('/')[3] === 'edit_city')
-    //   axios.get(`${this.endPoint}/api/fetchById/rating-fetchById/${match.params.cityId}`)
+    //   axios.get(`${API_END_POINT}/api/fetchById/rating-fetchById/${match.params.cityId}`)
     //     .then((response) => {
     //       this.setState({
     //         rating: response.data[0],
@@ -65,7 +66,7 @@ export default class RatingsForm extends React.Component {
     }
 
     fetchUsers() {
-        axios.get(`${this.endPoint}/api/user/fetch`)
+        axios.get(`${API_END_POINT}/api/user/fetch`)
         .then(response => {
         this.setState({
           users: response.data,
@@ -74,7 +75,7 @@ export default class RatingsForm extends React.Component {
     }
 
     fetchHotels() {
-        axios.get(`${this.endPoint}/api/hotel/fetch`)
+        axios.get(`${API_END_POINT}/api/hotel/fetch`)
         .then(response => {
         this.setState({
           hotels: response.data,
@@ -83,7 +84,7 @@ export default class RatingsForm extends React.Component {
     }
 
     fetchPackages() {
-        axios.get(`${this.endPoint}/api/fetch/packagePage-fetch`)
+        axios.get(`${API_END_POINT}/api/fetch/packagePage-fetch`)
         .then(response => {
         this.setState({
           packages: response.data,
@@ -92,7 +93,7 @@ export default class RatingsForm extends React.Component {
     }
 
     fetchExperiences() {
-      axios.get(`${this.endPoint}/api/fetch/experience-fetch`)
+      axios.get(`${API_END_POINT}/api/fetch/experience-fetch`)
       .then(response => {
       this.setState({
         experiences: response.data,
@@ -171,7 +172,7 @@ export default class RatingsForm extends React.Component {
         const fd = new FormData();
 
         if(match.params.featuredPackageId || match.params.featuredHotelId) {
-            axios.patch(`${this.endPoint}/api/update/rating-update`, fd)
+            axios.patch(`${API_END_POINT}/api/update/rating-update`, fd)
             .then((response) => {
                 if (response.data === 'Featured Updated!') {
                 window.alert(response.data);
@@ -187,7 +188,7 @@ export default class RatingsForm extends React.Component {
                 let hotelRating = _.omit(rating, ['package_id'])
                 let requestBody = { 'hotelRating' : JSON.stringify(hotelRating)};
                 fd.append('hotelRating', JSON.stringify(rating));
-                    axios.post(`${this.endPoint}/api/save/hotelRating-save`, requestBody)
+                    axios.post(`${API_END_POINT}/api/save/hotelRating-save`, requestBody)
                     .then((response) => {
                         if (response.data && response.status === 200) {
                         window.alert(response.data);
@@ -206,7 +207,7 @@ export default class RatingsForm extends React.Component {
                     let packageRating = _.omit(rating, ['hotel_id'])
                     let requestBody = { 'packageRating' : JSON.stringify(packageRating)};
                     // fd.append('packageRating', JSON.stringify(rating));
-                        axios.post(`${this.endPoint}/api/save/packageRating-save`, requestBody)
+                        axios.post(`${API_END_POINT}/api/save/packageRating-save`, requestBody)
                         .then((response) => {
                         if (response.data && response.status === 200) {
                         window.alert(response.data);
@@ -225,7 +226,7 @@ export default class RatingsForm extends React.Component {
                   let experienceRating = _.omit(rating, ['hotel_id', 'package_id'])
                   let requestBody = { 'experienceRating' : JSON.stringify(experienceRating)};
                   // fd.append('packageRating', JSON.stringify(rating));
-                      axios.post(`${this.endPoint}/api/save/experienceRating-save`, requestBody)
+                      axios.post(`${API_END_POINT}/api/save/experienceRating-save`, requestBody)
                       .then((response) => {
                       if (response.data && response.status === 200) {
                       window.alert(response.data);

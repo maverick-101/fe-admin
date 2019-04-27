@@ -18,6 +18,7 @@ import Formsy from 'formsy-react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { API_END_POINT } from '../config';
 
 const style = {
   logoWrapper: {
@@ -49,7 +50,7 @@ class Login extends Component {
       password: '',
       loading: false,
     };
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
   }
 
   componentDidMount() {
@@ -80,7 +81,7 @@ class Login extends Component {
         fd.append('user', JSON.stringify(user));
 
         this.setState({ loading: true });
-          axios.post(`${this.endPoint}/api/user/save`, fd)
+          axios.post(`${API_END_POINT}/api/user/save`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);

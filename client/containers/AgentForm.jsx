@@ -6,6 +6,7 @@ import { Button } from 'reactstrap';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import { API_END_POINT } from '../../config';
 
 export default class AgentForm extends React.Component {
   constructor(props) {
@@ -36,19 +37,20 @@ export default class AgentForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postAgent = this.postAgent.bind(this);
   }
 
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/city-fetch`)
+    window.alert(API_END_POINT);
+    axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
             cities: response.data,
           });
         });
-    axios.get(`${this.endPoint}/api/fetch/locations-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
     .then((response) => {
       this.setState({
         locations: response.data,
@@ -60,18 +62,18 @@ export default class AgentForm extends React.Component {
     console.log('props',this.props);
     const { match } = this.props;
       if (match.params.agentId)
-      axios.get(`${this.endPoint}/api/fetchById/agentPage-fetchById/${match.params.agentId}`)
+      axios.get(`${API_END_POINT}/api/fetchById/agentPage-fetchById/${match.params.agentId}`)
         .then((response) => {
           this.setState({
             agent: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
-            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.agent.city_id}`)
+            axios.get(`${API_END_POINT}/api/fetchById/city-fetchById/${this.state.agent.city_id}`)
             .then((response) => {
               this.setState({
                 agentCity: response.data[0],
               }, () => {
-                axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.state.agent.location_id}`)
+                axios.get(`${API_END_POINT}/api/fetchById/location-fetchById/${this.state.agent.location_id}`)
                 .then((response) => {
                   this.setState({
                     agentLocation: response.data[0]
@@ -181,7 +183,7 @@ export default class AgentForm extends React.Component {
         fd.append('agentPage', JSON.stringify(agent));
 
         if(match.params.agentId) {
-          axios.patch(`${this.endPoint}/api/update/agentPage-update`, fd)
+          axios.patch(`${API_END_POINT}/api/update/agentPage-update`, fd)
           .then((response) => {
             if (response.status === 200) {
               window.alert(response.data);
@@ -192,7 +194,7 @@ export default class AgentForm extends React.Component {
             }
           });
         } else {
-          axios.post(`${this.endPoint}/api/save/agentPage-save`, fd)
+          axios.post(`${API_END_POINT}/api/save/agentPage-save`, fd)
           .then((response) => {
             if (response.status === 200) {
               window.alert(response.data);

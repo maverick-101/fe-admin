@@ -4,6 +4,7 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { API_END_POINT } from '../../config';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -31,13 +32,13 @@ export default class AreaResource extends React.Component {
       description: RichTextEditor.createEmptyValue(),
       responseMessage: 'Loading Resources...'
     };
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postAreaResource = this.postAreaResource.bind(this);
   }
 
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/city-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
             cities: response.data,
@@ -49,7 +50,7 @@ export default class AreaResource extends React.Component {
 
   fetchResources = () => {
     const { match } = this.props;
-    axios.get(`${this.endPoint}/api/lcoationResources/fetchByLocationId/${match.params.areaId}`)
+    axios.get(`${API_END_POINT}/api/lcoationResources/fetchByLocationId/${match.params.areaId}`)
     .then((response) => {
         this.setState({
         resources: response.data,
@@ -67,13 +68,13 @@ export default class AreaResource extends React.Component {
       },
     }));
       if (match.params.areaId) {
-      axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${match.params.areaId}`)
+      axios.get(`${API_END_POINT}/api/fetchById/location-fetchById/${match.params.areaId}`)
         .then((response) => {
           this.setState({
             location: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
-            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.location.city_id}`)
+            axios.get(`${API_END_POINT}/api/fetchById/city-fetchById/${this.state.location.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
@@ -138,7 +139,7 @@ export default class AreaResource extends React.Component {
         fd.append('locationResources', JSON.stringify(location));
 
         if(match.params.resourceId) {
-          axios.patch(`${this.endPoint}/api/lcoationResources/update`, fd)
+          axios.patch(`${API_END_POINT}/api/lcoationResources/update`, fd)
           .then((response) => {
             if (response.data === 'locationResources Updated!') {
               window.alert(response.data);
@@ -149,7 +150,7 @@ export default class AreaResource extends React.Component {
             }
           });
         } else {
-          axios.post(`${this.endPoint}/api/lcoationResources/save`, fd)
+          axios.post(`${API_END_POINT}/api/lcoationResources/save`, fd)
           .then((response) => {
             if (response.data === 'locationResources Saved!') {
               window.alert(response.data);

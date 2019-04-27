@@ -5,6 +5,7 @@ import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import { API_END_POINT } from '../../config';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -30,13 +31,13 @@ export default class ExperienceRatingForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postExperienceRating = this.postExperienceRating.bind(this);
   }
 
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/user/fetch`)
+    axios.get(`${API_END_POINT}/api/user/fetch`)
     .then((response) => {
       this.setState({
         users: response.data,
@@ -57,7 +58,7 @@ export default class ExperienceRatingForm extends React.Component {
 
   fetchRatings = () => {
     const { match } = this.props;
-    axios.get(`${this.endPoint}/api/fetchByExperienceId/experienceRating-fetchByExperienceId/${match.params.experienceId}`)
+    axios.get(`${API_END_POINT}/api/fetchByExperienceId/experienceRating-fetchByExperienceId/${match.params.experienceId}`)
     .then((response) => {
       this.setState({
         ratings: response.data,
@@ -105,7 +106,7 @@ export default class ExperienceRatingForm extends React.Component {
 
   deleteRating(ratingId, index) {
     if(confirm("Are you sure you want to delete this rating?")) {
-      axios.delete(`${this.endPoint}/api/delete/experienceRating-deleteById/${ratingId}`)
+      axios.delete(`${API_END_POINT}/api/delete/experienceRating-deleteById/${ratingId}`)
         .then(response => {
           const ratings = this.state.ratings.slice();
           ratings.splice(index, 1);
@@ -135,7 +136,7 @@ export default class ExperienceRatingForm extends React.Component {
 
         if(match.params.cityId) {
         // axios.patch('/api/experienceRating/update', fd)
-        axios.patch(`${this.endPoint}/api/update/experienceRating-update`, fd)
+        axios.patch(`${API_END_POINT}/api/update/experienceRating-update`, fd)
           .then((response) => {
             if (response.data && reponse.status === 200) {
               window.alert(response.data);
@@ -147,7 +148,7 @@ export default class ExperienceRatingForm extends React.Component {
           });
         }
         else {
-          axios.post(`${this.endPoint}/api/save/experienceRating-save`, requestBody)
+          axios.post(`${API_END_POINT}/api/save/experienceRating-save`, requestBody)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);

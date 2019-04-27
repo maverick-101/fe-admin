@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
+import { API_END_POINT } from '../../config';
 
 export default class CityForm extends React.Component {
   constructor(props) {
@@ -20,7 +21,7 @@ export default class CityForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postCity = this.postCity.bind(this);
   }
@@ -42,7 +43,7 @@ export default class CityForm extends React.Component {
     console.log('props',this.props);
     const { match } = this.props;
       if (window.location.href.split('/')[3] === 'edit_city')
-      axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${match.params.cityId}`)
+      axios.get(`${API_END_POINT}/api/fetchById/city-fetchById/${match.params.cityId}`)
         .then((response) => {
           this.setState({
             city: response.data[0],
@@ -92,7 +93,7 @@ export default class CityForm extends React.Component {
 
         if(match.params.cityId) {
         // axios.patch('/api/city/update', fd)
-        axios.patch(`${this.endPoint}/api/update/city-update`, fd)
+        axios.patch(`${API_END_POINT}/api/update/city-update`, fd)
           .then((response) => {
             if (response.data === 'City Updated!') {
               window.alert(response.data);
@@ -105,7 +106,7 @@ export default class CityForm extends React.Component {
         }
         else {
           // axios.post('/api/city/save', fd)
-          axios.post(`${this.endPoint}/api/save/city-save`, fd)
+          axios.post(`${API_END_POINT}/api/save/city-save`, fd)
           .then((response) => {
             if (response.data === 'City Saved!') {
               window.alert(response.data);

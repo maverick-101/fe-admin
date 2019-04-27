@@ -4,6 +4,7 @@ import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
 import Swal from 'sweetalert2';
+import { API_END_POINT } from '../../config';
 
 import HasRole from '../hoc/HasRole';
 
@@ -18,10 +19,10 @@ export default class Cities extends React.Component {
       q: '',
       responseMessage: 'Loading Cities...'
     }
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/city-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
       .then(response => {
         this.setState({
           cities: response.data,
@@ -32,7 +33,7 @@ export default class Cities extends React.Component {
   }
   deleteCity(cityId, index) {
     if(confirm("Are you sure you want to delete this city?")) {
-      axios.delete(`${this.endPoint}/api/delete/city-deleteById/${cityId}`)
+      axios.delete(`${API_END_POINT}/api/delete/city-deleteById/${cityId}`)
         .then(response => {
           if(response.status === 200) {
             Swal.fire({
@@ -126,7 +127,7 @@ export default class Cities extends React.Component {
                     <td>{area.lat}</td>
                     <td>{area.lon}</td> */}
                     {/* <td>
-                      <Link to={`${this.endPoint}/area_resource/${city.ID}`}>
+                      <Link to={`${API_END_POINT}/area_resource/${city.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
                     </td> */}
