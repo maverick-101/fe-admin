@@ -171,7 +171,7 @@ export default class HotelForm extends React.Component {
           if(response.status === 200) {
             window.alert('Image deleted Successfully!')
           }
-          const hotels = this.state.hotels[hotel_gallery].slice();
+          const hotels = this.state.hotels[gallery].slice();
           hotels.splice(index, 1);
           this.setState({ hotels });
         });

@@ -158,7 +158,7 @@ export default class AreaForm extends React.Component {
               window.alert('Image deleted Successfully!')
             }
             const location = this.state.location[gallery].slice();
-            hotels.splice(index, 1);
+            location.splice(index, 1);
             this.setState({ location });
           });
       }
