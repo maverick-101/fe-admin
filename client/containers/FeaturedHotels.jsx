@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import moment from 'moment';
+import { API_END_POINT } from '../../config';
 
 import HasRole from '../hoc/HasRole';
 
@@ -17,10 +18,10 @@ export default class FeaturedHotels extends React.Component {
       q: '',
       responseMessage: 'Loading Featured Hotels...'
     }
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/featuredHotel-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/featuredHotel-fetch`)
       .then(response => {
         this.setState({
           featuredHotels: response.data,
@@ -35,7 +36,7 @@ export default class FeaturedHotels extends React.Component {
   }
   deleteHotel(hotelId, index) {
     if(confirm("Are you sure you want to delete this featured hotel?")) {
-      axios.delete(`${this.endPoint}/api/delete/featuredHotel-deleteById/${hotelId}`)
+      axios.delete(`${API_END_POINT}/api/delete/featuredHotel-deleteById/${hotelId}`)
         .then(response => {
           const featuredHotels = this.state.featuredHotels.slice();
           featuredHotels.splice(index, 1);

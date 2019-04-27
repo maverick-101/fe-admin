@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
+import { API_END_POINT } from '../../config';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -28,13 +29,13 @@ export default class AreaForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postArea = this.postArea.bind(this);
   }
 
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/city-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
             cities: response.data,
@@ -46,13 +47,13 @@ export default class AreaForm extends React.Component {
     console.log('props',this.props);
     const { match } = this.props;
       if (match.params.areaId)
-      axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${match.params.areaId}`)
+      axios.get(`${API_END_POINT}/api/fetchById/location-fetchById/${match.params.areaId}`)
         .then((response) => {
           this.setState({
             location: response.data[0],
             description: RichTextEditor.createValueFromString(response.data[0].description, 'html'),
           }, () => {
-            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.location.city_id}`)
+            axios.get(`${API_END_POINT}/api/fetchById/city-fetchById/${this.state.location.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
@@ -120,7 +121,7 @@ export default class AreaForm extends React.Component {
 
         if(match.params.areaId) {
           // axios.patch('/api/locations/update', fd)
-          axios.patch(`${this.endPoint}/api/update/location-update`, fd)
+          axios.patch(`${API_END_POINT}/api/update/location-update`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);
@@ -132,7 +133,7 @@ export default class AreaForm extends React.Component {
           });
         } else {
           // axios.post('/api/locations/save', fd)
-          axios.post(`${this.endPoint}/api/save/location-save`, fd)
+          axios.post(`${API_END_POINT}/api/save/location-save`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);
@@ -150,8 +151,8 @@ export default class AreaForm extends React.Component {
       const data =  {ID, url}
       let requestBody = { 'locationGallery' : JSON.stringify(data)};
       if(confirm("Are you sure you want to delete this image?")) {
-        // axios.delete(`${this.endPoint}/api/delete/Image-deleteByPublicId`, {reqBody})
-        axios.delete(`${this.endPoint}/api/deleteGallery/location-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
+        // axios.delete(`${API_END_POINT}/api/delete/Image-deleteByPublicId`, {reqBody})
+        axios.delete(`${API_END_POINT}/api/deleteGallery/location-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
           .then(response => {
             if(response.status === 200) {
               window.alert('Image deleted Successfully!')
@@ -338,7 +339,7 @@ export default class AreaForm extends React.Component {
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
-                          required
+                          // required
                           type="text"
                           name="video_link"
                           className="form-control"

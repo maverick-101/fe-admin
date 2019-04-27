@@ -4,6 +4,7 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 import _ from 'lodash';
+import { API_END_POINT } from '../../config';
 
 import _amenities from '../static/_amenities';
 
@@ -58,26 +59,26 @@ export default class HotelForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     // this.handleFile = this.handleFile.bind(this);
     this.postHotel = this.postHotel.bind(this);
   }
 
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/city-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
             cities: response.data,
           });
         });
-    axios.get(`${this.endPoint}/api/fetch/locations-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
     .then((response) => {
       this.setState({
         locations: response.data,
       });
     });
-    axios.get(`${this.endPoint}/api/user/fetch`)
+    axios.get(`${API_END_POINT}/api/user/fetch`)
     .then((response) => {
       this.setState({
         users: response.data,
@@ -89,23 +90,23 @@ export default class HotelForm extends React.Component {
     console.log('props',this.props);
     const { match } = this.props;
       if (match.params.hotelId)
-      axios.get(`${this.endPoint}/api/hotel/fetchById/${match.params.hotelId}`)
+      axios.get(`${API_END_POINT}/api/hotel/fetchById/${match.params.hotelId}`)
         .then((response) => {
           this.setState({
             hotel: response.data,
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
-            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.hotel.city_id}`)
+            axios.get(`${API_END_POINT}/api/fetchById/city-fetchById/${this.state.hotel.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
               }, () => {
-                axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.state.hotel.location_id}`)
+                axios.get(`${API_END_POINT}/api/fetchById/location-fetchById/${this.state.hotel.location_id}`)
                 .then((response) => {
                   this.setState({
                     location: response.data[0],
                   }, () => {
-                    axios.get(`${this.endPoint}/api/user/fetchById/${this.state.hotel.user_id}`)
+                    axios.get(`${API_END_POINT}/api/user/fetchById/${this.state.hotel.user_id}`)
                     .then((response) => {
                       this.setState({
                         user: response.data[0],
@@ -164,8 +165,8 @@ export default class HotelForm extends React.Component {
     const data =  {ID, url}
     let requestBody = { 'hotelGallery' : JSON.stringify(data)};
     if(confirm("Are you sure you want to delete this image?")) {
-      // axios.delete(`${this.endPoint}/api/delete/Image-deleteByPublicId`, {reqBody})
-      axios.delete(`${this.endPoint}/api/deleteGallery/hotel-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
+      // axios.delete(`${API_END_POINT}/api/delete/Image-deleteByPublicId`, {reqBody})
+      axios.delete(`${API_END_POINT}/api/deleteGallery/hotel-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
         .then(response => {
           if(response.status === 200) {
             window.alert('Image deleted Successfully!')
@@ -188,6 +189,7 @@ export default class HotelForm extends React.Component {
   }
 
   setLocation(selectedLocation) {
+    window.alert(selectedLocation.ID);
     this.setState(prevState => ({
       location: selectedLocation,
       hotel: {
@@ -231,7 +233,7 @@ export default class HotelForm extends React.Component {
         this.setState({ loading: true });
 
         if(match.params.hotelId) {
-          axios.patch(`${this.endPoint}/api/hotel/update`, fd)
+          axios.patch(`${API_END_POINT}/api/hotel/update`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);
@@ -242,7 +244,7 @@ export default class HotelForm extends React.Component {
             }
           });
         } else {
-          axios.post(`${this.endPoint}/api/hotel/save`, fd)
+          axios.post(`${API_END_POINT}/api/hotel/save`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);
@@ -434,7 +436,7 @@ export default class HotelForm extends React.Component {
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
-                          required
+                          // required
                           type="text"
                           name="video_link"
                           className="form-control"

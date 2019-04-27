@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
+import { API_END_POINT } from '../../config';
 
 import HasRole from '../hoc/HasRole';
 
@@ -18,10 +19,10 @@ export default class Hotels extends React.Component {
       loading: false,
       responseMessage: 'Loading Hotels...'
     }
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/hotel/fetch`)
+    axios.get(`${API_END_POINT}/api/hotel/fetch`)
       .then(response => {
         this.setState({
           hotels: response.data,
@@ -33,7 +34,7 @@ export default class Hotels extends React.Component {
 
   deleteHotel(hotelId, index) {
     if(confirm("Are you sure you want to delete this hotel?")) {
-      axios.delete(`${this.endPoint}/api/delete/hotel-deleteById/${hotelId}`)
+      axios.delete(`${API_END_POINT}/api/delete/hotel-deleteById/${hotelId}`)
         .then(response => {
           const hotels = this.state.hotels.slice();
           hotels.splice(index, 1);

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
+import { API_END_POINT } from '../../config';
 
 import HasRole from '../hoc/HasRole';
 
@@ -18,11 +19,11 @@ export default class Users extends React.Component {
       loading: false,
       responseMessage: 'Loading Users...'
     }
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
     this.setState({ loading: true })
-    axios.get(`${this.endPoint}/api/user/fetch`)
+    axios.get(`${API_END_POINT}/api/user/fetch`)
       .then(response => {
         this.setState({
           users: response.data,
@@ -34,7 +35,7 @@ export default class Users extends React.Component {
   }
   deleteUser(userId, index) {
     if(confirm("Are you sure you want to delete this user?")) {
-      axios.delete(`${this.endPoint}/api/delete/user-deleteById/${userId}`)
+      axios.delete(`${API_END_POINT}/api/delete/user-deleteById/${userId}`)
         .then(response => {
           const users = this.state.users.slice();
           users.splice(index, 1);

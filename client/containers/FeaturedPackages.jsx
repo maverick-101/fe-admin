@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import moment from 'moment';
+import { API_END_POINT } from '../../config';
 
 import HasRole from '../hoc/HasRole';
 
@@ -17,10 +18,10 @@ export default class FeaturedPackages extends React.Component {
       q: '',
       responseMessage: 'Loading Featured Packages...'
     }
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/featuredPackage-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/featuredPackage-fetch`)
       .then(response => {
         this.setState({
           featuredPackages: response.data,
@@ -35,7 +36,7 @@ export default class FeaturedPackages extends React.Component {
   }
   deletePackage(packageId, index) {
     if(confirm("Are you sure you want to delete this featured package?")) {
-      axios.delete(`${this.endPoint}/api/delete/featuredPackage-deleteById/${packageId}`)
+      axios.delete(`${API_END_POINT}/api/delete/featuredPackage-deleteById/${packageId}`)
         .then(response => {
           const featuredPackages = this.state.featuredPackages.slice();
           featuredPackages.splice(index, 1);

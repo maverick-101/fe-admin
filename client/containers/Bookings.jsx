@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
+import { API_END_POINT } from '../../config';
 
 import HasRole from '../hoc/HasRole';
 
@@ -17,10 +18,10 @@ export default class Bookings extends React.Component {
       q: '',
       responseMessage: 'Loading Bookings...'
     }
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/booking-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/booking-fetch`)
       .then(response => {
         this.setState({
           bookings: response.data,
@@ -31,7 +32,7 @@ export default class Bookings extends React.Component {
   }
   deleteCity(cityId, index) {
     if(confirm("Are you sure you want to delete this booking?")) {
-      axios.delete(`${this.endPoint}/api/delete/booking-deleteById/${cityId}`)
+      axios.delete(`${API_END_POINT}/api/delete/booking-deleteById/${cityId}`)
         .then(response => {
           const bookings = this.state.bookings.slice();
           bookings.splice(index, 1);
@@ -117,13 +118,13 @@ export default class Bookings extends React.Component {
                     <td>{area.lat}</td>
                     <td>{area.lon}</td> */}
                     {/* <td>
-                      <Link to={`${this.endPoint}/area_resource/${booking.ID}`}>
+                      <Link to={`${API_END_POINT}/area_resource/${booking.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
                     </td> */}
                     {/* <HasRole requiredRole={['admin']} requiredDepartment={['admin', 'sales']}> */}
                       <td>
-                        <Link to={`${this.endPoint}/edit_booking/${booking.ID}`}>
+                        <Link to={`${API_END_POINT}/edit_booking/${booking.ID}`}>
                           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </Link>
                       </td>

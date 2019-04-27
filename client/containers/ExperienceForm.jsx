@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
+import { API_END_POINT } from '../../config';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -51,13 +52,18 @@ export default class ExperienceForm extends React.Component {
       information: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postExperience = this.postExperience.bind(this);
   }
 
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/user/fetch`)
+    this.getLocations();
+    this.getUsers();
+  }
+
+  getUsers = () => {
+    axios.get(`${API_END_POINT}/api/user/fetch`)
     .then((response) => {
       this.setState({
         users: response.data,
@@ -71,11 +77,30 @@ export default class ExperienceForm extends React.Component {
     });
   }
 
+  getLocations = () => {
+    axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
+    .then((response) => {
+      this.setState({
+        locations: response.data,
+      });
+    });
+  }
+
+  setLocation(selectedLocation) {
+    this.setState(prevState => ({
+      location: selectedLocation,
+      experience: {
+        ...prevState.experience,
+        location_id: selectedLocation.ID,
+      },
+    }));
+  }
+
   componentDidMount() {
     console.log('PROPS',this.props);
     const { match } = this.props;
     if (match.params.experienceId) {
-      axios.get(`${this.endPoint}/api/fetchById/experience-fetchById/${match.params.experienceId}`)
+      axios.get(`${API_END_POINT}/api/fetchById/experience-fetchById/${match.params.experienceId}`)
         .then((response) => {
           this.setState({
             experience: response.data[0],
@@ -86,7 +111,7 @@ export default class ExperienceForm extends React.Component {
               toDo: this.state.experience.todo,
               description: RichTextEditor.createValueFromString(this.state.experience.description, 'html')
             })
-            axios.get(`${this.endPoint}/api/user/fetchById/${this.state.experience.user_id}`)
+            axios.get(`${API_END_POINT}/api/user/fetchById/${this.state.experience.user_id}`)
             .then((response) => {
               this.setState({
                 user: response.data[0],
@@ -218,7 +243,7 @@ export default class ExperienceForm extends React.Component {
         fd.append('experience', JSON.stringify(experience));
 
         if(match.params.experienceId) {
-        axios.patch(`${this.endPoint}/api/update/experience-update`, fd)
+        axios.patch(`${API_END_POINT}/api/update/experience-update`, fd)
           .then((response) => {
             if (response.data === 'Experience Updated!') {
               window.alert(response.data);
@@ -231,7 +256,7 @@ export default class ExperienceForm extends React.Component {
         }
         else {
           // axios.post('/api/experience/save', fd)
-          axios.post(`${this.endPoint}/api/save/experience-save`, fd)
+          axios.post(`${API_END_POINT}/api/save/experience-save`, fd)
           .then((response) => {
             if (response.data === 'Experience Saved!') {
               window.alert(response.data);
@@ -252,6 +277,8 @@ export default class ExperienceForm extends React.Component {
       information,
       users,
       user,
+      locations,
+      location,
       toDo,
       locations,
       location,
@@ -343,21 +370,21 @@ export default class ExperienceForm extends React.Component {
                     </div>
 
                     <div className="form-group row">
-                          <label className="control-label col-md-3 col-sm-3">Location</label>
-                          <div className="col-md-6 col-sm-6">
-                            <Select
-                              name="location_id"
-                              value={location}
-                              onChange={value => this.setLocation(value)}
-                              options={locations}
-                              valueKey="ID"
-                              labelKey="name"
-                              clearable={false}
-                              backspaceRemoves={false}
-                              required
-                            />
-                          </div>
-                        </div>  
+                      <label className="control-label col-md-3 col-sm-3">Location</label>
+                      <div className="col-md-6 col-sm-6">
+                        <Select
+                          name="location_id"
+                          value={location}
+                          onChange={value => this.setLocation(value)}
+                          options={locations}
+                          valueKey="id"
+                          labelKey="name"
+                          clearable={false}
+                          backspaceRemoves={false}
+                          required
+                        />
+                      </div>
+                    </div>
 
                     <div className="form-group row">
                       <label
@@ -578,7 +605,7 @@ export default class ExperienceForm extends React.Component {
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
-                          required
+                          // required
                           type="text"
                           name="video_link"
                           className="form-control"

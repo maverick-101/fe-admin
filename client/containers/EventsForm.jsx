@@ -4,6 +4,7 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 import moment from 'moment';
+import { API_END_POINT } from '../../config';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -51,7 +52,7 @@ export default class EventsForm extends React.Component {
       whyList: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postEvent = this.postEvent.bind(this);
   }
@@ -78,7 +79,7 @@ export default class EventsForm extends React.Component {
     console.log('props',this.props);
     const { match } = this.props;
       if (match.params.eventId) {
-      axios.get(`${this.endPoint}/api/fetchById/event-fetchById/${match.params.eventId}`)
+      axios.get(`${API_END_POINT}/api/fetchById/event-fetchById/${match.params.eventId}`)
         .then((response) => {
           this.setState({
             event: response.data,
@@ -86,12 +87,12 @@ export default class EventsForm extends React.Component {
             whyList: RichTextEditor.createValueFromString(response.data.why_list, 'html'),
           }, () => {
             this.setState({ eventVideos: this.state.event.event_videos})
-            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.event.city_id}`)
+            axios.get(`${API_END_POINT}/api/fetchById/city-fetchById/${this.state.event.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
               }, () => {
-                axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.state.event.location_id}`)
+                axios.get(`${API_END_POINT}/api/fetchById/location-fetchById/${this.state.event.location_id}`)
                 .then((response) => {
                   this.setState({
                     location: response.data[0]
@@ -105,7 +106,7 @@ export default class EventsForm extends React.Component {
 }
 
     getCities = () => {
-      axios.get(`${this.endPoint}/api/fetch/city-fetch`)
+      axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
             cities: response.data,
@@ -124,7 +125,7 @@ export default class EventsForm extends React.Component {
     }
 
     getLocations = () => {
-      axios.get(`${this.endPoint}/api/fetch/locations-fetch`)
+      axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
         .then((response) => {
           this.setState({
             locations: response.data,
@@ -164,8 +165,8 @@ export default class EventsForm extends React.Component {
     const data =  {ID, url}
     let requestBody = { 'eventGallery' : JSON.stringify(data)};
     if(confirm("Are you sure you want to delete this image?")) {
-      // axios.delete(`${this.endPoint}/api/delete/Image-deleteByPublicId`, {reqBody})
-      axios.delete(`${this.endPoint}/api/deleteGallery/event-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
+      // axios.delete(`${API_END_POINT}/api/delete/Image-deleteByPublicId`, {reqBody})
+      axios.delete(`${API_END_POINT}/api/deleteGallery/event-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
         .then(response => {
           if(response.status === 200) {
             window.alert('Image deleted Successfully!')
@@ -229,7 +230,7 @@ export default class EventsForm extends React.Component {
         fd.append('event', JSON.stringify(event));
 
         if(match.params.eventId) {
-        axios.patch(`${this.endPoint}/api/update/event-update`, fd)
+        axios.patch(`${API_END_POINT}/api/update/event-update`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);
@@ -242,7 +243,7 @@ export default class EventsForm extends React.Component {
         }
         else {
           // axios.post('/api/event/save', fd)
-          axios.post(`${this.endPoint}/api/save/event-save`, fd)
+          axios.post(`${API_END_POINT}/api/save/event-save`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);
