@@ -82,9 +82,13 @@ export default class CityForm extends React.Component {
           if(response.status === 200) {
             window.alert('Image deleted Successfully!')
           }
-          const city = this.state.city[gallery].slice();
-          city.splice(index, 1);
-          this.setState({ city });
+          // const city = this.state.city[gallery].slice();
+          // city.splice(index, 1);
+          // this.setState({ city });
+
+            const { city } = this.state;
+            city.gallery.splice(index, 1);
+            this.setState({ city });
         });
     }
   }

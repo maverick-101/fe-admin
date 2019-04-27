@@ -291,8 +291,12 @@ export default class PackageForm extends React.Component {
           if(response.status === 200) {
             window.alert('Image deleted Successfully!')
           }
-          const pckg = this.state.pckg[gallery].slice();
-          pckg.splice(index, 1);
+          // const pckg = this.state.pckg[gallery].slice();
+          // pckg.splice(index, 1);
+          // this.setState({ pckg });
+
+          const { pckg } = this.state;
+          pckg.gallery.splice(index, 1);
           this.setState({ pckg });
         });
     }

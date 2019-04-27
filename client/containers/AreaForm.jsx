@@ -157,8 +157,12 @@ export default class AreaForm extends React.Component {
             if(response.status === 200) {
               window.alert('Image deleted Successfully!')
             }
-            const location = this.state.location[gallery].slice();
-            location.splice(index, 1);
+            // const location = this.state.location[gallery].slice();
+            // location.splice(index, 1);
+            // this.setState({ location });
+
+            const { location } = this.state;
+            location.gallery.splice(index, 1);
             this.setState({ location });
           });
       }
