@@ -378,7 +378,7 @@ export default class ExperienceForm extends React.Component {
                     <div className="form-group row">
                       <label className="control-label col-md-3 col-sm-3">Location</label>
                       <div className="col-md-6 col-sm-6">
-                        {/* <Select
+                        <Select
                           name="location_id"
                           value={location}
                           onChange={value => this.setLocation(value)}
@@ -388,7 +388,7 @@ export default class ExperienceForm extends React.Component {
                           clearable={false}
                           backspaceRemoves={false}
                           required
-                        /> */}
+                        />
                       </div>
                     </div>
 
@@ -461,7 +461,7 @@ export default class ExperienceForm extends React.Component {
                     <div className="form-group row">
                           <label className="control-label col-md-3 col-sm-3">User</label>
                           <div className="col-md-6 col-sm-6">
-                            {/* <Select
+                            <Select
                               name="user_name"
                               value={user}
                               onChange={value => this.setUser(value)}
@@ -471,7 +471,7 @@ export default class ExperienceForm extends React.Component {
                               clearable={false}
                               backspaceRemoves={false}
                               required
-                            /> */}
+                            />
                           </div>
                         </div>
 
