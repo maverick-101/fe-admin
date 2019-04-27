@@ -171,9 +171,13 @@ export default class EventsForm extends React.Component {
           if(response.status === 200) {
             window.alert('Image deleted Successfully!')
           }
-          const hotels = this.state.hotels[hotel_gallery].slice();
-          hotels.splice(index, 1);
-          this.setState({ hotels });
+          // const hotels = this.state.hotels[hotel_gallery].slice();
+          // hotels.splice(index, 1);
+          // this.setState({ hotels });
+
+          const { event } = this.state;
+          event.gallery.splice(index, 1);
+          this.setState({ event });
         });
     }
   }

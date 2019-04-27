@@ -137,9 +137,13 @@ export default class ExperienceForm extends React.Component {
             if(response.status === 200) {
               window.alert('Image deleted Successfully!')
             }
-            const hotels = this.state.hotels[hotel_gallery].slice();
-            hotels.splice(index, 1);
-            this.setState({ hotels });
+            // const hotels = this.state.hotels[hotel_gallery].slice();
+            // hotels.splice(index, 1);
+            // this.setState({ hotels });
+
+            const { experience } = this.state;
+            experience.gallery.splice(index, 1);
+            this.setState({ experience });
           });
       }
     }
