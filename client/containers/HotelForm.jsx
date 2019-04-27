@@ -242,7 +242,11 @@ export default class HotelForm extends React.Component {
               window.alert('ERROR')
               this.setState({ loading: false });
             }
-          });
+          })
+        .catch((error) => {
+          this.setState({ loading: false });
+          window.alert(error.response.data);
+        });
         } else {
           axios.post(`${API_END_POINT}/api/hotel/save`, fd)
           .then((response) => {
@@ -253,6 +257,10 @@ export default class HotelForm extends React.Component {
               window.alert('ERROR')
               this.setState({ loading: false });
             }
+          })
+          .catch((error) => {
+            this.setState({ loading: false });
+            window.alert(error.response.data);
           });
       // }
     }

@@ -72,17 +72,16 @@ class Login extends Component {
           // console.log("####", response);
           if (response && response.status === 200) {
             const { Token } = response.data;
-            // window.alert(Token);
             axios.defaults.headers.common.Authorization = `Bearer ${Token}`;
             Cookie.set('saadi_admin_access_token', `${Token}`, { expires: 14 });
             history.push('/');
-            // window.location.href = ('/');
+            this.setState({ loading: false });
           }
         })
-        // .catch((error) => {
-        //   this.setState({ loading: false });
-        //   window.alert(error.response.data);
-        // });
+        .catch((error) => {
+          this.setState({ loading: false });
+          window.alert(error.response.data);
+        });
     }
   }
 
