@@ -280,8 +280,6 @@ export default class ExperienceForm extends React.Component {
       locations,
       location,
       toDo,
-      locations,
-      location,
     } = this.state;
     const toolbarConfig = {
       // Optionally specify the groups to display (displayed in the order listed).
