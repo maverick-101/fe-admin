@@ -161,7 +161,7 @@ export default class HotelForm extends React.Component {
   //   });
   // }
 
-  deleteImage = (url, ID) => {
+  deleteImage = (url, ID, index) => {
     const data =  {ID, url}
     let requestBody = { 'hotelGallery' : JSON.stringify(data)};
     if(confirm("Are you sure you want to delete this image?")) {
@@ -171,9 +171,9 @@ export default class HotelForm extends React.Component {
           if(response.status === 200) {
             window.alert('Image deleted Successfully!')
           }
-          const hotels = this.state.hotels[gallery].slice();
-          hotels.splice(index, 1);
-          this.setState({ hotels });
+          const { hotel } = this.state;
+          hotel.gallery.splice(index, 1);
+          this.setState({ hotel });
         });
     }
   }
@@ -475,7 +475,7 @@ export default class HotelForm extends React.Component {
                           src={`${image.url}`}
                           alt="cover"
                         />
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, hotel.ID)}/>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, hotel.ID, index)}/>
                         </span>
                           )
                         })}
