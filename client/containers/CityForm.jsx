@@ -42,7 +42,7 @@ export default class CityForm extends React.Component {
   componentDidMount() {
     console.log('props',this.props);
     const { match } = this.props;
-      if (window.location.href.split('/')[3] === 'edit_city')
+      if (window.city.href.split('/')[3] === 'edit_city')
       axios.get(`${API_END_POINT}/api/fetchById/city-fetchById/${match.params.cityId}`)
         .then((response) => {
           this.setState({
@@ -71,6 +71,22 @@ export default class CityForm extends React.Component {
 
   handleImages = (event) => {
     this.setState({ gallery: event.target.files });
+  }
+
+  deleteImage = (url, ID) => {
+    const data =  {ID, url}
+    let requestBody = { 'cityGallery' : JSON.stringify(data)};
+    if(confirm("Are you sure you want to delete this image?")) {
+      axios.delete(`${API_END_POINT}/api/deleteGallery/city-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
+        .then(response => {
+          if(response.status === 200) {
+            window.alert('Image deleted Successfully!')
+          }
+          const city = this.state.city[gallery].slice();
+          city.splice(index, 1);
+          this.setState({ city });
+        });
+    }
   }
 
   postCity(event) {
@@ -270,16 +286,18 @@ export default class CityForm extends React.Component {
                         <div className="col-md-6 col-sm-6">
                         {city.gallery.map((image,index) => {
                           return (
-                          <img key={index}
-                          style={{marginRight: '5px'}}
-                          width="100"
-                          className="img-fluid"
-                          src={`${image.url}`}
-                          alt="cover"
-                        />
+                          <span key={index}>
+                            <img
+                            style={{marginRight: '5px'}}
+                            width="100"
+                            className="img-fluid"
+                            src={`${image.url}`}
+                            alt="cover"
+                          />
+                          <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, city.ID)}/>
+                          </span>
                           )
                         })}
-                          
                         </div>
                       </div>
                       ) : null
