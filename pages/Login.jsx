@@ -41,6 +41,7 @@ class Login extends Component {
       // user: null,
       username: '',
       password: '',
+      user_type: '',
       loading: false,
     };
     // API_END_POINT = 'https://admin.saaditrips.com';
@@ -61,13 +62,13 @@ class Login extends Component {
 
   submit() {
     const { history } = this.props;
-    const { loading } = this.state;
+    const { loading, user_type } = this.state;
     if (!loading) {
       const { username, password } = this.state;
       const user = {email: username, password};
       let requestBody = { 'user' : JSON.stringify(user)};
       this.setState({ loading: true });
-      axios.post(`${API_END_POINT}/api/user/signIn/`, requestBody)
+      axios.post(`${API_END_POINT}/api/${user_type}/signIn/`, requestBody)
         .then((response) => {
           // console.log("####", response);
           if (response && response.status === 200) {
@@ -132,6 +133,29 @@ class Login extends Component {
               value={this.state.password}
               onChange={e => this.setState({ password: e.target.value })}
             />
+          </div>
+        </div>
+
+        <div className="form-group row">
+        <label
+            className="control-label col-md-4 col-sm-4 text-right"
+            style={{color: 'white'}}
+          >User Type
+          </label>
+          <div className="col-md-4 col-sm-4">
+          <select
+            name="user_type"
+            value={this.state.user_type}
+            className="form-control custom-select"
+            // onChange={this.handleInputChange}
+            onChange={e => this.setState({ user_type: e.target.value })}
+            required
+          >
+            <option value="">Select Type</option>
+            <option value="admin">Admin</option>
+            <option value="agent">Agent</option>
+            <option value="user">User</option>
+          </select>
           </div>
         </div>
 
