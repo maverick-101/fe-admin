@@ -154,6 +154,26 @@ export default class RoomForm extends React.Component {
     }
   }
 
+  deleteImage = (url, ID) => {
+    const data =  {ID, url}
+    let requestBody = { 'roomGallery' : JSON.stringify(data)};
+    if(confirm("Are you sure you want to delete this image?")) {
+      axios.delete(`${API_END_POINT}/api/deleteGallery/room-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
+        .then(response => {
+          if(response.status === 200) {
+            window.alert('Image deleted Successfully!')
+          }
+          // const room = this.state.room[gallery].slice();
+          // room.splice(index, 1);
+          // this.setState({ room });
+
+            const { room } = this.state;
+            room.gallery.splice(index, 1);
+            this.setState({ room });
+        });
+    }
+  }
+
   postRoom(event) {
     event.preventDefault();
     const { match, history } = this.props;
@@ -335,13 +355,16 @@ export default class RoomForm extends React.Component {
                         <div className="col-md-6 col-sm-6">
                         {room.gallery.map((image,index) => {
                           return (
-                          <img key={index}
-                          style={{marginRight: '5px'}}
-                          width="100"
-                          className="img-fluid"
-                          src={`${image.url}`}
-                          alt="cover"
-                        />
+                          <span key={index}>
+                            <img
+                            style={{marginRight: '5px'}}
+                            width="100"
+                            className="img-fluid"
+                            src={`${image.url}`}
+                            alt="cover"
+                          />
+                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, room.ID)}/>
+                          </span>
                           )
                         })}
                           
