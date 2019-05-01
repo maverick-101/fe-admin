@@ -77,6 +77,9 @@ class Login extends Component {
             history.push('/');
             this.setState({ loading: false });
           }
+          else {
+            this.setState({ loading: false });
+          }
         })
         .catch((error) => {
           this.setState({ loading: false });
