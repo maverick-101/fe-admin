@@ -161,8 +161,8 @@ export default class EventsForm extends React.Component {
     });
   }
 
-  deleteImage = (url, ID) => {
-    const data =  {ID, url}
+  deleteImage = (url, ID, type) => {
+    const data =  {ID, url, type}
     let requestBody = { 'eventGallery' : JSON.stringify(data)};
     if(confirm("Are you sure you want to delete this image?")) {
       // axios.delete(`${API_END_POINT}/api/delete/Image-deleteByPublicId`, {reqBody})
@@ -544,7 +544,7 @@ export default class EventsForm extends React.Component {
                               src={`${image.url}`}
                               alt="cover"
                             />
-                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, event.ID)}/>
+                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, event.ID, 'gallery')}/>
                           </span>
                           )
                         })}
@@ -581,7 +581,7 @@ export default class EventsForm extends React.Component {
                               src={`${event.cover_photo.url}`}
                               alt="cover"
                             />
-                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, event.ID)}/>
+                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, event.ID, 'cover')}/>
                           </span>
                           
                         </div>
