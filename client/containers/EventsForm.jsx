@@ -34,6 +34,8 @@ export default class EventsForm extends React.Component {
         event_videos: '',
         recommended: false,
         contact_number: '',
+        latitude: '',
+        longitude: '',
         // video_link: ''
       },
       gallery: '',
@@ -443,7 +445,7 @@ export default class EventsForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                           <label className="control-label col-md-3 col-sm-3">Location</label>
                           <div className="col-md-6 col-sm-6">
                             <Select
@@ -458,7 +460,42 @@ export default class EventsForm extends React.Component {
                               required
                             />
                           </div>
-                        </div>
+                        </div> */}
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Latitude
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="latitude"
+                          className="form-control"
+                          value={event.latitude}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Longitude
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="longitude"
+                          className="form-control"
+                          value={event.longitude}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+                        
 
                         <div className="form-group row">
                           <label className="control-label col-md-3 col-sm-3">City</label>
