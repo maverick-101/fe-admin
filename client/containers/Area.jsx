@@ -16,12 +16,15 @@ export default class Area extends React.Component {
       activePage: 1,
       pages: 1,
       q: '',
+      pageSize: 10,
+      activePage: 1,
       responseMessage: 'Loading Areas...'
     }
     // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
+    // axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/locations-fetch?all=true`)
       .then(response => {
         this.setState({
           areas: response.data,
@@ -30,6 +33,20 @@ export default class Area extends React.Component {
         })
       })
   }
+  
+  getParams() {
+    const {
+      activePage,
+      pageSize,
+    } = this.state;
+    return {
+      params: {
+        pageNumber: activePage,
+        pageSize,
+      },
+    };
+  }
+
   deleteArea(areaId, index) {
     if(confirm("Are you sure you want to delete this area?")) {
       axios.delete(`/api/area/${areaId}`)
