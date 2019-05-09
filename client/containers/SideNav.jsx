@@ -19,10 +19,12 @@ export default class SideNav extends React.Component {
   logout() {
     axios.defaults.headers.common['Authorization'] = ''
     if (process.env.NODE_ENV === 'production') {
-      Cookie.remove('saadi_admin_access_token', {domain: `.${window.location.host}`})
+      // Cookie.remove('saadi_admin_access_token', {domain: `.${window.location.host}`})
+      Cookie.remove('saadi_admin_access_token', { path: '', domain: '.saaditrips.com' });
     }
     else {
-      Cookie.remove('saadi_admin_access_token');
+      // Cookie.remove('saadi_admin_access_token');
+      Cookie.remove('saadi_admin_access_token', { path: '', domain: '.saaditrips.com' });
     }
     //this.props.router.push("/login");
     window.location.href = ("/");
