@@ -38,6 +38,19 @@ export default class Experiences extends React.Component {
       })
   }
 
+  getParams() {
+    const {
+      activePage,
+      pageSize,
+    } = this.state;
+    return {
+      params: {
+        pageNumber: activePage,
+        pageSize,
+      },
+    };
+  }
+
   deleteExperience(experienceId, index) {
     if(confirm("Are you sure you want to delete this experience?")) {
       axios.delete(`${API_END_POINT}/api/delete/experience-deleteById/${experienceId}`)
