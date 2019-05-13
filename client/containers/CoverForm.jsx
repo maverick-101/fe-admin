@@ -51,7 +51,7 @@ export default class CoverForm extends React.Component {
             axios.get(`${API_END_POINT}/api/hotel/fetchById/${this.state.cover.hotel_id}`)
             .then((response) => {
               this.setState({
-                hotel: response.data[0],
+                hotel: response.data,
                 startDate: moment(this.state.cover.start_date),
                 endDate: moment(this.state.cover.end_date),
               })

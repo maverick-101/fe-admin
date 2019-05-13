@@ -409,7 +409,7 @@ export default class ExperienceForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                       <label
                         className="control-label col-md-3 col-sm-3"
                       >Time
@@ -423,7 +423,7 @@ export default class ExperienceForm extends React.Component {
                           onChange={this.handleInputChange}
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-group row">
                       <label
@@ -448,7 +448,7 @@ export default class ExperienceForm extends React.Component {
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
-                          required
+                          // required
                           type="text"
                           name="menu"
                           className="form-control"

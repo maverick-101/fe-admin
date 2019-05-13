@@ -34,6 +34,20 @@ export default class Packages extends React.Component {
         })
       })
   }
+
+  getParams() {
+    const {
+      activePage,
+      pageSize,
+    } = this.state;
+    return {
+      params: {
+        pageNumber: activePage,
+        pageSize,
+      },
+    };
+  }
+  
   deletePackage(pckgId, index) {
     if(confirm("Are you sure you want to delete this packge?")) {
       axios.delete(`${API_END_POINT}/api/delete/packagePage-deleteById/${pckgId}`)

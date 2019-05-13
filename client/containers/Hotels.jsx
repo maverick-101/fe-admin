@@ -32,6 +32,19 @@ export default class Hotels extends React.Component {
       })
   }
 
+  getParams() {
+    const {
+      activePage,
+      pageSize,
+    } = this.state;
+    return {
+      params: {
+        pageNumber: activePage,
+        pageSize,
+      },
+    };
+  }
+
   deleteHotel(hotelId, index) {
     if(confirm("Are you sure you want to delete this hotel?")) {
       axios.delete(`${API_END_POINT}/api/delete/hotel-deleteById/${hotelId}`)

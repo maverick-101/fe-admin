@@ -21,7 +21,7 @@ export default class UserForm extends React.Component {
         phone: '',
         password: '',
         address: '',
-
+        user_type: '',
       },
       cities: [],
       city: '',
@@ -250,6 +250,24 @@ export default class UserForm extends React.Component {
                           value={user.last_name}
                           onChange={this.handleInputChange}
                         />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">User Type</label>
+                      <div className="col-md-6 col-sm-6">
+                      <select
+                        name="user_type"
+                        value={user.user_type}
+                        className="form-control custom-select"
+                        onChange={this.handleInputChange}
+                        // required
+                      >
+                        <option value="">Select Type</option>
+                        <option value="admin">Admin</option>
+                        <option value="agent">Agent</option>
+                        <option value="user">User</option>
+                      </select>
                       </div>
                     </div>
 

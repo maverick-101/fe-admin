@@ -15,6 +15,7 @@ export default class Cities extends React.Component {
     this.state = {
       cities: [],
       activePage: 1,
+      pageSize: 10,
       pages: 1,
       q: '',
       responseMessage: 'Loading Cities...'
@@ -22,7 +23,7 @@ export default class Cities extends React.Component {
     // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/city-fetch`, this.getParams())
       .then(response => {
         this.setState({
           cities: response.data,
@@ -30,6 +31,18 @@ export default class Cities extends React.Component {
           responseMessage: 'No Cities Found...'
         })
       })
+  }
+  getParams() {
+    const {
+      activePage,
+      pageSize,
+    } = this.state;
+    return {
+      params: {
+        pageNumber: activePage,
+        pageSize,
+      },
+    };
   }
   deleteCity(cityId, index) {
     if(confirm("Are you sure you want to delete this city?")) {
@@ -50,14 +63,26 @@ export default class Cities extends React.Component {
     }
   }
   handleSelect(page) {
-    axios.get(`/api/area?offset=${(page-1)*10}`)
-      .then(response => {
-        this.setState({
-          areas: response.data.items,
-          activePage: page
-        })
+    this.setState({ activePage: page }, () => {
+    axios.get(`${API_END_POINT}/api/fetch/city-fetch`, this.getParams())
+    // axios.get(`https://api.saaditrips.com/api/fetch/city-fetch`, this.getParams())
+    .then(response => {
+      this.setState({
+        cities: response.data.items,
+        activePage: page
       })
+    })
+    })
   }
+  // handleSelect(page) {
+  //   axios.get(`/api/area?offset=${(page-1)*10}`)
+  //     .then(response => {
+  //       this.setState({
+  //         areas: response.data.items,
+  //         activePage: page
+  //       })
+  //     })
+  // }
   handleSearch() {
     axios.get(`/api/area?q=${this.state.q}`)
       .then((response) => {

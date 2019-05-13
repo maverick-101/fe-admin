@@ -16,20 +16,37 @@ export default class Area extends React.Component {
       activePage: 1,
       pages: 1,
       q: '',
+      pageSize: 10,
       responseMessage: 'Loading Areas...'
     }
     // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
+    // axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/locations-fetch`, this.getParams())
+    // axios.get(`https://api.saaditrips.com/api/fetch/locations-fetch`, this.getParams())
       .then(response => {
         this.setState({
-          areas: response.data,
-          pages: Math.ceil(response.data.length/10),
+          areas: response.data.items,
+          pages: Math.ceil(response.data.total/10),
           responseMessage: 'No Areas Found...'
         })
       })
   }
+  
+  getParams() {
+    const {
+      activePage,
+      pageSize,
+    } = this.state;
+    return {
+      params: {
+        pageNumber: activePage,
+        pageSize,
+      },
+    };
+  }
+
   deleteArea(areaId, index) {
     if(confirm("Are you sure you want to delete this area?")) {
       axios.delete(`/api/area/${areaId}`)
@@ -41,13 +58,16 @@ export default class Area extends React.Component {
     }
   }
   handleSelect(page) {
-    axios.get(`/api/area?offset=${(page-1)*10}`)
-      .then(response => {
-        this.setState({
-          areas: response.data.items,
-          activePage: page
-        })
+    this.setState({ activePage: page }, () => {
+      axios.get(`${API_END_POINT}/api/fetch/locations-fetch`, this.getParams())
+    // axios.get(`https://api.saaditrips.com/api/fetch/locations-fetch`, this.getParams())
+    .then(response => {
+      this.setState({
+        areas: response.data.items,
+        activePage: page
       })
+    })
+    })
   }
   handleSearch() {
     axios.get(`/api/area?q=${this.state.q}`)

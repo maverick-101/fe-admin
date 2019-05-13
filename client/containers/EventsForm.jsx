@@ -34,6 +34,8 @@ export default class EventsForm extends React.Component {
         event_videos: '',
         recommended: false,
         contact_number: '',
+        latitude: '',
+        longitude: '',
         // video_link: ''
       },
       gallery: '',
@@ -161,8 +163,8 @@ export default class EventsForm extends React.Component {
     });
   }
 
-  deleteImage = (url, ID) => {
-    const data =  {ID, url}
+  deleteImage = (url, ID, type) => {
+    const data =  {ID, url, type}
     let requestBody = { 'eventGallery' : JSON.stringify(data)};
     if(confirm("Are you sure you want to delete this image?")) {
       // axios.delete(`${API_END_POINT}/api/delete/Image-deleteByPublicId`, {reqBody})
@@ -443,7 +445,7 @@ export default class EventsForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                           <label className="control-label col-md-3 col-sm-3">Location</label>
                           <div className="col-md-6 col-sm-6">
                             <Select
@@ -458,7 +460,42 @@ export default class EventsForm extends React.Component {
                               required
                             />
                           </div>
-                        </div>
+                        </div> */}
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Latitude
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="latitude"
+                          className="form-control"
+                          value={event.latitude}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Longitude
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="longitude"
+                          className="form-control"
+                          value={event.longitude}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+                        
 
                         <div className="form-group row">
                           <label className="control-label col-md-3 col-sm-3">City</label>
@@ -544,7 +581,7 @@ export default class EventsForm extends React.Component {
                               src={`${image.url}`}
                               alt="cover"
                             />
-                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, event.ID)}/>
+                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, event.ID, 'gallery')}/>
                           </span>
                           )
                         })}
@@ -581,7 +618,7 @@ export default class EventsForm extends React.Component {
                               src={`${event.cover_photo.url}`}
                               alt="cover"
                             />
-                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, event.ID)}/>
+                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, event.ID, 'cover')}/>
                           </span>
                           
                         </div>
