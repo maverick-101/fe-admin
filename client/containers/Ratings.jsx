@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
+import { API_END_POINT } from '../../config';
 
 import HasRole from '../hoc/HasRole';
 
@@ -20,10 +21,10 @@ export default class Ratings extends React.Component {
       responseMessage: 'Loading Ratings...',
       status: 'All'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
-    // axios.get(`${this.endPoint}/api/fetch/rating-fetch`)
+    // axios.get(`${API_END_POINT}/api/fetch/rating-fetch`)
     //   .then(response => {
     //     this.setState({
     //       ratings: response.data,
@@ -35,7 +36,7 @@ export default class Ratings extends React.Component {
 
   changeStatus = (ratingId, ratingStatus) => {
     if(this.state.selectedRating === 'hotels') {
-    axios.get(`${this.endPoint}/api/fetchById/hotelRating-fetchById/${ratingId}`)
+    axios.get(`${API_END_POINT}/api/fetchById/hotelRating-fetchById/${ratingId}`)
       .then(response => {
         this.setState({
           rating: response.data,
@@ -48,13 +49,13 @@ export default class Ratings extends React.Component {
             }));
         })
             let updatedRating = {'hotelRating' : JSON.stringify(this.state.rating)}
-              axios.patch(`${this.endPoint}/api/update/hotelRating-update`,  updatedRating)
+              axios.patch(`${API_END_POINT}/api/update/hotelRating-update`,  updatedRating)
               .then((response) => {
                 window.alert(response.data)
               })
       })
     } else {
-      axios.get(`${this.endPoint}/api/fetchById/packageRating-fetchById/${ratingId}`)
+      axios.get(`${API_END_POINT}/api/fetchById/packageRating-fetchById/${ratingId}`)
       .then(response => {
         this.setState({
           rating: response.data,
@@ -67,7 +68,7 @@ export default class Ratings extends React.Component {
             }));
         })
             let updatedRating = {'packageRating' : JSON.stringify(this.state.rating)}
-              axios.patch(`${this.endPoint}/api/update/packageRating-update`,  updatedRating)
+              axios.patch(`${API_END_POINT}/api/update/packageRating-update`,  updatedRating)
               .then((response) => {
                 window.alert(response.data)
               })
@@ -78,7 +79,7 @@ export default class Ratings extends React.Component {
   fetchRatings(ratingName) {
     this.setState({ ratings: [] })
     if(ratingName === 'hotels') {
-    axios.get(`${this.endPoint}/api/fetch/hotelRating-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/hotelRating-fetch`)
       .then(response => {
         this.setState({
           ratings: response.data,
@@ -91,7 +92,7 @@ export default class Ratings extends React.Component {
         })
       })
     } else if(ratingName === 'packages') {
-      axios.get(`${this.endPoint}/api/fetch/packageRating-fetch`)
+      axios.get(`${API_END_POINT}/api/fetch/packageRating-fetch`)
       .then(response => {
         this.setState({
           ratings: response.data,
@@ -104,7 +105,7 @@ export default class Ratings extends React.Component {
         })
       })
     } else if(ratingName === 'experiences') {
-      axios.get(`${this.endPoint}/api/fetch/experienceRating-fetch`)
+      axios.get(`${API_END_POINT}/api/fetch/experienceRating-fetch`)
       .then(response => {
         this.setState({
           ratings: response.data,
@@ -129,7 +130,7 @@ export default class Ratings extends React.Component {
       if(type === 'All'){
         this.fetchRatings(selectedRating);
       } else {
-      axios.get(`${this.endPoint}/api/fetchAll${type}/hotelRating-fetchAll${type}`)
+      axios.get(`${API_END_POINT}/api/fetchAll${type}/hotelRating-fetchAll${type}`)
         .then(response => {
           this.setState({
             ratings: response.data,
@@ -148,7 +149,7 @@ export default class Ratings extends React.Component {
       if(type === 'All') {
         this.fetchRatings(selectedRating);
       } else {
-      axios.get(`${this.endPoint}/api/fetchAll${type}/packageRating-fetchAll${type}`)
+      axios.get(`${API_END_POINT}/api/fetchAll${type}/packageRating-fetchAll${type}`)
       .then(response => {
         this.setState({
           ratings: response.data,
@@ -166,7 +167,7 @@ export default class Ratings extends React.Component {
     if(type === 'All') {
       this.fetchRatings(selectedRating);
     } else {
-    axios.get(`${this.endPoint}/api/fetchAll${type}/experienceRating-fetchAll${type}`)
+    axios.get(`${API_END_POINT}/api/fetchAll${type}/experienceRating-fetchAll${type}`)
     .then(response => {
       this.setState({
         ratings: response.data,
@@ -186,7 +187,7 @@ export default class Ratings extends React.Component {
 
   deleteRating(ratingId, index) {
     if(confirm("Are you sure you want to delete this rating?")) {
-      axios.delete(`${this.endPoint}/api/delete/${this.state.selectedRating === 'hotels'? 'hotel' : this.state.selectedRating === 'packages' ? 'package' : 'experience'}Rating-deleteById/${ratingId}`)
+      axios.delete(`${API_END_POINT}/api/delete/${this.state.selectedRating === 'hotels'? 'hotel' : this.state.selectedRating === 'packages' ? 'package' : 'experience'}Rating-deleteById/${ratingId}`)
         .then(response => {
           const ratings = this.state.ratings.slice();
           ratings.splice(index, 1);

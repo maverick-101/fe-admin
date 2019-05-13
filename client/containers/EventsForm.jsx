@@ -4,6 +4,7 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 import moment from 'moment';
+import { API_END_POINT } from '../../config';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -33,6 +34,8 @@ export default class EventsForm extends React.Component {
         event_videos: '',
         recommended: false,
         contact_number: '',
+        latitude: '',
+        longitude: '',
         // video_link: ''
       },
       gallery: '',
@@ -51,7 +54,7 @@ export default class EventsForm extends React.Component {
       whyList: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://api.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postEvent = this.postEvent.bind(this);
   }
@@ -78,7 +81,7 @@ export default class EventsForm extends React.Component {
     console.log('props',this.props);
     const { match } = this.props;
       if (match.params.eventId) {
-      axios.get(`${this.endPoint}/api/fetchById/event-fetchById/${match.params.eventId}`)
+      axios.get(`${API_END_POINT}/api/fetchById/event-fetchById/${match.params.eventId}`)
         .then((response) => {
           this.setState({
             event: response.data,
@@ -86,12 +89,12 @@ export default class EventsForm extends React.Component {
             whyList: RichTextEditor.createValueFromString(response.data.why_list, 'html'),
           }, () => {
             this.setState({ eventVideos: this.state.event.event_videos})
-            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.event.city_id}`)
+            axios.get(`${API_END_POINT}/api/fetchById/city-fetchById/${this.state.event.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
               }, () => {
-                axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.state.event.location_id}`)
+                axios.get(`${API_END_POINT}/api/fetchById/location-fetchById/${this.state.event.location_id}`)
                 .then((response) => {
                   this.setState({
                     location: response.data[0]
@@ -105,7 +108,7 @@ export default class EventsForm extends React.Component {
 }
 
     getCities = () => {
-      axios.get(`${this.endPoint}/api/fetch/city-fetch`)
+      axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
             cities: response.data,
@@ -124,7 +127,7 @@ export default class EventsForm extends React.Component {
     }
 
     getLocations = () => {
-      axios.get(`${this.endPoint}/api/fetch/locations-fetch`)
+      axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
         .then((response) => {
           this.setState({
             locations: response.data,
@@ -160,19 +163,23 @@ export default class EventsForm extends React.Component {
     });
   }
 
-  deleteImage = (url, ID) => {
-    const data =  {ID, url}
+  deleteImage = (url, ID, type) => {
+    const data =  {ID, url, type}
     let requestBody = { 'eventGallery' : JSON.stringify(data)};
     if(confirm("Are you sure you want to delete this image?")) {
-      // axios.delete(`${this.endPoint}/api/delete/Image-deleteByPublicId`, {reqBody})
-      axios.delete(`${this.endPoint}/api/deleteGallery/event-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
+      // axios.delete(`${API_END_POINT}/api/delete/Image-deleteByPublicId`, {reqBody})
+      axios.delete(`${API_END_POINT}/api/deleteGallery/event-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
         .then(response => {
           if(response.status === 200) {
             window.alert('Image deleted Successfully!')
           }
-          const hotels = this.state.hotels[hotel_gallery].slice();
-          hotels.splice(index, 1);
-          this.setState({ hotels });
+          // const hotels = this.state.hotels[hotel_gallery].slice();
+          // hotels.splice(index, 1);
+          // this.setState({ hotels });
+
+          const { event } = this.state;
+          event.gallery.splice(index, 1);
+          this.setState({ event });
         });
     }
   }
@@ -229,7 +236,7 @@ export default class EventsForm extends React.Component {
         fd.append('event', JSON.stringify(event));
 
         if(match.params.eventId) {
-        axios.patch(`${this.endPoint}/api/update/event-update`, fd)
+        axios.patch(`${API_END_POINT}/api/update/event-update`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);
@@ -242,7 +249,7 @@ export default class EventsForm extends React.Component {
         }
         else {
           // axios.post('/api/event/save', fd)
-          axios.post(`${this.endPoint}/api/save/event-save`, fd)
+          axios.post(`${API_END_POINT}/api/save/event-save`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);
@@ -438,7 +445,7 @@ export default class EventsForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="form-group row">
+                    {/* <div className="form-group row">
                           <label className="control-label col-md-3 col-sm-3">Location</label>
                           <div className="col-md-6 col-sm-6">
                             <Select
@@ -453,7 +460,42 @@ export default class EventsForm extends React.Component {
                               required
                             />
                           </div>
-                        </div>
+                        </div> */}
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Latitude
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="latitude"
+                          className="form-control"
+                          value={event.latitude}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label
+                        className="control-label col-md-3 col-sm-3"
+                      >Longitude
+                      </label>
+                      <div className="col-md-6 col-sm-6">
+                        <input
+                          required
+                          type="text"
+                          name="longitude"
+                          className="form-control"
+                          value={event.longitude}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+                        
 
                         <div className="form-group row">
                           <label className="control-label col-md-3 col-sm-3">City</label>
@@ -539,7 +581,7 @@ export default class EventsForm extends React.Component {
                               src={`${image.url}`}
                               alt="cover"
                             />
-                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, event.ID)}/>
+                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, event.ID, 'gallery')}/>
                           </span>
                           )
                         })}
@@ -576,7 +618,7 @@ export default class EventsForm extends React.Component {
                               src={`${event.cover_photo.url}`}
                               alt="cover"
                             />
-                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, event.ID)}/>
+                            <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, event.ID, 'cover')}/>
                           </span>
                           
                         </div>

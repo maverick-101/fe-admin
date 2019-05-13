@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
+import { API_END_POINT } from '../../config';
 
 import HasRole from '../hoc/HasRole';
 
@@ -18,10 +19,10 @@ export default class Orders extends React.Component {
       selectedOrder: undefined,
       responseMessage: 'Loading Orders...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
-    // axios.get(`${this.endPoint}/api/fetch/order-fetch`)
+    // axios.get(`${API_END_POINT}/api/fetch/order-fetch`)
     //   .then(response => {
     //     this.setState({
     //       orders: response.data,
@@ -33,7 +34,7 @@ export default class Orders extends React.Component {
 
   fetchOrders(orderName) {
     if(orderName === 'hotels') {
-    axios.get(`${this.endPoint}/api/fetch/hotelContact-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/hotelContact-fetch`)
       .then(response => {
         this.setState({
           orders: response.data,
@@ -47,7 +48,7 @@ export default class Orders extends React.Component {
         })
       })
     } else if(orderName === 'packages') {
-      axios.get(`${this.endPoint}/api/fetch/packageContact-fetch`)
+      axios.get(`${API_END_POINT}/api/fetch/packageContact-fetch`)
       .then(response => {
         this.setState({
           orders: response.data,
@@ -64,7 +65,7 @@ export default class Orders extends React.Component {
   }
   deleteCity(cityId, index) {
     if(confirm("Are you sure you want to delete this order?")) {
-      axios.delete(`${this.endPoint}/api/delete/order-deleteById/${cityId}`)
+      axios.delete(`${API_END_POINT}/api/delete/order-deleteById/${cityId}`)
         .then(response => {
           const orders = this.state.orders.slice();
           orders.splice(index, 1);
@@ -182,7 +183,7 @@ export default class Orders extends React.Component {
                     <td>{order.user_email}</td>
                     <td>{order.user_phone}</td>
                     {/* <td>
-                      <Link to={`${this.endPoint}/area_resource/${order.ID}`}>
+                      <Link to={`${API_END_POINT}/area_resource/${order.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
                     </td> */}

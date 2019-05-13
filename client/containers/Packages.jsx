@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
+import { API_END_POINT } from '../../config';
 
 import HasRole from '../hoc/HasRole';
 
@@ -17,10 +18,10 @@ export default class Packages extends React.Component {
       q: '',
       responseMessage: 'Loading Packages...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/packagePage-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/packagePage-fetch`)
       .then(response => {
         this.setState({
           packages: response.data,
@@ -33,9 +34,23 @@ export default class Packages extends React.Component {
         })
       })
   }
+
+  getParams() {
+    const {
+      activePage,
+      pageSize,
+    } = this.state;
+    return {
+      params: {
+        pageNumber: activePage,
+        pageSize,
+      },
+    };
+  }
+  
   deletePackage(pckgId, index) {
     if(confirm("Are you sure you want to delete this packge?")) {
-      axios.delete(`${this.endPoint}/api/delete/packagePage-deleteById/${pckgId}`)
+      axios.delete(`${API_END_POINT}/api/delete/packagePage-deleteById/${pckgId}`)
         .then(response => {
           const packages = this.state.packages.slice();
           packages.splice(index, 1);

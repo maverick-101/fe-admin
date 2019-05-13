@@ -5,6 +5,7 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 import moment from 'moment';
+import { API_END_POINT } from '../../config';
 
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/initialize';
@@ -37,7 +38,7 @@ export default class PackageResource extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://api.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postPackageResource = this.postPackageResource.bind(this);
   }
@@ -45,12 +46,12 @@ export default class PackageResource extends React.Component {
   // componentDidMount() {
   //   console.log('props', this.props)
   //   if (match.params.coverBannerId) {
-  //     axios.get(`${this.endPoint}/api/coverbanner/fetchById/${match.params.coverBannerId}`)
+  //     axios.get(`${API_END_POINT}/api/coverbanner/fetchById/${match.params.coverBannerId}`)
   //       .then((response) => {
   //         this.setState({
   //           packageResource: response.data[0]
   //         },() => {
-  //           axios.get(`${this.endPoint}/api/hotel/fetchById/${this.state.packageResource.hotel_id}`)
+  //           axios.get(`${API_END_POINT}/api/hotel/fetchById/${this.state.packageResource.hotel_id}`)
   //           .then((response) => {
   //             this.setState({
   //               hotel: response.data[0],
@@ -77,7 +78,7 @@ export default class PackageResource extends React.Component {
     
     fetchResources = () => {
       const { match } = this.props;
-      axios.get(`${this.endPoint}/api/fetchByPackageId/packageResources-fetchByPackageId/${match.params.packageId}`)
+      axios.get(`${API_END_POINT}/api/fetchByPackageId/packageResources-fetchByPackageId/${match.params.packageId}`)
       .then((response) => {
         this.setState({
           resources: response.data,
@@ -92,7 +93,7 @@ export default class PackageResource extends React.Component {
     }
 
     getCities = () => {
-      axios.get(`${this.endPoint}/api/fetch/city-fetch`)
+      axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
             cities: response.data,
@@ -112,7 +113,7 @@ export default class PackageResource extends React.Component {
 
     deleteResource(resourceId, index) {
       if(confirm("Are you sure you want to delete this resource?")) {
-        axios.delete(`${this.endPoint}/api/delete/packageResources-deleteById/${resourceId}`)
+        axios.delete(`${API_END_POINT}/api/delete/packageResources-deleteById/${resourceId}`)
           .then(response => {
             const resources = this.state.resources.slice();
             resources.splice(index, 1);
@@ -174,7 +175,7 @@ export default class PackageResource extends React.Component {
         fd.append('packageResources', JSON.stringify(packageResource));
 
         // if(match.params.packageId) {
-        // axios.patch(`${this.endPoint}/api/update/hotelImage-update`, fd)
+        // axios.patch(`${API_END_POINT}/api/update/hotelImage-update`, fd)
         //   .then((response) => {
         //     if (response.data && response.status === 200) {
         //       window.alert(response.data);
@@ -186,7 +187,7 @@ export default class PackageResource extends React.Component {
         //   });
         // }
         // else {
-          axios.post(`${this.endPoint}/api/save/packageResources-save`, fd)
+          axios.post(`${API_END_POINT}/api/save/packageResources-save`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);

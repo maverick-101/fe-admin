@@ -5,6 +5,7 @@ import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
 import Swal from 'sweetalert2';
 import moment from 'moment'
+import { API_END_POINT } from '../../config';
 
 import HasRole from '../hoc/HasRole';
 
@@ -19,10 +20,10 @@ export default class Events extends React.Component {
       q: '',
       responseMessage: 'Loading Events...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/event-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/event-fetch`)
       .then(response => {
         this.setState({
           events: response.data,
@@ -39,7 +40,7 @@ export default class Events extends React.Component {
   }
   deleteEvent(eventId, index) {
     if(confirm("Are you sure you want to delete this event?")) {
-      axios.delete(`${this.endPoint}/api/delete/event-deleteById/${eventId}`)
+      axios.delete(`${API_END_POINT}/api/delete/event-deleteById/${eventId}`)
         .then(response => {
           if(response.status === 200) {
             Swal.fire({
@@ -138,7 +139,7 @@ export default class Events extends React.Component {
                     <td>{area.lat}</td>
                     <td>{area.lon}</td> */}
                     {/* <td>
-                      <Link to={`${this.endPoint}/area_resource/${event.ID}`}>
+                      <Link to={`${API_END_POINT}/area_resource/${event.ID}`}>
                         <button type="button" className="btn btn-info btn-sm">Resource</button>
                       </Link>
                     </td> */}

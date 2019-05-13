@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
+import { API_END_POINT } from '../../config';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -76,7 +77,7 @@ export default class PackageForm extends React.Component {
       summary: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://api.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postPackage = this.postPackage.bind(this);
   }
@@ -88,7 +89,7 @@ export default class PackageForm extends React.Component {
   }
 
   getCity = () => {
-    axios.get(`${this.endPoint}/api/fetch/city-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
             cities: response.data,
@@ -97,7 +98,7 @@ export default class PackageForm extends React.Component {
   }
 
   getAgent = () => {
-    axios.get(`${this.endPoint}/api/fetch/agentPage-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/agentPage-fetch`)
         .then((response) => {
           this.setState({
             agents: response.data,
@@ -106,7 +107,7 @@ export default class PackageForm extends React.Component {
   }
 
   getLocation = () => {
-    axios.get(`${this.endPoint}/api/fetch/locations-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
         .then((response) => {
           this.setState({
             locations: response.data,
@@ -118,7 +119,7 @@ export default class PackageForm extends React.Component {
     console.log('props',this.props);
     const { match } = this.props;
       if (match.params.packageId)
-      axios.get(`${this.endPoint}/api/fetchById/packagePage-fetchById/${match.params.packageId}`)
+      axios.get(`${API_END_POINT}/api/fetchById/packagePage-fetchById/${match.params.packageId}`)
         .then((response) => {
           this.setState({
             pckg: response.data,
@@ -130,17 +131,17 @@ export default class PackageForm extends React.Component {
               price: this.state.pckg.price,
               activities: this.state.pckg.activities,
             })
-            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.pckg.city_id}`)
+            axios.get(`${API_END_POINT}/api/fetchById/city-fetchById/${this.state.pckg.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
               }, () => {
-                axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.state.pckg.location_id}`)
+                axios.get(`${API_END_POINT}/api/fetchById/location-fetchById/${this.state.pckg.location_id}`)
                 .then((response) => {
                   this.setState({
                     location: response.data[0],
                   }, () => {
-                      axios.get(`${this.endPoint}/api/fetchById/agentPage-fetchById/${this.state.pckg.agent_id}`)
+                      axios.get(`${API_END_POINT}/api/fetchById/agentPage-fetchById/${this.state.pckg.agent_id}`)
                       .then((response) => {
                         this.setState({
                           agent: response.data[0],
@@ -284,14 +285,18 @@ export default class PackageForm extends React.Component {
     const data =  {ID, url}
     let requestBody = { 'packageGallery' : JSON.stringify(data)};
     if(confirm("Are you sure you want to delete this image?")) {
-      // axios.delete(`${this.endPoint}/api/delete/Image-deleteByPublicId`, {reqBody})
-      axios.delete(`${this.endPoint}/api//deleteGallery/packagePage-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
+      // axios.delete(`${API_END_POINT}/api/delete/Image-deleteByPublicId`, {reqBody})
+      axios.delete(`${API_END_POINT}/api//deleteGallery/packagePage-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
         .then(response => {
           if(response.status === 200) {
             window.alert('Image deleted Successfully!')
           }
-          const pckg = this.state.pckg[gallery].slice();
-          pckg.splice(index, 1);
+          // const pckg = this.state.pckg[gallery].slice();
+          // pckg.splice(index, 1);
+          // this.setState({ pckg });
+
+          const { pckg } = this.state;
+          pckg.gallery.splice(index, 1);
           this.setState({ pckg });
         });
     }
@@ -317,7 +322,7 @@ export default class PackageForm extends React.Component {
 
         if(match.params.packageId) {
           // axios.patch('/api/locations/update', fd)
-          axios.patch(`${this.endPoint}/api/update/packagePage-update`, fd)
+          axios.patch(`${API_END_POINT}/api/update/packagePage-update`, fd)
           .then((response) => {
             if (response.status === 200) {
               window.alert(response.data);
@@ -329,7 +334,7 @@ export default class PackageForm extends React.Component {
             window.alert('Error')
           });
         } else {
-          axios.post(`${this.endPoint}/api/save/packagePage-save`, fd)
+          axios.post(`${API_END_POINT}/api/save/packagePage-save`, fd)
           .then((response) => {
             if (response.status === 200) {
               window.alert(response.data);
@@ -1086,7 +1091,7 @@ export default class PackageForm extends React.Component {
                       </label>
                       <div className="col-md-6 col-sm-6">
                         <input
-                          required
+                          // required
                           type="text"
                           name="video_link"
                           className="form-control"

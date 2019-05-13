@@ -19,6 +19,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { API_END_POINT } from '../config';
 
 const style = {
   logoWrapper: {
@@ -42,7 +43,7 @@ class Login extends Component {
       password: '',
       loading: false,
     };
-    this.endPoint = 'https://api.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.submit = this.submit.bind(this);
   }
 
@@ -66,22 +67,24 @@ class Login extends Component {
       const user = {email: username, password};
       let requestBody = { 'user' : JSON.stringify(user)};
       this.setState({ loading: true });
-      axios.post(`${this.endPoint}/api/user/signIn/`, requestBody)
+      axios.post(`${API_END_POINT}/api/user/signIn/`, requestBody)
         .then((response) => {
           // console.log("####", response);
           if (response && response.status === 200) {
             const { Token } = response.data;
-            // window.alert(Token);
             axios.defaults.headers.common.Authorization = `Bearer ${Token}`;
             Cookie.set('saadi_admin_access_token', `${Token}`, { expires: 14 });
             history.push('/');
-            // window.location.href = ('/');
+            this.setState({ loading: false });
+          }
+          else {
+            this.setState({ loading: false });
           }
         })
-        // .catch((error) => {
-        //   this.setState({ loading: false });
-        //   window.alert(error.response.data);
-        // });
+        .catch((error) => {
+          this.setState({ loading: false });
+          window.alert(error.response.data);
+        });
     }
   }
 

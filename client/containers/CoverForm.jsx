@@ -4,6 +4,7 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 import moment from 'moment';
+import { API_END_POINT } from '../../config';
 
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/initialize';
@@ -33,7 +34,7 @@ export default class CoverForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://api.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postCoverBanner = this.postCoverBanner.bind(this);
   }
@@ -42,15 +43,15 @@ export default class CoverForm extends React.Component {
     console.log('props', this.props)
     const { match } = this.props;
     if (match.params.coverBannerId) {
-      axios.get(`${this.endPoint}/api/coverbanner/fetchById/${match.params.coverBannerId}`)
+      axios.get(`${API_END_POINT}/api/coverbanner/fetchById/${match.params.coverBannerId}`)
         .then((response) => {
           this.setState({
             cover: response.data[0]
           },() => {
-            axios.get(`${this.endPoint}/api/hotel/fetchById/${this.state.cover.hotel_id}`)
+            axios.get(`${API_END_POINT}/api/hotel/fetchById/${this.state.cover.hotel_id}`)
             .then((response) => {
               this.setState({
-                hotel: response.data[0],
+                hotel: response.data,
                 startDate: moment(this.state.cover.start_date),
                 endDate: moment(this.state.cover.end_date),
               })
@@ -61,7 +62,7 @@ export default class CoverForm extends React.Component {
   }
 
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/hotel/fetch`)
+    axios.get(`${API_END_POINT}/api/hotel/fetch`)
         .then((response) => {
           this.setState({
             hotels: response.data,
@@ -113,7 +114,7 @@ export default class CoverForm extends React.Component {
         fd.append('coverBanner', JSON.stringify(cover));
 
         if(match.params.coverBannerId) {
-        axios.patch(`${this.endPoint}/api/coverbanner/update`, fd)
+        axios.patch(`${API_END_POINT}/api/coverbanner/update`, fd)
           .then((response) => {
             if (response.data === 'CoverBanner Updated!') {
               window.alert(response.data);
@@ -125,7 +126,7 @@ export default class CoverForm extends React.Component {
           });
         }
         else {
-          axios.post(`${this.endPoint}/api/coverbanner/save`, fd)
+          axios.post(`${API_END_POINT}/api/coverbanner/save`, fd)
           .then((response) => {
             if (response.data === 'CoverBanner Saved!') {
               window.alert(response.data);

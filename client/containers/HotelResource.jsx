@@ -5,6 +5,7 @@ import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 import moment from 'moment';
+import { API_END_POINT } from '../../config';
 
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/initialize';
@@ -34,7 +35,7 @@ export default class HotelResource extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://admin.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postHotelResource = this.postHotelResource.bind(this);
   }
@@ -43,12 +44,12 @@ export default class HotelResource extends React.Component {
     console.log('props', this.props)
     const { match } = this.props;
     if (match.params.coverBannerId) {
-      axios.get(`${this.endPoint}/api/coverbanner/fetchById/${match.params.coverBannerId}`)
+      axios.get(`${API_END_POINT}/api/coverbanner/fetchById/${match.params.coverBannerId}`)
         .then((response) => {
           this.setState({
             hotelResource: response.data[0]
           },() => {
-            axios.get(`${this.endPoint}/api/hotel/fetchById/${this.state.hotelResource.hotel_id}`)
+            axios.get(`${API_END_POINT}/api/hotel/fetchById/${this.state.hotelResource.hotel_id}`)
             .then((response) => {
               this.setState({
                 hotel: response.data[0],
@@ -74,7 +75,7 @@ export default class HotelResource extends React.Component {
     
     fetchResources = () => {
       const { match } = this.props;
-      axios.get(`${this.endPoint}/api/fetchByHotelId/hotelResources-fetchByHotelId/${match.params.hotelId}`)
+      axios.get(`${API_END_POINT}/api/fetchByHotelId/hotelResources-fetchByHotelId/${match.params.hotelId}`)
       .then((response) => {
         this.setState({
           resources: response.data,
@@ -90,7 +91,7 @@ export default class HotelResource extends React.Component {
 
     deleteResource(resourceId, index) {
       if(confirm("Are you sure you want to delete this resource?")) {
-        axios.delete(`${this.endPoint}/api/delete/hotelResources-deleteById/${resourceId}`)
+        axios.delete(`${API_END_POINT}/api/delete/hotelResources-deleteById/${resourceId}`)
           .then(response => {
             const resources = this.state.resources.slice();
             resources.splice(index, 1);
@@ -149,7 +150,7 @@ export default class HotelResource extends React.Component {
         fd.append('hotelResources', JSON.stringify(hotelResource));
 
         // if(match.params.hotelId) {
-        // axios.patch(`${this.endPoint}/api/update/hotelImage-update`, fd)
+        // axios.patch(`${API_END_POINT}/api/update/hotelImage-update`, fd)
         //   .then((response) => {
         //     if (response.data && response.status === 200) {
         //       window.alert(response.data);
@@ -161,7 +162,7 @@ export default class HotelResource extends React.Component {
         //   });
         // }
         // else {
-          axios.post(`${this.endPoint}/api/save/hotelResources-save`, fd)
+          axios.post(`${API_END_POINT}/api/save/hotelResources-save`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);

@@ -5,6 +5,7 @@ import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
 import _ from 'lodash';
 import moment from 'moment';
+import { API_END_POINT } from '../../config';
 
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/initialize';
@@ -35,7 +36,7 @@ export default class FeaturedForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://api.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postFeatured = this.postFeatured.bind(this);
   }
@@ -53,12 +54,12 @@ export default class FeaturedForm extends React.Component {
     console.log('props',this.props);
     const { location, match } = this.props;
       if (match.params.featuredPackageId){
-        axios.get(`${this.endPoint}/api/fetchById/featuredPackage-fetchById/${match.params.featuredPackageId}`)
+        axios.get(`${API_END_POINT}/api/fetchById/featuredPackage-fetchById/${match.params.featuredPackageId}`)
         .then(response => {
         this.setState({
           featured: response.data[0],
         }, () => {
-          axios.get(`${this.endPoint}/api/fetchById/packagePage-fetchById/${this.state.featured.package_id}`)
+          axios.get(`${API_END_POINT}/api/fetchById/packagePage-fetchById/${this.state.featured.package_id}`)
           .then((response) => {
             this.setState({
               pckg: response.data,
@@ -67,12 +68,12 @@ export default class FeaturedForm extends React.Component {
         })
       })}
       if(match.params.featuredHotelId) {
-        axios.get(`${this.endPoint}/api/fetchById/featuredHotel-fetchById/${match.params.featuredHotelId}`)
+        axios.get(`${API_END_POINT}/api/fetchById/featuredHotel-fetchById/${match.params.featuredHotelId}`)
         .then(response => {
         this.setState({
           featured: response.data[0],
         }, () => {
-          axios.get(`${this.endPoint}/api/hotel/fetchById/${this.state.featured.hotel_id}`)
+          axios.get(`${API_END_POINT}/api/hotel/fetchById/${this.state.featured.hotel_id}`)
             .then((response) => {
               this.setState({
                 hotel: response.data,
@@ -84,7 +85,7 @@ export default class FeaturedForm extends React.Component {
     }
 
     fetchHotels() {
-        axios.get(`${this.endPoint}/api/hotel/fetch`)
+        axios.get(`${API_END_POINT}/api/hotel/fetch`)
         .then(response => {
         this.setState({
           hotels: response.data,
@@ -93,7 +94,7 @@ export default class FeaturedForm extends React.Component {
     }
 
     fetchPackages() {
-        axios.get(`${this.endPoint}/api/fetch/packagePage-fetch`)
+        axios.get(`${API_END_POINT}/api/fetch/packagePage-fetch`)
         .then(response => {
         this.setState({
           packages: response.data,
@@ -162,7 +163,7 @@ export default class FeaturedForm extends React.Component {
           if(match.params.featuredPackageId) {
             let featuredPackage = _.omit(featured, ['hotel_id']);
             let requestBody = { 'featuredPackage' : JSON.stringify(featuredPackage)};
-            axios.patch(`${this.endPoint}/api/update/featuredPackage-update`, requestBody)
+            axios.patch(`${API_END_POINT}/api/update/featuredPackage-update`, requestBody)
             .then((response) => {
                 if (response.data && response.status === 200) {
                 window.alert(response.data);
@@ -175,7 +176,7 @@ export default class FeaturedForm extends React.Component {
             } else {
               let featuredHotel = _.omit(featured, ['package_id'])
               let requestBody = { 'featuredHotel' : JSON.stringify(featuredHotel)};
-              axios.patch(`${this.endPoint}/api/update/featuredHotel-update`, requestBody)
+              axios.patch(`${API_END_POINT}/api/update/featuredHotel-update`, requestBody)
               .then((response) => {
                   if (response.data && response.status === 200) {
                   window.alert(response.data);
@@ -191,7 +192,7 @@ export default class FeaturedForm extends React.Component {
             if(location.state.selectedForm === 'featuredHotels') {
                 let featuredHotel = _.omit(featured, ['package_id'])
                 let requestBody = { 'featuredHotel' : JSON.stringify(featuredHotel)};
-                    axios.post(`${this.endPoint}/api/save/featuredHotel-save`, requestBody)
+                    axios.post(`${API_END_POINT}/api/save/featuredHotel-save`, requestBody)
                     .then((response) => {
                         if (response.data && response.status === 200) {
                         window.alert(response.data);
@@ -210,7 +211,7 @@ export default class FeaturedForm extends React.Component {
                 } else {
                     let featuredPackage = _.omit(featured, ['hotel_id']);
                     let requestBody = { 'featuredPackage' : JSON.stringify(featuredPackage)};
-                        axios.post(`${this.endPoint}/api/save/featuredPackage-save`, requestBody)
+                        axios.post(`${API_END_POINT}/api/save/featuredPackage-save`, requestBody)
                         .then((response) => {
                         if (response.data && response.status === 200) {
                         window.alert(response.data);

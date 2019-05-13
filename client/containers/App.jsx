@@ -102,32 +102,33 @@ class App extends React.Component {
     const token = Cookie.get('saadi_admin_access_token');
     if (token) {
       axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-      this.setState({
-        displayApp: true,
-        displayLoading: false,
-        loading: false,
-      })
+      // this.setState({
+      //   displayApp: true,
+      //   displayLoading: false,
+      //   loading: false,
+      // })
 
-      // axios.get('/api/user/me')
-      //   .then((response) => {
-      //     // console.log("#### success", response.data);
-      //     dispatch({
-      //       type: types.SET_USER_FROM_TOKEN,
-      //       payload: response.data,
-      //     });
-      //     this.setState({
-      //       user: response.data,
-      //       loading: false,
-      //       displayApp: true,
-      //     });
-      //   })
-      //   .catch((/* error */) => {
-      //     // console.log("app componentWillMount error :: ", error);
-      //     this.setState({ loading: false });
-      //     Cookie.remove('saadi_admin_access_token');
-      //     // history.push('/login');
-      //     // window.location.replace('/login')
-      //   });
+      axios.get(`https://admin.saaditrips.com/api/user/me`)
+        .then((response) => {
+          // console.log("#### success", response.data);
+          dispatch({
+            type: types.SET_USER_FROM_TOKEN,
+            payload: response.data,
+          });
+          this.setState({
+            user: response.data,
+            loading: false,
+            displayApp: true,
+            displayLoading: false,
+          });
+        })
+        .catch((/* error */) => {
+          // console.log("app componentWillMount error :: ", error);
+          this.setState({ loading: false });
+          Cookie.remove('saadi_admin_access_token');
+          // history.push('/login');
+          // window.location.replace('/login')
+        });
     } else {
       // this.setState({ loading: false, displayApp: true });
       // history.push('/login');

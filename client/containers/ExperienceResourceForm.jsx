@@ -29,13 +29,13 @@ export default class ExperienceResourceForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://api.saaditrips.com';
+    API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postExperienceResource = this.postExperienceResource.bind(this);
   }
 
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/user/fetch`)
+    axios.get(`${API_END_POINT}/api/user/fetch`)
     .then((response) => {
       this.setState({
         users: response.data,
@@ -54,7 +54,7 @@ export default class ExperienceResourceForm extends React.Component {
   }
 
   fetchResources = () => {
-    axios.get(`${this.endPoint}/api/fetchByExperienceId/experienceResources-fetchByExperienceId/${match.params.experienceId}`)
+    axios.get(`${API_END_POINT}/api/fetchByExperienceId/experienceResources-fetchByExperienceId/${match.params.experienceId}`)
     .then((response) => {
       this.setState({
         resources: response.data,
@@ -100,7 +100,7 @@ export default class ExperienceResourceForm extends React.Component {
   }
   deleteResource(resourceId, index) {
     if(confirm("Are you sure you want to delete this resource?")) {
-      axios.delete(`${this.endPoint}/api/delete/experienceResources-deleteById/${resourceId}`)
+      axios.delete(`${API_END_POINT}/api/delete/experienceResources-deleteById/${resourceId}`)
         .then(response => {
           const resources = this.state.resources.slice();
           resources.splice(index, 1);
@@ -129,7 +129,7 @@ export default class ExperienceResourceForm extends React.Component {
 
         if(match.params.cityId) {
         // axios.patch('/api/experienceResources/update', fd)
-        axios.patch(`${this.endPoint}/api/update/experienceResources-update`, fd)
+        axios.patch(`${API_END_POINT}/api/update/experienceResources-update`, fd)
           .then((response) => {
             if (response.data === 'Experience Updated!') {
               window.alert(response.data);
@@ -141,7 +141,7 @@ export default class ExperienceResourceForm extends React.Component {
           });
         }
         else {
-          axios.post(`${this.endPoint}/api/save/experienceResources-save`, fd)
+          axios.post(`${API_END_POINT}/api/save/experienceResources-save`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);

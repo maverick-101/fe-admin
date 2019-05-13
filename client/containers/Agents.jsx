@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
+import { API_END_POINT } from '../../config';
 
 import HasRole from '../hoc/HasRole';
 
@@ -17,10 +18,10 @@ export default class Agents extends React.Component {
       q: '',
       responseMessage: 'Loading Agents...'
     }
-    this.endPoint = 'https://api.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/agentPage-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/agentPage-fetch`)
       .then(response => {
         this.setState({
           agents: response.data,
@@ -31,7 +32,7 @@ export default class Agents extends React.Component {
   }
   deleteAgent(agentId, index) {
     if(confirm("Are you sure you want to delete this agent?")) {
-      axios.delete(`${this.endPoint}/api/delete/agentPage-deleteById/${agentId}`)
+      axios.delete(`${API_END_POINT}/api/delete/agentPage-deleteById/${agentId}`)
         .then(response => {
           const agents = this.state.agents.slice();
           agents.splice(index, 1);

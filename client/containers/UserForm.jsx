@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import RichTextEditor from 'react-rte';
 import { Button } from 'reactstrap';
+import { API_END_POINT } from '../../config';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -20,7 +21,7 @@ export default class UserForm extends React.Component {
         phone: '',
         password: '',
         address: '',
-
+        user_type: '',
       },
       cities: [],
       city: '',
@@ -29,13 +30,13 @@ export default class UserForm extends React.Component {
       description: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
-    this.endPoint = 'https://api.saaditrips.com';
+    // API_END_POINT = 'https://admin.saaditrips.com';
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postUser = this.postUser.bind(this);
   }
 
   componentWillMount() {
-    axios.get(`${this.endPoint}/api/fetch/city-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
       .then(response => {
         this.setState({
           cities: response.data,
@@ -47,13 +48,13 @@ export default class UserForm extends React.Component {
     console.log('props',this.props);
     const { match } = this.props;
       if (match.params.userId)
-      axios.get(`${this.endPoint}/api/user/fetchById/${match.params.userId}`)
+      axios.get(`${API_END_POINT}/api/user/fetchById/${match.params.userId}`)
         .then((response) => {
           this.setState({
             user: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
           }, () => {
-            axios.get(`${this.endPoint}/api/fetchById/city-fetchById/${this.state.user.city_id}`)
+            axios.get(`${API_END_POINT}/api/fetchById/city-fetchById/${this.state.user.city_id}`)
             .then((response) => {
               this.setState({
                 city: response.data[0],
@@ -104,7 +105,7 @@ export default class UserForm extends React.Component {
         this.setState({ loading: true });
         if(match.params.userId) {
           // axios.patch('/api/user/update', fd)
-          axios.patch(`${this.endPoint}/api/user/update`, fd)
+          axios.patch(`${API_END_POINT}/api/user/update`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);
@@ -116,7 +117,7 @@ export default class UserForm extends React.Component {
           });
         }
         else {
-          axios.post(`${this.endPoint}/api/user/save`, fd)
+          axios.post(`${API_END_POINT}/api/user/save`, fd)
           .then((response) => {
             if (response.data && response.status === 200) {
               window.alert(response.data);
@@ -249,6 +250,24 @@ export default class UserForm extends React.Component {
                           value={user.last_name}
                           onChange={this.handleInputChange}
                         />
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="control-label col-md-3 col-sm-3">User Type</label>
+                      <div className="col-md-6 col-sm-6">
+                      <select
+                        name="user_type"
+                        value={user.user_type}
+                        className="form-control custom-select"
+                        onChange={this.handleInputChange}
+                        // required
+                      >
+                        <option value="">Select Type</option>
+                        <option value="admin">Admin</option>
+                        <option value="agent">Agent</option>
+                        <option value="user">User</option>
+                      </select>
                       </div>
                     </div>
 
