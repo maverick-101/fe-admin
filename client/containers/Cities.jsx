@@ -27,7 +27,7 @@ export default class Cities extends React.Component {
       .then(response => {
         this.setState({
           cities: response.data.items,
-          pages: Math.ceil(response.data.length/10),
+          pages: Math.ceil(response.data.total/10),
           responseMessage: 'No Cities Found...'
         })
       })
