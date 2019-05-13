@@ -26,7 +26,7 @@ export default class Cities extends React.Component {
     axios.get(`${API_END_POINT}/api/fetch/city-fetch`, this.getParams())
       .then(response => {
         this.setState({
-          cities: response.data,
+          cities: response.data.items,
           pages: Math.ceil(response.data.length/10),
           responseMessage: 'No Cities Found...'
         })
