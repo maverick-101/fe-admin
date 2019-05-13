@@ -248,6 +248,7 @@ export default class CityForm extends React.Component {
                           <option value="Khyber Pakhtunkhwa">Khyber PakhtunKhawa</option>
                           <option value="Gilgit Baltistan">Gilgit Baltistan</option>
                           <option value="Azad Kashmir">Azad Kashmir</option>
+                          <option value="Islamabad Capital Territory">Islamabad Capital Territory</option>
                         </select>
                       </div>
                     </div>
