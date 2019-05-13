@@ -23,7 +23,7 @@ export default class Cities extends React.Component {
     // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
-    axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
+    axios.get(`${API_END_POINT}/api/fetch/city-fetch`, this.getParams())
       .then(response => {
         this.setState({
           cities: response.data,
@@ -64,7 +64,8 @@ export default class Cities extends React.Component {
   }
   handleSelect(page) {
     this.setState({ activePage: page }, () => {
-    axios.get(`https://api.saaditrips.com/api/fetch/city-fetch`, this.getParams())
+    axios.get(`${API_END_POINT}/api/fetch/city-fetch`, this.getParams())
+    // axios.get(`https://api.saaditrips.com/api/fetch/city-fetch`, this.getParams())
     .then(response => {
       this.setState({
         cities: response.data.items,

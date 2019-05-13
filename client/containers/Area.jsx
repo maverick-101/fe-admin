@@ -23,8 +23,8 @@ export default class Area extends React.Component {
   }
   componentWillMount() {
     // axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
-    // axios.get(`${API_END_POINT}/api/fetch/locations-fetch?all=true`)
-    axios.get(`https://api.saaditrips.com/api/fetch/locations-fetch`, this.getParams())
+    axios.get(`${API_END_POINT}/api/fetch/locations-fetch`, this.getParams())
+    // axios.get(`https://api.saaditrips.com/api/fetch/locations-fetch`, this.getParams())
       .then(response => {
         this.setState({
           areas: response.data.items,
@@ -59,8 +59,8 @@ export default class Area extends React.Component {
   }
   handleSelect(page) {
     this.setState({ activePage: page }, () => {
-      // axios.get(`${API_END_POINT}/api/fetch/locations-fetch`, this.getParams())
-    axios.get(`https://api.saaditrips.com/api/fetch/locations-fetch`, this.getParams())
+      axios.get(`${API_END_POINT}/api/fetch/locations-fetch`, this.getParams())
+    // axios.get(`https://api.saaditrips.com/api/fetch/locations-fetch`, this.getParams())
     .then(response => {
       this.setState({
         areas: response.data.items,
