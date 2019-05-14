@@ -38,7 +38,7 @@ export default class AreaForm extends React.Component {
     axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
-            cities: response.data,
+            cities: response.data.items,
           });
         });
   }
