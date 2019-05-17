@@ -4,6 +4,7 @@ import axios from 'axios';
 import {Pagination} from 'react-bootstrap';
 import Broken from '../static/broken.png';
 import { API_END_POINT } from '../../config';
+import Swal from 'sweetalert2'
 
 import HasRole from '../hoc/HasRole';
 
@@ -19,10 +20,9 @@ export default class Area extends React.Component {
       pageSize: 10,
       responseMessage: 'Loading Areas...'
     }
-    // API_END_POINT = 'https://admin.saaditrips.com';
+    // this.API_END = 'https://api.saaditrips.com';
   }
   componentWillMount() {
-    // axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
     axios.get(`${API_END_POINT}/api/fetch/locations-fetch`, this.getParams())
     // axios.get(`https://api.saaditrips.com/api/fetch/locations-fetch`, this.getParams())
       .then(response => {
@@ -49,8 +49,16 @@ export default class Area extends React.Component {
 
   deleteArea(areaId, index) {
     if(confirm("Are you sure you want to delete this area?")) {
-      axios.delete(`/api/area/${areaId}`)
+      axios.delete(`${API_END_POINT}/api/delete/location-deleteById/${areaId}`)
         .then(response => {
+          if(response.status === 200) {
+            Swal.fire({
+              type: 'success',
+              title: 'Deleted...',
+              text: 'Area has been deleted successfully!',
+            })
+          }
+          
           const areas = this.state.areas.slice();
           areas.splice(index, 1);
           this.setState({ areas });
