@@ -23,6 +23,9 @@ export default class Cities extends React.Component {
     // API_END_POINT = 'https://admin.saaditrips.com';
   }
   componentWillMount() {
+    this.fetchCities();
+  }
+  fetchCities = () => {
     axios.get(`${API_END_POINT}/api/fetch/city-fetch`, this.getParams())
       .then(response => {
         this.setState({
@@ -84,14 +87,18 @@ export default class Cities extends React.Component {
   //     })
   // }
   handleSearch() {
-    axios.get(`/api/area?q=${this.state.q}`)
+    if(!this.state.q) {
+      this.fetchCities()
+    } else {
+      axios.get(`${API_END_POINT}/api/fetchByName/city-fetchByName/${this.state.q}`)
       .then((response) => {
         this.setState({
-          areas: response.data.items,
+          cities: response.data.items,
           activePage: 1,
           pages: Math.ceil(response.data.total/10)
         })
       })
+    }
   }
   render() {
     return (
@@ -103,7 +110,14 @@ export default class Cities extends React.Component {
             </div>
             <div style={{marginTop: '20px'}} className="col-sm-4">
               <div className='input-group'>
-                <input  className='form-control' type="text" name="search" placeholder="Enter keyword" value={this.state.q} onChange={(event) => this.setState({q: event.target.value})}/>
+                <input 
+                  className='form-control'
+                  type="text" name="search"
+                  placeholder="Enter keyword"
+                  value={this.state.q}
+                  onChange={(event) => this.setState({q: event.target.value})}
+                  onKeyPress={(event) => { if (event.key === 'Enter') { this.handleSearch(); } }}
+                  />
                 <span className="input-group-btn" >
                   <button type="button" onClick={() => this.handleSearch()} className="btn btn-info search-btn">Search</button>
                 </span>
