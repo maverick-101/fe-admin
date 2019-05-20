@@ -84,10 +84,10 @@ export default class Cities extends React.Component {
   //     })
   // }
   handleSearch() {
-    axios.get(`/api/area?q=${this.state.q}`)
+    axios.get(`${API_END_POINT}/api/fetchByName/city-fetchByName/${this.state.q}`)
       .then((response) => {
         this.setState({
-          areas: response.data.items,
+          cities: response.data.items,
           activePage: 1,
           pages: Math.ceil(response.data.total/10)
         })
