@@ -626,6 +626,7 @@ export default class ExperienceForm extends React.Component {
                       <div className="col-md-6 col-sm-6">
                         <input
                           type="file"
+                          accept="image/*"
                           name="gallery"
                           className="form-control"
                           onChange={this.handleImages}
@@ -665,6 +666,7 @@ export default class ExperienceForm extends React.Component {
                       <div className="col-md-6 col-sm-6">
                         <input
                           type="file"
+                          accept="image/*"
                           name="gallery"
                           className="form-control"
                           onChange={this.handleGuestPhotos}

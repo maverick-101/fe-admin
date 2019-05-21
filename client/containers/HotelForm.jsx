@@ -459,6 +459,7 @@ export default class HotelForm extends React.Component {
                       <div className="col-md-6 col-sm-6">
                         <input
                           type="file"
+                          accept="image/*"
                           name="cover"
                           className="form-control"
                           onChange={this.handleImages}

@@ -327,6 +327,7 @@ export default class UserForm extends React.Component {
                       <div className="col-md-6 col-sm-6">
                         <input
                           type="file"
+                          accept="image/*"
                           name="profile_picture"
                           className="form-control"
                           onChange={this.handleFile}

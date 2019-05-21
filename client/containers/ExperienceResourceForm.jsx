@@ -287,6 +287,7 @@ export default class ExperienceResourceForm extends React.Component {
                       <div className="col-md-6 col-sm-6">
                         <input
                           type="file"
+                          accept="image/*"
                           name="gallery"
                           className="form-control"
                           onChange={this.handleImages}
