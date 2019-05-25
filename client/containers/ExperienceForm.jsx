@@ -49,7 +49,7 @@ export default class ExperienceForm extends React.Component {
       locations: [],
       location: '',
       description: RichTextEditor.createEmptyValue(),
-      information: RichTextEditor.createEmptyValue(),
+      important_information: RichTextEditor.createEmptyValue(),
     };
     // this.rteState = RichTextEditor.createEmptyValue();
     // API_END_POINT = 'https://admin.saaditrips.com';
@@ -105,7 +105,7 @@ export default class ExperienceForm extends React.Component {
           this.setState({
             experience: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
-            information: RichTextEditor.createValueFromString(response.data.important_information, 'html'),
+            important_information: RichTextEditor.createValueFromString(response.data[0].important_information, 'html'),
           }, () => {
             this.setState({
               toDo: this.state.experience.todo,
@@ -117,7 +117,7 @@ export default class ExperienceForm extends React.Component {
                 user: response.data[0],
               });
             });
-            axios.get(`${this.endPoint}/api/fetchById/location-fetchById/${this.state.experience.location_id}`)
+            axios.get(`${API_END_POINT}/api/fetchById/location-fetchById/${this.state.experience.location_id}`)
             .then((response) => {
               this.setState({
                 location: response.data[0],
@@ -132,18 +132,17 @@ export default class ExperienceForm extends React.Component {
       const data =  {ID, url}
       let requestBody = { 'experienceGallery' : JSON.stringify(data)};
       if(confirm("Are you sure you want to delete this image?")) {
-        axios.delete(`${this.endPoint}/api/deleteGallery/experience-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
+        axios.delete(`${API_END_POINT}/api/deleteGallery/experience-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
           .then(response => {
             if(response.status === 200) {
               window.alert('Image deleted Successfully!')
             }
-            // const hotels = this.state.hotels[hotel_gallery].slice();
-            // hotels.splice(index, 1);
-            // this.setState({ hotels });
-
             const { experience } = this.state;
             experience.gallery.splice(index, 1);
             this.setState({ experience });
+          })
+          .catch((error) => {
+            window.alert('Error deleting image!');
           });
       }
     }
@@ -157,12 +156,12 @@ export default class ExperienceForm extends React.Component {
     });
   }
 
-  setInformation(information) {
+  setInformation(important_information) {
     const { experience } = this.state;
-    experience.important_information = information.toString('html');
+    experience.important_information = important_information.toString('html');
     this.setState({
       experience,
-      information,
+      important_information,
     });
   }
 
@@ -286,7 +285,7 @@ export default class ExperienceForm extends React.Component {
       loading,
       experience,
       description,
-      information,
+      important_information,
       users,
       user,
       locations,
@@ -647,8 +646,8 @@ export default class ExperienceForm extends React.Component {
                         <div className="col-md-6 col-sm-6">
                         {experience.gallery.map((image,index) => {
                           return (
-                          <span>
-                            <img key={index}
+                          <span key={index}>
+                            <img
                             style={{marginRight: '5px'}}
                             width="100"
                             className="img-fluid"
@@ -686,8 +685,8 @@ export default class ExperienceForm extends React.Component {
                         <div className="col-md-6 col-sm-6">
                         {experience.guest_gallery.map((image,index) => {
                           return (
-                          <span>
-                          <img key={index}
+                          <span key={index}>
+                          <img
                           style={{marginRight: '5px'}}
                           width="100"
                           className="img-fluid"
@@ -743,7 +742,7 @@ export default class ExperienceForm extends React.Component {
                       <label className="control-label col-md-3 col-sm-3">Important Information</label>
                       <div className="col-md-6 col-sm-6">
                         <RichTextEditor
-                          value={information}
+                          value={important_information}
                           toolbarConfig={toolbarConfig}
                           onChange={(e) => {
                             this.setInformation(e);
