@@ -26,7 +26,7 @@ export default class Experiences extends React.Component {
     axios.get(`${API_END_POINT}/api/fetch/experience-fetch`)
       .then(response => {
         this.setState({
-          experiences: response.data,
+          experiences: response.data.items,
           pages: Math.ceil(response.data.length/10),
           responseMessage: 'No Experiences Found...'
         })
