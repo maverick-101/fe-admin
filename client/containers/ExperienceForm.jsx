@@ -273,9 +273,13 @@ export default class ExperienceForm extends React.Component {
               window.alert('ERROR')
               this.setState({ loading: false });
             }
+          })
+          .catch((error) => {
+            this.setState({ loading: false });
+            window.alert(error.response.data);
           });
         }
-        }
+      }
 
   render() {
     const {
