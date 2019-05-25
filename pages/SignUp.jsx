@@ -209,6 +209,7 @@ class Login extends Component {
                       <div className="col-md-4 col-sm-4">
                         <input
                           type="file"
+                          accept="image/*"
                           name="profile_picture"
                           className="form-control"
                           onChange={this.handleFile}
