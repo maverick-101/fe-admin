@@ -128,8 +128,8 @@ export default class ExperienceForm extends React.Component {
       }
     }
 
-    deleteImage = (url, ID) => {
-      const data =  {ID, url}
+    deleteImage = (url, ID, type, index) => {
+      const data =  {ID, url, type}
       let requestBody = { 'experienceGallery' : JSON.stringify(data)};
       if(confirm("Are you sure you want to delete this image?")) {
         axios.delete(`${API_END_POINT}/api/deleteGallery/experience-deleteGallery`, {data: requestBody, headers:{Authorization: "token"}})
@@ -138,12 +138,14 @@ export default class ExperienceForm extends React.Component {
               window.alert('Image deleted Successfully!')
             }
             const { experience } = this.state;
-            experience.gallery.splice(index, 1);
+            if(type === 'gallery') {
+              experience.gallery.splice(index, 1);
+            } else {
+
+              experience.guest_gallery.splice(index, 1)
+            }
             this.setState({ experience });
           })
-          .catch((error) => {
-            window.alert('Error deleting image!');
-          });
       }
     }
 
@@ -654,7 +656,7 @@ export default class ExperienceForm extends React.Component {
                             src={`${image.url}`}
                             alt="cover"
                           />
-                          <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, experience.ID)}/>
+                          <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, experience.ID, 'gallery', index)}/>
                         </span>
                           )
                         })}
@@ -693,7 +695,7 @@ export default class ExperienceForm extends React.Component {
                           src={`${image.url}`}
                           alt="cover"
                         />
-                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, experience.ID)}/>
+                        <span className="glyphicon glyphicon-trash" aria-hidden="true" style={{cursor: 'pointer'}} onClick={() => this.deleteImage(image.url, experience.ID, 'guest_gallery', index)}/>
                         </span>
                           )
                         })}
