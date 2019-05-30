@@ -92,7 +92,7 @@ export default class PackageForm extends React.Component {
     axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
-            cities: response.data,
+            cities: response.data.items,
           });
         });
   }
@@ -110,7 +110,7 @@ export default class PackageForm extends React.Component {
     axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
         .then((response) => {
           this.setState({
-            locations: response.data,
+            locations: response.data.items,
           });
         });
   }
@@ -122,9 +122,9 @@ export default class PackageForm extends React.Component {
       axios.get(`${API_END_POINT}/api/fetchById/packagePage-fetchById/${match.params.packageId}`)
         .then((response) => {
           this.setState({
-            pckg: response.data,
-            description: RichTextEditor.createValueFromString(response.data.description, 'html'),
-            summary: RichTextEditor.createValueFromString(response.data.summary, 'html'),
+            pckg: response.data[0],
+            description: RichTextEditor.createValueFromString(response.data[0].description || '', 'html'),
+            summary: RichTextEditor.createValueFromString(response.data[0].summary || '', 'html'),
           }, () => {
             this.setState({
               travelModes: this.state.pckg.travel_modes,
@@ -134,7 +134,7 @@ export default class PackageForm extends React.Component {
             axios.get(`${API_END_POINT}/api/fetchById/city-fetchById/${this.state.pckg.city_id}`)
             .then((response) => {
               this.setState({
-                city: response.data[0],
+                city: response.data.items,
               }, () => {
                 axios.get(`${API_END_POINT}/api/fetchById/location-fetchById/${this.state.pckg.location_id}`)
                 .then((response) => {
@@ -1106,7 +1106,6 @@ export default class PackageForm extends React.Component {
                       <div className="col-md-6 col-sm-6">
                         <input
                           type="file"
-                          accept="image/*"
                           name="cover"
                           className="form-control"
                           onChange={this.handleImages}
