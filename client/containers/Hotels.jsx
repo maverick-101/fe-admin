@@ -25,7 +25,7 @@ export default class Hotels extends React.Component {
     axios.get(`${API_END_POINT}/api/hotel/fetch`)
       .then(response => {
         this.setState({
-          hotels: response.data,
+          hotels: response.data.items,
           pages: Math.ceil(response.data.length/10),
           responseMessage: 'No Hotels Found'
         })
