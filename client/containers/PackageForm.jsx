@@ -123,8 +123,8 @@ export default class PackageForm extends React.Component {
         .then((response) => {
           this.setState({
             pckg: response.data[0],
-            description: RichTextEditor.createValueFromString(response.data.description, 'html'),
-            summary: RichTextEditor.createValueFromString(response.data.summary, 'html'),
+            description: RichTextEditor.createValueFromString(response.data[0].description || '', 'html'),
+            summary: RichTextEditor.createValueFromString(response.data[0].summary || '', 'html'),
           }, () => {
             this.setState({
               travelModes: this.state.pckg.travel_modes,
@@ -134,7 +134,7 @@ export default class PackageForm extends React.Component {
             axios.get(`${API_END_POINT}/api/fetchById/city-fetchById/${this.state.pckg.city_id}`)
             .then((response) => {
               this.setState({
-                city: response.data[0],
+                city: response.data.items,
               }, () => {
                 axios.get(`${API_END_POINT}/api/fetchById/location-fetchById/${this.state.pckg.location_id}`)
                 .then((response) => {
