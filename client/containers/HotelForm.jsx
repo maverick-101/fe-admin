@@ -99,7 +99,7 @@ export default class HotelForm extends React.Component {
             axios.get(`${API_END_POINT}/api/fetchById/city-fetchById/${this.state.hotel.city_id}`)
             .then((response) => {
               this.setState({
-                city: response.data[0],
+                city: response.data.items,
               }, () => {
                 axios.get(`${API_END_POINT}/api/fetchById/location-fetchById/${this.state.hotel.location_id}`)
                 .then((response) => {
@@ -459,7 +459,6 @@ export default class HotelForm extends React.Component {
                       <div className="col-md-6 col-sm-6">
                         <input
                           type="file"
-                          accept="image/*"
                           name="cover"
                           className="form-control"
                           onChange={this.handleImages}
