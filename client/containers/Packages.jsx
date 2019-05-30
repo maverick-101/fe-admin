@@ -24,7 +24,7 @@ export default class Packages extends React.Component {
     axios.get(`${API_END_POINT}/api/fetch/packagePage-fetch`)
       .then(response => {
         this.setState({
-          packages: response.data,
+          packages: response.data.items,
           pages: Math.ceil(response.data.length/10),
         })
       })
@@ -131,7 +131,7 @@ export default class Packages extends React.Component {
                   this.state.packages.map((pckg, index) => (
                   <tr key={index}>
                     <td>{pckg.ID}</td>
-                    <td>{<img style={{height: '50px', width: '50px'}} src={pckg.gallery ? pckg.gallery[0].url : Broken} />}</td>
+                    <td>{<img style={{height: '50px', width: '50px'}} src={pckg.gallery && pckg.gallery.length ? pckg.gallery[0].url : Broken} />}</td>
                     <td>{pckg.package_title}</td>
                     <td>{pckg.city_id}</td>
                     <td>{pckg.agent_id}</td>
