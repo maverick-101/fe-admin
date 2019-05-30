@@ -92,7 +92,7 @@ export default class PackageForm extends React.Component {
     axios.get(`${API_END_POINT}/api/fetch/city-fetch`)
         .then((response) => {
           this.setState({
-            cities: response.data,
+            cities: response.data.items,
           });
         });
   }
@@ -110,7 +110,7 @@ export default class PackageForm extends React.Component {
     axios.get(`${API_END_POINT}/api/fetch/locations-fetch`)
         .then((response) => {
           this.setState({
-            locations: response.data,
+            locations: response.data.items,
           });
         });
   }
@@ -122,7 +122,7 @@ export default class PackageForm extends React.Component {
       axios.get(`${API_END_POINT}/api/fetchById/packagePage-fetchById/${match.params.packageId}`)
         .then((response) => {
           this.setState({
-            pckg: response.data,
+            pckg: response.data[0],
             description: RichTextEditor.createValueFromString(response.data.description, 'html'),
             summary: RichTextEditor.createValueFromString(response.data.summary, 'html'),
           }, () => {
