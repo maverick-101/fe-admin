@@ -88,7 +88,7 @@ export default class FeaturedForm extends React.Component {
         axios.get(`${API_END_POINT}/api/hotel/fetch`)
         .then(response => {
         this.setState({
-          hotels: response.data,
+          hotels: response.data.items,
         })
       })
     }
