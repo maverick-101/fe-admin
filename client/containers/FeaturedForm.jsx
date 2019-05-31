@@ -62,7 +62,7 @@ export default class FeaturedForm extends React.Component {
           axios.get(`${API_END_POINT}/api/fetchById/packagePage-fetchById/${this.state.featured.package_id}`)
           .then((response) => {
             this.setState({
-              pckg: response.data,
+              pckg: response.data[0],
             })
           })
         })
@@ -97,7 +97,7 @@ export default class FeaturedForm extends React.Component {
         axios.get(`${API_END_POINT}/api/fetch/packagePage-fetch`)
         .then(response => {
         this.setState({
-          packages: response.data,
+          packages: response.data.items,
         })
       })
     }
