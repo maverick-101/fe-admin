@@ -24,8 +24,8 @@ export default class FeaturedHotels extends React.Component {
     axios.get(`${API_END_POINT}/api/fetch/featuredHotel-fetch`)
       .then(response => {
         this.setState({
-          featuredHotels: response.data.items,
-          pages: Math.ceil(response.data.total/10),
+          featuredHotels: response.data,
+          pages: Math.ceil(response.data.length/10),
         })
       })
       .catch((error) => {
