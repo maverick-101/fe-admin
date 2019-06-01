@@ -1,2 +1,2 @@
 
-export const API_END_POINT = 'https://api.saaditrips.com';
+export const API_END_POINT = 'https://admin.saaditrips.com';
