@@ -57,6 +57,7 @@ export default class Area extends React.Component {
       })
   }
   render() {
+    console.log('user', this.props)
     return (
       <div className="row">
         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -68,7 +69,6 @@ export default class Area extends React.Component {
           </div>
           <div className="text-center space-2">
           </div>
-          <div className="table-responsive">
             {/*<table className="table table-striped">
               <thead>
                 <tr>
@@ -119,7 +119,7 @@ export default class Area extends React.Component {
               </tbody>
             </table>*/}
             <div className = 'row space-3'>
-              <div className='col-sm-6 pull-left'>
+              {/* <div className='col-sm-6 pull-left'>
                 <h3 className='space-1'>Listings in last week</h3>
                 <LineChart className='chart' data={[1,2,3,4,5,6,7]} labels={['Mon','Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']}/>
               </div>
@@ -136,9 +136,9 @@ export default class Area extends React.Component {
               <div className='col-sm-6'>
                 <h3 className='space-1'>Types Comparison</h3>
                 <BarChart className='chart' data={[300,200,300]} labels={['Basic', 'Premium', 'Premium Plus']}/>
-              </div>
+              </div> */}
+              <h1>Welcome to Saadi Admin Dashboard</h1>
             </div>
-          </div>
         </div>
       </div>
     );
