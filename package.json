@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/graana/graana-dashboard#readme",
   "dependencies": {
-    "axios": "^0.15.3",
+    "axios": "^0.21.1",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-polyfill": "^6.26.0",
